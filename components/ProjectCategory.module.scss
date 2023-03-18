@@ -1,0 +1,14 @@
+.projectCategoryInstance {
+  margin: 0 20px 0 0;
+  padding: 12px;
+  background-color: darkcyan;
+
+  &:hover {
+    background-color: pink;
+    opacity: 70%;
+  }
+}
+
+.selectedInstance {
+  background-color: pink;
+}

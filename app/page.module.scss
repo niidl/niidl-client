@@ -1,0 +1,27 @@
+.main {
+  margin: 0;
+  padding: 0;
+  box-sizing: 0;
+}
+
+.main > div:first-child {
+  margin: 24px auto;
+  width: 90%;
+}
+
+.projectCategoriesContainer {
+  width: 100%;
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-flow: row wrap;
+  row-gap: 12px;
+}
+
+.filteredProjectsContainer {
+  width: 100%;
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  row-gap: 20px;
+}
