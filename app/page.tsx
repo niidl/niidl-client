@@ -62,10 +62,12 @@ export interface Project {
 }
 
 export default function Home() {
-  const [projectCategories, setProjectCategories] = 
-    useState<string[]>(projectCategoriesMockData);
-  const [selectedProjectCategories, setSelectedProjectCategories] =
-    useState<string[]>(['All Projects']);
+  const [projectCategories, setProjectCategories] = useState<string[]>(
+    projectCategoriesMockData
+  );
+  const [selectedProjectCategories, setSelectedProjectCategories] = useState<
+    string[]
+  >(['All Projects']);
   const [allProjects, setAllProjects] =
     useState<Project[]>(allProjectsMockData);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
@@ -116,7 +118,6 @@ export default function Home() {
     <main className={styles.main}>
       <div>
         <h1>Projects</h1>
-
         <div>
           <h2>Project Categories</h2>
           <div className={styles.projectCategoriesContainer}>
