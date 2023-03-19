@@ -1,0 +1,15 @@
+.projectPageInfoContainer {
+  width: 90%;
+  margin: 24px auto;
+
+  div {
+    margin: 0 20px 36px 0;
+  }
+}
+
+.projectTechnologiesContainer {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  row-gap: 12px;
+}
