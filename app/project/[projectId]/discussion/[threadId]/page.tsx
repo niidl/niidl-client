@@ -60,7 +60,7 @@ export default async function ThreadPage() {
             </div>
           );
         })}
-      <NewMessage />
+      <NewMessage thread_id={threadInfo.id} project_id={threadInfo.project_id}/>
     </div>
   );
 }

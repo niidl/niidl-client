@@ -10,22 +10,30 @@ interface MessageObject {
   thread_id: number;
 }
 
-export default function NewMessage() {
+interface Props {
+  thread_id: number;
+  project_id: number;
+}
+
+export default function NewMessage({ thread_id, project_id }: Props) {
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
     const textValue: string = e.target.textarea.value;
-    const date: Date = new Date()
-    const postDate: string = moment(date).format('YYYY-MM-DD')
-
-    console.log(postDate)
+    const date: Date = new Date();
+    const postDate: string = moment(date).format('YYYY-MM-DD');
+    let userId: any = localStorage.getItem('currentUser');
+    userId = JSON.parse(userId);
 
     const newMessageObject: MessageObject = {
       content: textValue,
       creation_time: postDate,
-      user_id: 3,
-      thread_id: 5,
+      user_id: userId.ghuid,
+      thread_id: thread_id,
     };
-    // await axios.post('https://niidl.net/NewMessage', newMessageObject);
+
+    console.log(newMessageObject, project_id)
+
+    await axios.post(`https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`, newMessageObject);
   }
 
   return (
