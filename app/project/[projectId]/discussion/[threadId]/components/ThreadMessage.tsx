@@ -1,4 +1,5 @@
 import moment from 'moment';
+import styles from '../page.module.scss';
 
 interface Props {
   content: string;
