@@ -34,11 +34,9 @@ export default async function ThreadPage() {
     `https://niidl.net/projects/-1/threads/-1/messages`
   ).then((data) => data.json());
 
-  const threadInfo: ThreadInfo[] = await fetch(
-    `https://niidl.net/projects/-1/threads/${-1}`
+  const threadInfo: ThreadInfo = await fetch(
+    `https://niidl.net/projects/-1/threads/-1`
   ).then((data) => data.json());
-
-  console.log(messages[0]);
 
   return (
     <div className={styles.threadBody}>
@@ -48,10 +46,10 @@ export default async function ThreadPage() {
       <h1>This project needs more quests and puzzles.</h1>
       <h3>General Discussion</h3>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2>{threadInfo[1].user.user_name}</h2>
-        <p>{moment(threadInfo[1].creation_time).fromNow()}</p>
+        <h2>Hello World</h2>
+        <p>{moment(threadInfo.creation_time).fromNow()}</p>
       </div>
-      <p>{threadInfo[1].content}</p>
+      <p>{threadInfo.content}</p>
       <hr />
       {Array.isArray(messages) &&
         messages.map((message, index) => {

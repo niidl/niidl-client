@@ -1,4 +1,5 @@
 'use client';
+import styles from '../page.module.scss';
 
 export default function NewMessage() {
   // function handleSubmit(e: any): void {
@@ -7,7 +8,7 @@ export default function NewMessage() {
   // }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className={styles.newMessageContainer}>
       <form>
         <textarea
           id='message'
@@ -17,8 +18,8 @@ export default function NewMessage() {
           className='text-area'
           style={{ resize: 'vertical', margin: '20px', width: '600px' }}
         ></textarea>
-        <button style={{ width: '160px', margin: '0px 20px 20px' }}>
-          Click Me
+        <button className={styles.newMessageButton}>
+          Post
         </button>
       </form>
     </div>

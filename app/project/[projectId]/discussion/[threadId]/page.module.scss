@@ -1,4 +1,12 @@
 .threadBody {
   margin: 40px 30px 10px;
+}
+.newMessageContainer {
+  display: flex;
+  flex-direction: column;
+}
 
+.newMessageButton {
+  width: 160px;
+  margin: 0px 20px 2px;
 }
