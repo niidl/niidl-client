@@ -3,17 +3,25 @@ import { useState } from 'react';
 
 interface Props {
   files: any;
+  codeRef: any;
 }
 
-const handleFiles = (url: string) => {};
+const handleFiles = async (url: string, codeRef: any) => {
+  const filesJson = await fetch(url);
+  const filesContent = await filesJson.json();
 
-const Directory = ({ files }: Props) => {
+  codeRef.current = Buffer.from(filesContent.content, 'base64').toString(
+    'utf8'
+  );
+};
+
+const Directory = ({ files, codeRef }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (files.type === 'file') {
     return (
       <>
-        <h3 onClick={() => handleFiles(files.url)}>{files.name}</h3>
+        <h3 onClick={() => handleFiles(files.url, codeRef)}>{files.name}</h3>
         <br />
       </>
     );
@@ -31,7 +39,7 @@ const Directory = ({ files }: Props) => {
       <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
       {isExpanded &&
         files.items.map((file: object) => {
-          <Directory files={file} />;
+          return <Directory files={file} codeRef={codeRef} key={files.name} />;
         })}
     </div>
   );
