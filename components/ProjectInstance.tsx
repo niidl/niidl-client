@@ -11,9 +11,9 @@ const ProjectInstance: React.FC<Props> = ({ project }) => {
     <Link
       href={`/project/${project.id}`}
       className={styles.filteredProjectInstance}
-      key={project.name}
+      key={project.project_name}
     >
-      <div>{project.name}</div>
+      <div>{project.project_name}</div>
     </Link>
   );
 };

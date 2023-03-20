@@ -43,8 +43,51 @@ async function getProject(projectId: string) {
   return res;
 }
 
+export interface SingleProj {
+  issues: Array<object>,
+  contributors: Array<{login:string, id:number}>,
+  directory: Array<object>,
+  project_name: string,
+  description: string,
+  id: number,
+  threads: Array<object>
+  tags: Array<{tag_name:string}>
+}
+
 export default async function ProjectPage({ params }: any) {
-  const project = await getProject(params.projectId);
+
+  const project: SingleProj = {
+    issues: [],
+    contributors: [],
+    directory: [],
+    project_name: "",
+    description: "",
+    id: 0,
+    threads: [],
+    tags: []
+  };
+  //const project = await getProject(params.projectId);
+
+  async function fetchAllProjects(): Promise<void>{
+    const response = await fetch(`niidl.com/projects/${params.projectId}`);
+    const data:SingleProj = await response.json();
+    project.issues = data.issues
+    project.contributors = data.contributors
+    project.directory = data.directory
+    project.project_name = data.project_name
+    project.description = data.description
+    project.id = data.id
+    project.threads = data.threads
+    project.tags = data.tags
+  }
+
+  const tagOnly:Array<string> = project.tags.map((tag)=>{
+    return tag.tag_name
+  })
+
+  const contributorNames:Array<string> = project.contributors.map((contributor)=>{
+    return contributor.login
+  })
 
   return (
     <div className={styles.projectPageInfoContainer}>
@@ -59,8 +102,8 @@ export default async function ProjectPage({ params }: any) {
           />
         </div>
         <div>
-          <h1>{project.name}</h1>
-          <div>Here goes the project description and everything the organizers want to say.</div>
+          <h1>{project.project_name}</h1>
+          <div>{project.description}</div>
         </div>
       </div>
 
@@ -68,7 +111,7 @@ export default async function ProjectPage({ params }: any) {
         <h2>Technologies</h2>
         <div className={styles.projectTechnologiesContainer}>
           {
-            project.keywords.map(keyword => 
+            tagOnly.map(keyword => 
               <div
                 className={projectCategoryStyles.projectCategoryInstance}
                 key={keyword}
@@ -94,7 +137,14 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Contributors</h2>
-        <div>Here goes all of the contributors.</div>
+          <div>
+          <ul>{project.contributors.map((contributor) =>
+            <li key={contributor.id}>
+              {contributor.login}
+            </li>
+          )}
+          </ul>
+        </div>
       </div>
 
       <div>
