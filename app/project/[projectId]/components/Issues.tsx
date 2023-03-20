@@ -1,9 +1,13 @@
+'use client';
 import Link from 'next/link';
 import styles from './Issues.module.scss';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
 
-export default async function Issues() {
-  const gitAccount = 'https://github.com/acheong08/EdgeGPT'; //This url is fetched from the ServerSide github URL
+export default function Issues() {
+  const [issuesData, setIssuesData] = useState([]);
+
+  const gitAccount = 'https://github.com/lidofinance/solido-sdk'; //This url is fetched from the ServerSide github URL
   const GitAPI = {
     root: 'https://api.github.com/repos/',
     projectName: '',
@@ -16,23 +20,28 @@ export default async function Issues() {
   const apiLink =
     GitAPI.root + GitAPI.user + '/' + GitAPI.projectName + '/' + 'issues';
 
-  const data = await fetch(apiLink);
-  const res = await data.json();
+  (async () => {
+    const data = await fetch(apiLink);
+    const res = await data.json();
+    setIssuesData(res);
+  })();
 
   return (
     <div className={styles.issuesContainer}>
-      {res.map((issue: any) => {
-        return (
-          <Link href={`${issue.html_url}`} key={issue.id}>
-            <div className={styles.issueInstance}>
-              <div>{issue.title}</div>
-              <div>
-                {moment(issue.created_at).fromNow()} by {issue.user.login}
-              </div>
-            </div>
-          </Link>
-        );
-      })}
+      {issuesData
+        ? issuesData.map((issue: any) => {
+            return (
+              <Link href={`${issue.html_url}`} key={issue.id}>
+                <div className={styles.issueInstance}>
+                  <div>{issue.title}</div>
+                  <div>
+                    {moment(issue.created_at).fromNow()} by {issue.user.login}
+                  </div>
+                </div>
+              </Link>
+            );
+          })
+        : null}
     </div>
   );
 }
