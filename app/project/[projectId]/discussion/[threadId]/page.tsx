@@ -14,10 +14,6 @@ interface Message {
   };
 }
 
-interface Props {
-  threadId?: number;
-}
-
 interface ThreadInfo {
   id: number;
   content: string;
@@ -33,13 +29,16 @@ interface ThreadInfo {
   title: string;
 }
 
-export default async function ThreadPage({}: Props) {
-  const  messages: Message[] = await fetch(`https://niidl.net/projects/-1/threads/-1/messages`).then(data => data.json());
+export default async function ThreadPage() {
+  const messages: Message[] = await fetch(
+    `https://niidl.net/projects/-1/threads/-1/messages`
+  ).then((data) => data.json());
 
-  const threadInfo: ThreadInfo[] =  await fetch(`https://niidl.net/threads/${-1}`).then(data => data.json())
+  const threadInfo: ThreadInfo[] = await fetch(
+    `https://niidl.net/projects/-1/threads/${-1}`
+  ).then((data) => data.json());
 
-  console.log(messages[0])
-
+  console.log(messages[0]);
 
   return (
     <div className={styles.threadBody}>
@@ -55,11 +54,14 @@ export default async function ThreadPage({}: Props) {
       <p>{threadInfo[1].content}</p>
       <hr />
       {Array.isArray(messages) &&
-        messages.map((message: Message) => {
+        messages.map((message, index) => {
           return (
-            <div>
-              Hello
-              <hr />
+            <div key={index}>
+              <ThreadMessage
+                content={message.content}
+                creation_time={message.creation_time}
+                username={message.user.user_name}
+              />
             </div>
           );
         })}
