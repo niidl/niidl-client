@@ -4,9 +4,16 @@
 .newMessageContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: start;
 }
 
 .newMessageButton {
   width: 160px;
   margin: 0px 20px 2px;
+}
+
+.userInfoContainer {
+  display: flex;
+  justify-content: space-between;
 }

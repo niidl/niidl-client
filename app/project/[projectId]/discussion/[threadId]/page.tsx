@@ -2,6 +2,7 @@ import moment from 'moment';
 import ThreadMessage from './components/ThreadMessage';
 import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
+import Link from 'next/link';
 
 interface Message {
   id: number;
@@ -18,13 +19,7 @@ interface ThreadInfo {
   id: number;
   content: string;
   project_id: number;
-  project: {
-    project_name: string;
-  };
-  user_id: number;
-  user: {
-    user_name: string;
-  };
+  user_id: string;
   creation_time: string;
   title: string;
 }
@@ -41,12 +36,14 @@ export default async function ThreadPage() {
   return (
     <div className={styles.threadBody}>
       <div>
-        <h4>Back to Project</h4>
+        <Link href={`/projects/${threadInfo.project_id}`}>
+          <h4>Back to Project</h4>
+        </Link>
       </div>
-      <h1>This project needs more quests and puzzles.</h1>
-      <h3>General Discussion</h3>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2>Hello World</h2>
+      <h1>{threadInfo.title}</h1>
+      <h3>Discussion</h3>
+      <div className={styles.userInfoContainer}>
+        <h2>{threadInfo.user_id}</h2>
         <p>{moment(threadInfo.creation_time).fromNow()}</p>
       </div>
       <p>{threadInfo.content}</p>
