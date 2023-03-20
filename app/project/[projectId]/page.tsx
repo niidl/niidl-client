@@ -7,7 +7,7 @@ import Repository from './components/Repository';
 
 const allProjectsMockData = [
   {
-    id: '101',
+    id: 101,
     name: 'mymizu',
     keywords: ['Education', 'JavaScript', 'Beginner-friendly'],
   },
@@ -38,13 +38,13 @@ const allProjectsMockData = [
   },
 ];
 
-async function getProject(projectId: number) {
-  const res = await allProjectsMockData[0];
+async function getProject(projectId: string) {
+  const res = await allProjectsMockData.filter(project => String(project.id) === projectId)[0];
   return res;
 }
 
 export default async function ProjectPage({ params }: any) {
-  const project = await getProject(params.id);
+  const project = await getProject(params.projectId);
 
   return (
     <div className={styles.projectPageInfoContainer}>
@@ -89,13 +89,11 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Issues</h2>
-        {/* <div>Here goes all of the issues.</div> */}
-        <Issues
-        />
+        <Issues />
       </div>
 
       <div>
-        <h2>Contibutors</h2>
+        <h2>Contributors</h2>
         <div>Here goes all of the contributors.</div>
       </div>
 

@@ -1,13 +1,19 @@
 .discussionsContainer {
   width: 100%;
-  background-color: pink;
+  border: 1px solid #FFFFFF;
   display: flex;
   flex-flow: column nowrap;
+  align-items: center;
+
+  & > .discussionsMessageInstance:first-child {
+    margin: 12px 0;
+  }
 
   .discussionsMessageInstance {
-    width: 100%;
+    width: calc(100% - 24px);
     height: 64px;
     background-color: darkred;
+    margin: 0 0 12px 0;
     padding: 0 32px;
     display: flex;
     justify-content: space-between;
