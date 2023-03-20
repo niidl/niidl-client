@@ -5,6 +5,10 @@ import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
 
+// --------------------->
+// import NewProjectModal from '@/components/NewProjectModal';
+// --------------------->
+
 const projectCategoriesMockData = [
   'Beginner-friendly',
   'Education',
@@ -25,53 +29,74 @@ const projectCategoriesMockData = [
 const allProjectsMockData = [
   {
     id: 101,
-    name: 'mymizu',
+    project_name: 'mymizu',
     keywords: ['Education', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 102,
-    name: 'Honeycomb',
+    project_name: 'Honeycomb',
     keywords: ['Science', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 103,
-    name: 'pURANIUM',
+    project_name: 'pURANIUM',
     keywords: ['Science', 'Environment', 'Python'],
   },
   {
     id: 105,
-    name: 'CodeLegion',
+    project_name: 'CodeLegion',
     keywords: ['Education', 'Science', 'JavaScript', 'C#'],
   },
   {
     id: 106,
-    name: 'RuddyRex',
+    project_name: 'RuddyRex',
     keywords: ['Travel', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 107,
-    name: 'impact training',
+    project_name: 'impact training',
     keywords: ['Fitness', 'Health', 'Ruby'],
   },
 ];
 
 export interface Project {
   id: number;
-  name: string;
+  project_name: string;
   keywords: string[];
 }
 
 export default function Home() {
-  const [projectCategories, setProjectCategories] = useState<string[]>(
-    projectCategoriesMockData
-  );
-  const [selectedProjectCategories, setSelectedProjectCategories] = useState<
-    string[]
-  >(['All Projects']);
-  const [allProjects, setAllProjects] =
-    useState<Project[]>(allProjectsMockData);
+  // const [projectCategories, setProjectCategories] = useState<string[]>(
+  //   projectCategoriesMockData
+  // );
+  const [projectCategories, setProjectCategories] = useState<string[]>(projectCategoriesMockData);
+  const [selectedProjectCategories, setSelectedProjectCategories] = useState<string[]>(['All Projects']);
+
+  const [allProjects, setAllProjects] = useState<Project[]>(allProjectsMockData);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const selectedProjectCategoriesLoadedRef = useRef<boolean>(false);
+
+  //-------------->
+const [showModal, setShowModal] = useState<boolean>(false)
+//--------------------->
+
+  useEffect(()=> {
+    async function fetchCategories(): Promise<void> {
+      const response = await fetch('niidl.com/tagNames');
+      const data = await response.json()
+      setProjectCategories(data)
+    }
+    fetchCategories();
+  },[])
+
+  useEffect(()=> {
+    async function fetchAllProjects(): Promise<void>{
+      const response = await fetch('niidl.com/projects');
+      const data = await response.json();
+      setAllProjects(data)
+    }
+    fetchAllProjects();
+  },[])
 
   useEffect(() => {
     if (!selectedProjectCategoriesLoadedRef.current) {
@@ -118,6 +143,17 @@ export default function Home() {
     <main className={styles.main}>
       <div>
         <h1>Projects</h1>
+ {/* -->
+        <button
+          onClick={() => setShowModal(true)}
+        >
+          + Add Project
+        </button>
+        <NewProjectModal 
+          showModal={showModal}
+          onClose={() => setShowModal(false)}
+        />
+--> */}
         <div>
           <h2>Project Categories</h2>
           <div className={styles.projectCategoriesContainer}>
