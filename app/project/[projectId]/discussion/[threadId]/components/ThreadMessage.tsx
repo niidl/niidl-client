@@ -4,12 +4,18 @@ interface Props {
   content: string;
   creation_time: string;
   username: string;
+  key: number;
 }
 
-export default function ThreadMessage({ content, creation_time, username }: Props) {
+export default async function ThreadMessage({
+  content,
+  creation_time,
+  username,
+  key,
+}: Props) {
   return (
     <div style={{ margin: '10px 5px' }}>
-      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h3>{username}</h3>
         <h4>{moment(creation_time).fromNow()}</h4>
       </div>
