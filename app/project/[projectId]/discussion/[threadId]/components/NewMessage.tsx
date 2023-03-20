@@ -2,14 +2,14 @@
 import styles from '../page.module.scss';
 
 export default function NewMessage() {
-  // function handleSubmit(e: any): void {
-  //   e.preventDefault();
-  //   const textValue = e.target.textarea.value;
-  // }
+  function handleSubmit(e: any): void {
+    e.preventDefault();
+    const textValue = e.target.textarea.value;
+  }
 
   return (
     <div className={styles.newMessageContainer}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <textarea
           id='message'
           rows={4}
