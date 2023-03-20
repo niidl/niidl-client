@@ -3,6 +3,7 @@ import './globals.scss';
 import React from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+//import { useAuth } from '@/auth/auth';
 
 export const metadata = {
   title: 'niidl',
@@ -14,6 +15,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang='en'>
       <body>

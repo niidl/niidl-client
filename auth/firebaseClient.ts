@@ -16,6 +16,6 @@ const CLIENT_CONFIG = {
 
 const app = getApps().length < 1 ? initializeApp(CLIENT_CONFIG) : undefined;
 const auth = getAuth(app);
-setPersistence(auth, browserSessionPersistence);
+//setPersistence(auth, browserSessionPersistence);
 
 export { auth };
