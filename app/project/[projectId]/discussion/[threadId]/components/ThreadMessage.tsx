@@ -4,14 +4,12 @@ interface Props {
   content: string;
   creation_time: string;
   username: string;
-  key: number;
 }
 
-export default async function ThreadMessage({
+export default function ThreadMessage({
   content,
   creation_time,
   username,
-  key,
 }: Props) {
   return (
     <div style={{ margin: '10px 5px' }}>
