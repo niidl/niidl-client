@@ -2,8 +2,7 @@
 import './globals.scss';
 import React from 'react';
 import Link from 'next/link';
-import { auth } from '../auth/firebaseClient';
-import { signInWithPopup, GithubAuthProvider } from 'firebase/auth';
+import Navbar from '@/components/Navbar';
 
 export const metadata = {
   title: 'niidl',
@@ -15,31 +14,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const provider = new GithubAuthProvider();
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
-        <nav className={'navbar'}>
-          <div className={'logo'}>niidl</div>
-          <div>
-            <button
-              // onClick={async () => {
-              //   await signInWithPopup(auth, provider);
-              //   window.location.href = '/';
-              // }}
-            >
-              Login
-            </button>
-            <button
-              // onClick={async () => {
-              //   await signInWithPopup(auth, provider);
-              //   window.location.href = '/';
-              // }}
-            >
-              Signup
-            </button>
-          </div>
-        </nav>
+        <Navbar />
         {children}
       </body>
     </html>
