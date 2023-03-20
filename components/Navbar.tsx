@@ -3,13 +3,14 @@ import { signInWithPopup, GithubAuthProvider, getRedirectResult, signOut, signIn
 import { auth } from '../auth/firebaseClient';
 
 interface CurrentUser {
-  uid: string,
+  fbuid: string,
   displayName: string|null;
   email: string|null,
+  ghuid: string,
 }
 
 class User implements CurrentUser {
-  constructor(public uid: string, public displayName: string|null, public email: string|null) {}
+  constructor(public fbuid: string, public displayName: string|null, public email: string|null, public ghuid: string) {}
 }
 
 export default function Navbar() {
@@ -19,9 +20,11 @@ export default function Navbar() {
   const login = async() =>{
     provider.addScope('repo');
     await signInWithPopup(auth, provider).then(function(result) {
-
-      var user = result.user;
-      const currentUser = new User(user.uid, user.displayName, user.email)
+      let test = result.user.providerData[0].uid
+      var user = result.user
+      console.log(user);
+      console.log('test', test)
+      const currentUser = new User(user.uid, user.displayName, user.email, user.providerData[0].uid)
       localStorage.setItem('currentUser', JSON.stringify(currentUser))
 
     fetch('https://www.niidl.net/userAuth', {
