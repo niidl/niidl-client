@@ -1,0 +1,16 @@
+.discussionsContainer {
+  width: 100%;
+  background-color: pink;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .discussionsMessageInstance {
+    width: 100%;
+    height: 64px;
+    background-color: darkred;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

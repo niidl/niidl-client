@@ -2,7 +2,7 @@
   width: 90%;
   margin: 24px auto;
 
-  div {
+  & > div {
     margin: 0 20px 36px 0;
   }
 }
@@ -12,4 +12,22 @@
   display: flex;
   flex-flow: row wrap;
   row-gap: 12px;
+}
+
+.projectPageBasicInfoContainer {
+  width: 100%;
+  display: flex;
+  column-gap: 20px;
+
+  .projectPageBasicInfoImageContainer {
+    width: 500px;
+    height: 500px;
+    background-color: darkcyan;
+
+    .projectPageBasicInfoImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
