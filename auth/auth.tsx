@@ -1,3 +1,4 @@
+//'use client'
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import nookies from 'nookies';
 import { User } from 'firebase/auth';
@@ -32,16 +33,17 @@ export function AuthProvider({ children }: any) {
     });
   }, []);
 
-  //refresh the token every 10 minutes
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      console.log(`refreshing token...`);
-      const user = auth.currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
-    return () => clearInterval(handle);
-  }, []);
+  // //refresh the token every 10 minutes
+  // useEffect(() => {
+  //   const handle = setInterval(async () => {
+  //     console.log(`refreshing token...`);
+  //     const user = auth.currentUser;
+  //     if (user) await user.getIdToken(true);
+  //   }, 10 * 60 * 1000);
+  //   return () => clearInterval(handle);
+  // }, []);
 
+  console.log("./auth/auth.user",user)
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
