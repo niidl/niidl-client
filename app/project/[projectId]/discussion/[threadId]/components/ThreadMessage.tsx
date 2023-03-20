@@ -6,7 +6,7 @@ interface Props {
   username: string;
 }
 
-export default function Message({ content, creation_time, username }: Props) {
+export default function ThreadMessage({ content, creation_time, username }: Props) {
   return (
     <div style={{ margin: '10px 5px' }}>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
