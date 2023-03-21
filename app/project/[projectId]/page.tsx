@@ -46,40 +46,66 @@ async function getProject(projectId: string) {
 }
 
 export interface SingleProj {
-  issues: Array<object>;
-  contributors: Array<{ login: string; id: number }>;
-  directory: Array<object>;
+  id: number;
   project_name: string;
   description: string;
-  id: number;
-  threads: Array<object>;
+  github_url: string;
+  owner: string;
+  project_image: string;
+  project_type: string;
   tags: Array<{ tag_name: string }>;
+  contributors: Array<{ username: string; contributor_id: number }>;
+  threads: Array<{
+    id: string;
+    content: string;
+    project_id: number;
+    user_id: string;
+    creation_time: Date;
+    title: string;
+  }>;
+  issues: Array<{
+    issue_id: number;
+    html_url: string;
+    title: string;
+    created_at: Date;
+    issue_author: string;
+    author_id: number;
+  }>;
+  directory: string;
 }
 
 export default async function ProjectPage({ params }: any) {
   const project: SingleProj = {
-    issues: [],
-    contributors: [],
-    directory: [],
+    id: 0,
     project_name: '',
     description: '',
-    id: 0,
-    threads: [],
+    github_url: '',
+    owner: '',
+    project_image: '',
+    project_type: '',
     tags: [],
+    contributors: [],
+    threads: [],
+    issues: [],
+    directory: '',
   };
   //const project = await getProject(params.projectId);
 
   async function fetchAllProjects(): Promise<void> {
-    const response = await fetch(`niidl.com/projects/${params.projectId}`);
+    const response = await fetch(`niidl.net/projects/${params.projectId}`);
     const data: SingleProj = await response.json();
-    project.issues = data.issues;
-    project.contributors = data.contributors;
-    project.directory = data.directory;
+    project.id = data.id;
     project.project_name = data.project_name;
     project.description = data.description;
-    project.id = data.id;
-    project.threads = data.threads;
+    project.github_url = data.github_url;
+    project.owner = data.owner;
+    project.project_image = data.project_image;
+    project.project_type = data.project_type;
     project.tags = data.tags;
+    project.contributors = data.contributors;
+    project.threads = data.threads;
+    project.issues = data.issues;
+    project.directory = data.directory;
   }
 
   const tagOnly: Array<string> = project.tags.map((tag) => {
@@ -88,7 +114,7 @@ export default async function ProjectPage({ params }: any) {
 
   const contributorNames: Array<string> = project.contributors.map(
     (contributor) => {
-      return contributor.login;
+      return contributor.username;
     }
   );
 
@@ -139,11 +165,11 @@ export default async function ProjectPage({ params }: any) {
       </div>
 
       <div>
-        <h2>Contributors</h2>
+        <h2>Contributor</h2>
         <div>
           <ul>
             {project.contributors.map((contributor) => (
-              <li key={contributor.id}>{contributor.login}</li>
+              <li key={contributor.contributor_id}>{contributor.username}</li>
             ))}
           </ul>
         </div>
