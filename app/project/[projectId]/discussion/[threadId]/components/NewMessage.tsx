@@ -22,11 +22,9 @@ export default function NewMessage({ thread_id, project_id }: Props) {
 
     const newMessageObject: MessageObject = {
       content: textValue,
-      user_id: userId.ghuid,
+      user_id: '456',
       thread_id: thread_id,
     };
-
-    console.log(newMessageObject, project_id);
 
     await axios.post(
       `https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`,
