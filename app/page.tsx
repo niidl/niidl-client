@@ -192,8 +192,9 @@ export default function Home() {
         <div>
           <h2>Filtered Projects</h2>
           <div className={styles.filteredProjectsContainer}>
-            {selectedProjectCategoriesLoadedRef.current
-              ? filteredProjects.map((filteredProject) => (
+            {selectedProjectCategories.length > 0
+              ? //selectedProjectCategoriesLoadedRef.current
+                filteredProjects.map((filteredProject) => (
                   <ProjectInstance
                     project={filteredProject}
                     key={filteredProject.id}
