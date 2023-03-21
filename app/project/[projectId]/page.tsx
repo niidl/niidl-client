@@ -56,7 +56,7 @@ export interface SingleProj {
   tags: Array<{ tag_name: string }>;
   contributors: Array<{ username: string; contributor_id: number }>;
   threads: Array<{
-    id: string;
+    id: number;
     content: string;
     project_id: number;
     user_id: string;
@@ -92,22 +92,35 @@ export default async function ProjectPage({ params }: any) {
   //const project = await getProject(params.projectId);
 
   async function fetchAllProjects(): Promise<void> {
-    const response = await fetch(`https://niidl.net/projects/${params.projectId}`);
-    const data: SingleProj = await response.json();
-    project.id = data.id;
-    project.project_name = data.project_name;
-    project.description = data.description;
-    project.github_url = data.github_url;
-    project.owner = data.owner;
-    project.project_image = data.project_image;
-    project.project_type = data.project_type;
-    project.tags = data.tags;
-    project.contributors = data.contributors;
-    project.threads = data.threads;
-    project.issues = data.issues;
-    project.directory = data.directory;
-  }
+    try {
+      const response = await fetch(
+        `https://niidl.net/projects/${params.projectId}`
+      );
+      const data = await response.text();
 
+      if (!data) {
+        throw new Error('Empty response from server');
+      }
+
+      const jsonData: SingleProj = JSON.parse(data);
+
+      project.id = jsonData.id;
+      project.project_name = jsonData.project_name;
+      project.description = jsonData.description;
+      project.github_url = jsonData.github_url;
+      project.owner = jsonData.owner;
+      project.project_image = jsonData.project_image;
+      project.project_type = jsonData.project_type;
+      project.tags = jsonData.tags;
+      project.contributors = jsonData.contributors;
+      project.threads = jsonData.threads;
+      project.issues = jsonData.issues;
+      project.directory = jsonData.directory;
+      console.log(project);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
   });
@@ -119,7 +132,7 @@ export default async function ProjectPage({ params }: any) {
   );
 
   await fetchAllProjects();
-
+  const test: string = project.directory;
   return (
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>
