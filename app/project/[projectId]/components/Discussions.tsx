@@ -1,6 +1,9 @@
+'use client'
+
 import styles from './Discussions.module.scss';
 import DiscussionInstance from './DiscussionInstance';
-import { Key } from 'react';
+import NewDiscussionModal from './NewDiscussionModal';
+import { useState, Key } from 'react';
 
 /*
 const threadMockData = [
@@ -48,18 +51,36 @@ export interface Thread {
 }
 
 interface Props {
-  projectDiscussion: Thread[] 
+  projectDiscussion: Thread[],
+  projectId: number,
+  projectName: string
 }
 
-export default function Discussions({ projectDiscussion }: any) {
+export default function Discussions({ projectDiscussion, projectId, projectName }: Props) {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   return (
-    <div className={styles.discussionsContainer}>
-      {projectDiscussion.map((thread: Thread, index: Key | null | undefined) => (
-        <DiscussionInstance
-          key={index}
-          thread={thread}
-        />
-      ))}
-    </div>
+    <>
+      <button 
+        className={styles.addThreadBtn}
+        onClick={() => setShowModal(true)}
+      >
+        + Add Thread
+      </button>
+      <NewDiscussionModal
+        showModal={showModal}
+        onClose={() => setShowModal(false)}
+        projectId={projectId}
+        projectName={projectName}
+      />
+      <div className={styles.discussionsContainer}>
+        {projectDiscussion.map((thread: Thread, index: Key | null | undefined) => (
+          <DiscussionInstance
+            key={index}
+            thread={thread}
+          />
+        ))}
+      </div>
+    </>
   );
 }

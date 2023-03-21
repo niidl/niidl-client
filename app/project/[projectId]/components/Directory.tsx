@@ -36,19 +36,21 @@ const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
     files.items = filesData;
   })();
 
+  console.log(files.name, files.items);
+
   return (
     <div>
       <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
       {isExpanded &&
         files.items &&
-        files.items.map((file: object) => {
+        files.items.map((file: any) => {
           return (
             <Directory
               files={file}
               setCurrContent={setCurrContent}
               newUrlFile={newUrlFile}
               userRepo={userRepo}
-              key={files.name}
+              key={file.name}
             />
           );
         })}
