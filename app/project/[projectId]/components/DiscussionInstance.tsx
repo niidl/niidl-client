@@ -14,11 +14,11 @@ export default function DiscussionInstance({ thread }: Props) {
         <div className={styles.discussionMessageInstanceTitle}>
           {thread.title}
         </div>
-      </Link>
           
       <div className={styles.discussionMessageInstanceTimeReference}>
         {moment(thread.creation_time).fromNow()}
       </div>
+      </Link>
     </div>
   )
 }
