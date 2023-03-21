@@ -1,11 +1,10 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Directory from './Directory';
 
 export default function Repository() {
-  const [codeShowed, setCodeShowed] = useState<object | null>(null);
   const url = 'https://api.github.com/repos/MrBCendales/PokeDex/contents';
-  const codeRef = useRef(null);
+  const [currContent, setCurrContent] = useState('');
 
   const firstDirectory: object = {
     name: 'PokeDex',
@@ -13,11 +12,10 @@ export default function Repository() {
     url: url,
   };
 
-  // setInitialFiles(firstDirectory);
-
   return (
     <div>
-      <Directory files={firstDirectory} />;<div ref={codeRef}></div>
+      <Directory files={firstDirectory} setCurrContent={setCurrContent} />;
+      <div>{currContent}</div>
     </div>
   );
 }

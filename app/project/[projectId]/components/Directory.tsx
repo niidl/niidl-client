@@ -3,17 +3,29 @@ import { useState } from 'react';
 
 interface Props {
   files: any;
+  setCurrContent: any;
 }
 
-const handleFiles = (url: string) => {};
+const handleFiles = async (url: string, setCurrContent: any) => {
+  const filesContent = await fetch(
+    'https://cdn.jsdelivr.net/gh/MrBCendales/PokeDex@main/client/src/App.js'
+  );
+  const filesData = await filesContent.text();
 
-const Directory = ({ files }: Props) => {
+  console.log(filesData, url);
+
+  setCurrContent(filesData);
+};
+
+const Directory = ({ files, setCurrContent }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (files.type === 'file') {
     return (
       <>
-        <h3 onClick={() => handleFiles(files.url)}>{files.name}</h3>
+        <h3 onClick={() => handleFiles(files.url, setCurrContent)}>
+          {files.name}
+        </h3>
         <br />
       </>
     );
@@ -31,7 +43,13 @@ const Directory = ({ files }: Props) => {
       <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
       {isExpanded &&
         files.items.map((file: object) => {
-          <Directory files={file} />;
+          return (
+            <Directory
+              files={file}
+              setCurrContent={setCurrContent}
+              key={files.name}
+            />
+          );
         })}
     </div>
   );
