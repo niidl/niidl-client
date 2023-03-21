@@ -8,14 +8,15 @@ interface Props {
 
 export default function Repository({ projectDirectory }: Props) {
   const [currContent, setCurrContent] = useState('');
-  const url = 'https://api.github.com/repos/MrBCendales/PokeDex/contents';
-  const userRepo = url.split('repos/')[1].split('/content')[0];
+
+  const userRepo = projectDirectory.split('repos/')[1].split('/content')[0];
   const newUrlFile = 'https://cdn.jsdelivr.net/gh/' + userRepo + '@';
+  const nameRepo = userRepo.split('/')[1];
 
   const firstDirectory: object = {
-    name: 'PokeDex',
+    name: nameRepo,
     type: 'dir',
-    url: url,
+    url: projectDirectory,
   };
 
   return (
