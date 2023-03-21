@@ -3,9 +3,16 @@ import styles from '../page.module.scss';
 
 interface Props {
   content: string;
-  creation_time: string;
+  creation_time: Date;
   username: string;
 }
+/*
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>{username}</h3>
+        <h4>{moment(creation_time).fromNow()}</h4>
+      </div>
+      <p>{content}</p>
+*/
 
 export default function ThreadMessage({
   content,
@@ -14,11 +21,7 @@ export default function ThreadMessage({
 }: Props) {
   return (
     <div style={{ margin: '10px 5px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h3>{username}</h3>
-        <h4>{moment(creation_time).fromNow()}</h4>
-      </div>
-      <p>{content}</p>
+      Hello
     </div>
   );
 }

@@ -1,11 +1,10 @@
 'use client';
 import axios from 'axios';
 import styles from '../page.module.scss';
-import moment from 'moment';
 
 interface MessageObject {
   content: string;
-  creation_time: string;
+  creation_time: Date;
   user_id: number;
   thread_id: number;
 }
@@ -20,20 +19,22 @@ export default function NewMessage({ thread_id, project_id }: Props) {
     e.preventDefault();
     const textValue: string = e.target.textarea.value;
     const date: Date = new Date();
-    const postDate: string = moment(date).format('YYYY-MM-DD');
     let userId: any = localStorage.getItem('currentUser');
     userId = JSON.parse(userId);
 
     const newMessageObject: MessageObject = {
       content: textValue,
-      creation_time: postDate,
+      creation_time: date,
       user_id: userId.ghuid,
       thread_id: thread_id,
     };
 
-    console.log(newMessageObject, project_id)
+    console.log(newMessageObject, project_id);
 
-    await axios.post(`https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`, newMessageObject);
+    await axios.post(
+      `https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`,
+      newMessageObject
+    );
   }
 
   return (

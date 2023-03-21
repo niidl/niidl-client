@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 interface Message {
   id: number;
-  user_id?: number;
+  user_id?: string;
   threads_id?: number;
   content: string;
-  creation_time: string;
+  creation_time: Date;
   user: {
     user_name: string;
   };
@@ -20,26 +20,25 @@ interface ThreadInfo {
   content: string;
   project_id: number;
   user_id: string;
-  creation_time: string;
+  creation_time: Date;
   title: string;
 }
 
 export default async function ThreadPage({ params }: any) {
-  // const messages: Message[] = await fetch(
-  //   `https://niidl.net/projects/-1/threads/-1/messages`
-  // ).then((data) => data.json());
-  const messages: Message[] =  await fetch(`https://niidl.net/projects/${params.projectId}/threads/${params.threadId}/messages`, {})
+  const messages: Message[] = await fetch(
+    `https://niidl.net/projects/-1/threads/-1/messages`
+  ).then((data) => data.json());
 
   const threadInfo: ThreadInfo = await fetch(
     `https://niidl.net/projects/-1/threads/-1`
   ).then((data) => data.json());
 
-  console.log(params)
+  // console.log(params, messages, threadInfo)
 
   return (
     <div className={styles.threadBody}>
       <div>
-        <Link href={`/projects/${threadInfo.project_id}`}>
+        <Link href={`/projects/${params.projectId}`}>
           <h4>Back to Project</h4>
         </Link>
       </div>
