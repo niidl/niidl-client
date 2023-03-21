@@ -38,7 +38,7 @@ const threadMockData = [
 ];
 */
 
-interface Thread {
+export interface Thread {
   id: number;
   content: string;
   project_id: number;
@@ -47,11 +47,11 @@ interface Thread {
   title: string;
 }
 
-export interface Props {
+interface Props {
   projectDiscussion: Thread[] 
 }
 
-export default function Discussions({ projectDiscussion }: Props) {
+export default function Discussions({ projectDiscussion }: any) {
   return (
     <div className={styles.discussionsContainer}>
       {projectDiscussion.map((thread: Thread, index: Key | null | undefined) => (
