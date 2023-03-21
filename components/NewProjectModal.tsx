@@ -16,7 +16,7 @@ export default function NewProjectModal({ showModal, onClose }: Props) {
       project_type: event.target.elements.projectType.value,
       description: event.target.elements.projectDescription.value,
       github_url: event.target.elements.projectGithubRepo.value,
-      owner: localStorage.getItem('currentUser').ghuid,
+      owner: JSON.parse(localStorage.getItem('currentUser') || '').ghuid,
       project_image: event.target.elements.projectImage.value
     }
 
