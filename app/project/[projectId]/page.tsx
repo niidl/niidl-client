@@ -92,7 +92,7 @@ export default async function ProjectPage({ params }: any) {
   //const project = await getProject(params.projectId);
 
   async function fetchAllProjects(): Promise<void> {
-    const response = await fetch(`niidl.net/projects/${params.projectId}`);
+    const response = await fetch(`https://niidl.net/projects/${params.projectId}`);
     const data: SingleProj = await response.json();
     project.id = data.id;
     project.project_name = data.project_name;
