@@ -4,10 +4,7 @@ import styles from './page.module.scss';
 import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
-
-// --------------------->
-// import NewProjectModal from '@/components/NewProjectModal';
-// --------------------->
+import NewProjectModal from '@/components/NewProjectModal';
 
 const projectCategoriesMockData = [
   'Beginner-friendly',
@@ -30,95 +27,126 @@ const allProjectsMockData = [
   {
     id: 101,
     project_name: 'mymizu',
-    keywords: ['Education', 'JavaScript', 'Beginner-friendly'],
+    tags: ['Education', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 102,
     project_name: 'Honeycomb',
-    keywords: ['Science', 'JavaScript', 'Beginner-friendly'],
+    tags: ['Science', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 103,
     project_name: 'pURANIUM',
-    keywords: ['Science', 'Environment', 'Python'],
+    tags: ['Science', 'Environment', 'Python'],
   },
   {
     id: 105,
     project_name: 'CodeLegion',
-    keywords: ['Education', 'Science', 'JavaScript', 'C#'],
+    tags: ['Education', 'Science', 'JavaScript', 'C#'],
   },
   {
     id: 106,
     project_name: 'RuddyRex',
-    keywords: ['Travel', 'JavaScript', 'Beginner-friendly'],
+    tags: ['Travel', 'JavaScript', 'Beginner-friendly'],
   },
   {
     id: 107,
     project_name: 'impact training',
-    keywords: ['Fitness', 'Health', 'Ruby'],
+    tags: ['Fitness', 'Health', 'Ruby'],
   },
 ];
 
 export interface Project {
   id: number;
   project_name: string;
-  keywords: string[];
+  tags: string[];
+}
+
+export interface ProjectData {
+  id: number;
+  project_name: string;
+  tags: Array<{ id: number; tag_name: string; project_id: number }>;
 }
 
 export default function Home() {
   // const [projectCategories, setProjectCategories] = useState<string[]>(
   //   projectCategoriesMockData
   // );
-  const [projectCategories, setProjectCategories] = useState<string[]>(projectCategoriesMockData);
-  const [selectedProjectCategories, setSelectedProjectCategories] = useState<string[]>(['All Projects']);
+  const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
+  const [selectedProjectCategories, setSelectedProjectCategories] = useState<
+    string[]
+  >([]);
 
-  const [allProjects, setAllProjects] = useState<Project[]>(allProjectsMockData);
+  const [allProjects, setAllProjects] = useState<Project[]>([
+    {
+      id: 0,
+      project_name: '',
+      tags: [],
+    },
+  ]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const selectedProjectCategoriesLoadedRef = useRef<boolean>(false);
 
-  //-------------->
-const [showModal, setShowModal] = useState<boolean>(false)
-//--------------------->
-
-  useEffect(()=> {
+  useEffect(() => {
     async function fetchCategories(): Promise<void> {
-      const response = await fetch('niidl.com/tagNames');
-      const data = await response.json()
-      setProjectCategories(data)
+      const response = await fetch('https://niidl.net/tagNames');
+      const data: Array<{ tag_name: '' }> = await response.json();
+      const cleanedTags: Array<string> = data.map((single) => {
+        return single.tag_name;
+      });
+      console.log('in fetchCategories useEffect', cleanedTags);
+      setProjectCategories(cleanedTags);
     }
     fetchCategories();
-  },[])
+  }, []);
 
-  useEffect(()=> {
-    async function fetchAllProjects(): Promise<void>{
-      const response = await fetch('niidl.com/projects');
-      const data = await response.json();
-      setAllProjects(data)
+  useEffect(() => {
+    async function fetchAllProjects(): Promise<void> {
+      const allProjectsArray: Array<Project> = [];
+      const response = await fetch('https://niidl.net/projects');
+      const data: Array<ProjectData> = await response.json();
+
+      for (let i = 0; i < data.length; i++) {
+        const singleProj: Project = { id: 0, project_name: '', tags: [] };
+        const cleanedTags: Array<string> = [];
+
+        data[i].tags.forEach((tag) => {
+          cleanedTags.push(tag.tag_name);
+        });
+
+        singleProj.id = data[i].id;
+        singleProj.project_name = data[i].project_name;
+        singleProj.tags = cleanedTags;
+        allProjectsArray.push(singleProj);
+      }
+      console.log('in fetchAllProj useEffect', allProjectsArray);
+      setAllProjects(allProjectsArray);
     }
     fetchAllProjects();
-  },[])
+  }, []);
 
   useEffect(() => {
     if (!selectedProjectCategoriesLoadedRef.current) {
       selectedProjectCategoriesLoadedRef.current = true;
     } else {
-      let projectsUnderKeyword: Project[] = [];
-      let uniqueProjectsUnderKeyword: Project[] = [];
+      let projectsUnderTag: Project[] = [];
+      let uniqueprojectsUnderTag: Project[] = [];
 
       for (let i = 0; i < selectedProjectCategories.length; i++) {
-        projectsUnderKeyword = [
-          ...projectsUnderKeyword,
+        projectsUnderTag = [
+          ...projectsUnderTag,
           ...allProjects.filter((project) =>
-            project.keywords.includes(selectedProjectCategories[i])
+            project.tags.includes(selectedProjectCategories[i])
           ),
         ];
 
-        uniqueProjectsUnderKeyword = projectsUnderKeyword.filter(
-          (project, index) => projectsUnderKeyword.indexOf(project) === index
+        uniqueprojectsUnderTag = projectsUnderTag.filter(
+          (project, index) => projectsUnderTag.indexOf(project) === index
         );
       }
 
-      setFilteredProjects(() => uniqueProjectsUnderKeyword);
+      setFilteredProjects(() => uniqueprojectsUnderTag);
     }
   }, [selectedProjectCategories, allProjects]);
 
@@ -143,17 +171,11 @@ const [showModal, setShowModal] = useState<boolean>(false)
     <main className={styles.main}>
       <div>
         <h1>Projects</h1>
- {/* -->
-        <button
-          onClick={() => setShowModal(true)}
-        >
-          + Add Project
-        </button>
-        <NewProjectModal 
+        <button onClick={() => setShowModal(true)}>+ Add Project</button>
+        <NewProjectModal
           showModal={showModal}
           onClose={() => setShowModal(false)}
         />
---> */}
         <div>
           <h2>Project Categories</h2>
           <div className={styles.projectCategoriesContainer}>
