@@ -24,7 +24,7 @@ interface ThreadInfo {
   title: string;
 }
 
-export default async function ThreadPage() {
+export default async function ThreadPage({ params }: any) {
   const messages: Message[] = await fetch(
     `https://niidl.net/projects/-1/threads/-1/messages`
   ).then((data) => data.json());
@@ -32,6 +32,8 @@ export default async function ThreadPage() {
   const threadInfo: ThreadInfo = await fetch(
     `https://niidl.net/projects/-1/threads/-1`
   ).then((data) => data.json());
+
+  console.log(params)
 
   return (
     <div className={styles.threadBody}>
