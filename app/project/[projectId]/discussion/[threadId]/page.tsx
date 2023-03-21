@@ -9,7 +9,7 @@ interface Message {
   user_id?: number;
   threads_id?: number;
   content: string;
-  creation_time: string;
+  creation_time: Date;
   user: {
     user_name: string;
   };
@@ -20,21 +20,18 @@ interface ThreadInfo {
   content: string;
   project_id: number;
   user_id: string;
-  creation_time: string;
+  creation_time: Date;
   title: string;
 }
 
 export default async function ThreadPage({ params }: any) {
-  // const messages: Message[] = await fetch(
-  //   `https://niidl.net/projects/-1/threads/-1/messages`
-  // ).then((data) => data.json());
-  const messages: Message[] =  await fetch(`https://niidl.net/projects/${params.projectId}/threads/${params.threadId}/messages`, {})
-
-  const threadInfo: ThreadInfo = await fetch(
-    `https://niidl.net/projects/-1/threads/-1`
+  const messages: Message[] = await fetch(
+    `https://niidl.net/projects/${params.projectId}/threads/${params.threadId}/messages`
   ).then((data) => data.json());
 
-  console.log(params)
+  const threadInfo: ThreadInfo = await fetch(
+    `https://niidl.net/projects/${params.projectId}/threads/${params.threadId}`
+  ).then((data) => data.json());
 
   return (
     <div className={styles.threadBody}>
@@ -63,7 +60,10 @@ export default async function ThreadPage({ params }: any) {
             </div>
           );
         })}
-      <NewMessage thread_id={threadInfo.id} project_id={threadInfo.project_id}/>
+      <NewMessage
+        thread_id={threadInfo.id}
+        project_id={threadInfo.project_id}
+      />
     </div>
   );
 }
