@@ -36,7 +36,7 @@ export default async function ThreadPage({ params }: any) {
   return (
     <div className={styles.threadBody}>
       <div>
-        <Link href={`/projects/${threadInfo.project_id}`}>
+        <Link href={`/project/${threadInfo.project_id}`}>
           <h4>Back to Project.</h4>
         </Link>
       </div>
