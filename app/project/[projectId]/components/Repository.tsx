@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Directory from './Directory';
 
-export default function Repository(projectDirectory: string) {
+export default function Repository({projectDirectory}: any) {
   const url = 'https://api.github.com/repos/MrBCendales/PokeDex/contents';
   const [currContent, setCurrContent] = useState('');
 
