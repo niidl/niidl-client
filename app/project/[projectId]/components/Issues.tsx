@@ -8,7 +8,7 @@ interface Issue {
   title: string;
   created_at: Date;
   issue_author: string;
-  author_id: string;
+  author_id: number;
 }
 
 export interface Props {
