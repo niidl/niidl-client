@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import { signInWithPopup, GithubAuthProvider, getRedirectResult, signOut, signInWithRedirect } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
 
@@ -16,46 +17,44 @@ class User implements CurrentUser {
 export default function Navbar() {
   const provider = new GithubAuthProvider();
 
-
-  const login = async() =>{
+  const login = async() => {
     provider.addScope('repo');
     await signInWithPopup(auth, provider).then(function(result) {
-      let test = result.user.providerData[0].uid
-      var user = result.user
+      let test = result.user.providerData[0].uid;
+      let user = result.user;
       console.log(user);
-      console.log('test', test)
-      const currentUser = new User(user.uid, user.displayName, user.email, user.providerData[0].uid)
-      localStorage.setItem('currentUser', JSON.stringify(currentUser))
+      console.log('test', test);
+      const currentUser = new User(user.uid, user.displayName, user.email, user.providerData[0].uid);
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-    fetch('https://www.niidl.net/userAuth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(currentUser)
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log('component/navbar.data',data)
-      try{
-        const parsedData = JSON.parse(data);
-        localStorage.setItem('githubName', JSON.stringify(parsedData))
-      } catch (error){
-        console.error('Invalid response', error)
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
+      fetch('https://www.niidl.net/userAuth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(currentUser)
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('component/navbar.data',data)
+        try{
+          const parsedData = JSON.parse(data);
+          localStorage.setItem('githubName', JSON.stringify(parsedData))
+        } catch (error){
+          console.error('Invalid response', error)
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     });
-  });
+  }
   
-}
-  
-
-
   return (
     <div className={'navbar'}>
-      <div className={'logo'}>niidl</div>
+      <Link href='/'>
+        <div className={'logo'}>niidl</div>
+      </Link>
       
       <div>
         <button
