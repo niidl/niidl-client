@@ -19,6 +19,7 @@ export default function ThreadMessage({
         <h4>{moment(creation_time).fromNow()}</h4>
       </div>
       <p>{content}</p>
+      <hr />
     </div>
   );
 }
