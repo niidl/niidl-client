@@ -4,8 +4,7 @@ import styles from '../page.module.scss';
 
 interface MessageObject {
   content: string;
-  creation_time: Date;
-  user_id: number;
+  user_id: string;
   thread_id: number;
 }
 
@@ -18,13 +17,11 @@ export default function NewMessage({ thread_id, project_id }: Props) {
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
     const textValue: string = e.target.textarea.value;
-    const date: Date = new Date();
     let userId: any = localStorage.getItem('currentUser');
     userId = JSON.parse(userId);
 
     const newMessageObject: MessageObject = {
       content: textValue,
-      creation_time: date,
       user_id: userId.ghuid,
       thread_id: thread_id,
     };
