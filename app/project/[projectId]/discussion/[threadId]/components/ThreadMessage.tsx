@@ -6,8 +6,6 @@ interface Props {
   creation_time: Date;
   username: string;
 }
-/*
-*/
 
 export default function ThreadMessage({
   content,
