@@ -94,8 +94,7 @@ export default async function ProjectPage({ params }: any) {
   async function fetchAllProjects(): Promise<void> {
     try {
       const response = await fetch(
-        //`https://niidl.net/projects/${params.projectId}`
-        `https://niidl.net/projects/-1`
+        `https://niidl.net/projects/${params.projectId}`
       );
       const data = await response.text();
 
