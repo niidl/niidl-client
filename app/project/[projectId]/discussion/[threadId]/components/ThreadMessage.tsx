@@ -7,11 +7,6 @@ interface Props {
   username: string;
 }
 /*
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h3>{username}</h3>
-        <h4>{moment(creation_time).fromNow()}</h4>
-      </div>
-      <p>{content}</p>
 */
 
 export default function ThreadMessage({
@@ -21,7 +16,11 @@ export default function ThreadMessage({
 }: Props) {
   return (
     <div style={{ margin: '10px 5px' }}>
-      Hello
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>{username}</h3>
+        <h4>{moment(creation_time).fromNow()}</h4>
+      </div>
+      <p>{content}</p>
     </div>
   );
 }
