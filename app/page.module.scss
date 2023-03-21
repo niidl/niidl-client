@@ -7,6 +7,11 @@
 .main > div:first-child {
   margin: 24px auto;
   width: 90%;
+
+  & > button {
+    margin: 12px 0 24px 0;
+    padding: 12px 24px;
+  }
 }
 
 .projectCategoriesContainer {
