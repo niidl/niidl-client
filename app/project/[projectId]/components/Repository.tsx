@@ -2,9 +2,15 @@
 import { useState } from 'react';
 import Directory from './Directory';
 
-export default function Repository(projectDirectory: string) {
-  const url = 'https://api.github.com/repos/MrBCendales/PokeDex/contents';
+interface Props {
+  projectDirectory: string;
+}
+
+export default function Repository({ projectDirectory }: Props) {
   const [currContent, setCurrContent] = useState('');
+  const url = 'https://api.github.com/repos/MrBCendales/PokeDex/contents';
+  const userRepo = url.split('repos/')[1].split('/content')[0];
+  const newUrlFile = 'https://cdn.jsdelivr.net/gh/' + userRepo + '@';
 
   const firstDirectory: object = {
     name: 'PokeDex',
@@ -14,8 +20,15 @@ export default function Repository(projectDirectory: string) {
 
   return (
     <div>
-      <Directory files={firstDirectory} setCurrContent={setCurrContent} />;
-      <div>{currContent}</div>
+      <Directory
+        files={firstDirectory}
+        setCurrContent={setCurrContent}
+        newUrlFile={newUrlFile}
+        userRepo={userRepo}
+      />
+      <div>
+        <pre>{currContent}</pre>
+      </div>
     </div>
   );
 }
