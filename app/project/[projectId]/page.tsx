@@ -56,7 +56,7 @@ export interface SingleProj {
   tags: Array<{ tag_name: string }>;
   contributors: Array<{ username: string; contributor_id: number }>;
   threads: Array<{
-    id: string;
+    id: number;
     content: string;
     project_id: number;
     user_id: string;
@@ -133,7 +133,7 @@ export default async function ProjectPage({ params }: any) {
   );
 
   await fetchAllProjects();
-
+  const test: string = project.directory;
   return (
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>
