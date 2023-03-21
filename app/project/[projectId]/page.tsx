@@ -169,7 +169,11 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Discussion</h2>
-        <Discussions projectDiscussion={project.threads} />
+        <Discussions 
+          projectDiscussion={project.threads}
+          projectId={project.id}
+          projectName={project.project_name}
+        />
       </div>
 
       <div>
