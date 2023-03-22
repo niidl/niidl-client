@@ -1,0 +1,13 @@
+$foreground-table-border-rgba: rgb(192, 192, 192);
+
+.projectRepositoryContainer {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: scroll;
+  border: 2px solid $foreground-table-border-rgba;
+  border-radius: 16px;
+  padding: 24px;
+  // display: flex;
+  // flex-flow: column nowrap;
+  // align-items: center;
+}
