@@ -1,16 +1,32 @@
+$foreground-table-border-rgba: rgb(198, 198, 198);
+
+$main-issue-instance-title-color: rgb(22, 104, 104);
+$main-issue-instance-border-color: rgb(22, 104, 104);
+
 .issuesContainer {
   width: 100%;
-  background-color: pink;
+  max-height: 400px;
+  overflow-y: scroll;
+  border: 2px solid $foreground-table-border-rgba;
+  border-radius: 16px;
   display: flex;
   flex-flow: column nowrap;
 
+  
   .issueInstance {
-    width: 100%;
+    width: calc(100% - 24px);
     height: 64px;
-    background-color: darkred;
+    border: 2px solid $main-issue-instance-border-color;
+    border-radius: 16px;
+    margin: 12px auto 0 auto;
     padding: 0 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &:first-child {
+      font-weight: 600;
+      color: $main-issue-instance-title-color;
+    }
   }
 }

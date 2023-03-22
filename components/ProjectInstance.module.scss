@@ -1,8 +1,27 @@
+$main-project-instance-color: rgb(22, 104, 104);
+$secondary-project-instance-color: rgb(38, 128, 128);
+
 .filteredProjectInstance {
   width: 48.5%;
-  height: 300px;
-  background-color: darkcyan;
+  height: 280px;
+  background: linear-gradient(
+    45deg,
+    $main-project-instance-color,
+    $secondary-project-instance-color
+  );
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      $main-project-instance-color,
+      $secondary-project-instance-color
+    );
+  }
 }
