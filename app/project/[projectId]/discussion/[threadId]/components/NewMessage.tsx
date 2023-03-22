@@ -36,8 +36,7 @@ export default function NewMessage({ thread_id, project_id }: Props) {
         newMessageObject
       )
       .then((res) => {
-        console.log(res);
-        router.push('/project/-1/discussion/-1');
+        router.refresh();
       });
   }
 
