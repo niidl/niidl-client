@@ -1,5 +1,6 @@
 'use client';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import styles from '../page.module.scss';
 
 interface MessageObject {
@@ -14,9 +15,12 @@ interface Props {
 }
 
 export default function NewMessage({ thread_id, project_id }: Props) {
+  const router = useRouter();
+
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
     const textValue: string = e.target.textarea.value;
+    e.target.textarea.value = '';
     let userId: any = localStorage.getItem('currentUser');
     userId = JSON.parse(userId);
 
@@ -26,10 +30,14 @@ export default function NewMessage({ thread_id, project_id }: Props) {
       thread_id: thread_id,
     };
 
-    await axios.post(
-      `https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`,
-      newMessageObject
-    );
+    await axios
+      .post(
+        `https://niidl.net/projects/${project_id}/threads/${thread_id}/newMessage`,
+        newMessageObject
+      )
+      .then((res) => {
+        router.refresh();
+      });
   }
 
   return (
