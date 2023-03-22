@@ -22,17 +22,43 @@ interface ThreadInfo {
   user_id: string;
   creation_time: Date;
   title: string;
+  user: {
+    user_name: string;
+  };
+}
+async function getMessages(
+  projectId: number,
+  threadId: number
+): Promise<Message[]> {
+  const res = await fetch(
+    `https://niidl.net/projects/${projectId}/threads/${threadId}/messages`,
+    { cache: 'no-store' }
+  );
+  return res.json();
+}
+
+async function getThreadInfo(
+  projectId: number,
+  threadId: number
+): Promise<ThreadInfo> {
+  const res = await fetch(
+    `https://niidl.net/projects/${projectId}/threads/${threadId}`,
+    { cache: 'no-store' }
+  );
+  return res.json();
 }
 
 export default async function ThreadPage({ params }: any) {
-  const messages: Message[] = await fetch(
-    `https://niidl.net/projects/${params.projectId}/threads/${params.threadId}/messages`
-  ).then((data) => data.json());
+  const messages: Message[] = await getMessages(
+    params.projectId,
+    params.threadId
+  );
 
-  const threadInfo: ThreadInfo = await fetch(
-    `https://niidl.net/projects/${params.projectId}/threads/${params.threadId}`
-  ).then((data) => data.json());
-
+  const threadInfo: ThreadInfo = await getThreadInfo(
+    params.projectId,
+    params.threadId
+  );
+ 
   return (
     <div className={styles.threadBody}>
       <div>
@@ -43,7 +69,7 @@ export default async function ThreadPage({ params }: any) {
       <h1>{threadInfo.title}</h1>
       <h3>Discussion</h3>
       <div className={styles.userInfoContainer}>
-        <h2>{threadInfo.user_id}</h2>
+        <h3>{threadInfo.user.user_name}</h3>
         <p>{moment(threadInfo.creation_time).fromNow()}</p>
       </div>
       <p>{threadInfo.content}</p>
