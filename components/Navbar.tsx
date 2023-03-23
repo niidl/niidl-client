@@ -1,79 +1,83 @@
-'use client'
+'use client';
 import Link from 'next/link';
-import { signInWithPopup, GithubAuthProvider, getRedirectResult, signOut, signInWithRedirect } from 'firebase/auth';
+import {
+  signInWithPopup,
+  GithubAuthProvider,
+  getRedirectResult,
+  signOut,
+  signInWithRedirect,
+} from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
 
 interface CurrentUser {
-  fbuid: string,
-  displayName: string|null;
-  email: string|null,
-  ghuid: string,
+  fbuid: string;
+  displayName: string | null;
+  email: string | null;
+  ghuid: string;
 }
 
 class User implements CurrentUser {
-  constructor(public fbuid: string, public displayName: string|null, public email: string|null, public ghuid: string) {}
+  constructor(
+    public fbuid: string,
+    public displayName: string | null,
+    public email: string | null,
+    public ghuid: string
+  ) {}
 }
 
 export default function Navbar() {
   const provider = new GithubAuthProvider();
 
-  const login = async() => {
+  const login = async () => {
     provider.addScope('repo');
-    await signInWithPopup(auth, provider).then(function(result) {
-      let test = result.user.providerData[0].uid;
+    await signInWithPopup(auth, provider).then(function (result) {
       let user = result.user;
-      console.log(user);
-      console.log('test', test);
-      const currentUser = new User(user.uid, user.displayName, user.email, user.providerData[0].uid);
+      const currentUser = new User(
+        user.uid,
+        user.displayName,
+        user.email,
+        user.providerData[0].uid
+      );
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      fetch('https://www.niidl.net/userAuth', {
+      fetch('http://localhost:8080/userAuth', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(currentUser)
+        body: JSON.stringify(currentUser),
       })
-      .then(response => response.text())
-      .then(data => {
-        console.log('component/navbar.data',data)
-        try{
-          const parsedData = JSON.parse(data);
-          localStorage.setItem('githubName', JSON.stringify(parsedData))
-        } catch (error){
-          console.error('Invalid response', error)
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        .then((response) => response.text())
+        .then((data) => {
+          try {
+            localStorage.setItem('githubName', JSON.stringify(data));
+          } catch (error) {
+            console.error('Invalid response', error);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     });
-  }
-  
+  };
+
   return (
     <div className={'navbar'}>
-      <Link href='/'>
+      <Link href="/">
         <div className={'logo'}>niidl</div>
       </Link>
-      
+
       <div>
+        <button onClick={login}>Login</button>
+        <button onClick={login}>Signup</button>
         <button
-        onClick={login}
+          onClick={async () => {
+            console.log('signout');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('githubName');
+            await signOut(auth);
+          }}
         >
-          Login
-        </button>
-        <button
-        onClick={login}
-        >
-          Signup
-        </button>
-        <button
-        onClick={async() => {
-          console.log("signout")
-          localStorage.removeItem('currentUser')
-          localStorage.removeItem('githubName')
-          await signOut(auth)
-        }}>
           Logout
         </button>
       </div>
