@@ -64,13 +64,14 @@ export default function Navbar() {
   };
 
   const logout = async () => {
+    console.log('at least in logout')
     fetch('http://localhost:8080/logout', {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(''),
+      body: JSON.stringify({}),
     })
       .then((response) => response.text())
       .then((data) => {
@@ -79,6 +80,7 @@ export default function Navbar() {
           localStorage.setItem('githubName', JSON.stringify(data));
           setGithubUser(data);
         } catch (error) {
+          
           console.error('Invalid response', error);
         }
       })
