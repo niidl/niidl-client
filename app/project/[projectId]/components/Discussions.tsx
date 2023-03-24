@@ -1,45 +1,9 @@
-'use client'
+'use client';
 
 import styles from './Discussions.module.scss';
 import DiscussionInstance from './DiscussionInstance';
 import NewDiscussionModal from './NewDiscussionModal';
 import { useState, Key } from 'react';
-
-/*
-const threadMockData = [
-  {
-    id: 101,
-    title: 'This project needs more quests and puzzles.',
-    content:
-      "Here I'm going to talk about how this app could have been a quest board, or even a puzzle platform.",
-    userId: 101,
-    creationTime: 'March 19',
-  },
-  {
-    id: 102,
-    title: 'Next.js Routing Question',
-    content:
-      'Hey everyone, I have a question about routing in Next.js 13 that I have been stuck on for a while.',
-    userId: 102,
-    creationTime: 'March 12',
-  },
-  {
-    id: 103,
-    title: 'Kudos to the dev team!',
-    content:
-      'I just wanted to say the dev team for niidl is so awesome! My life trajectory has been significantly better because of niidl.',
-    userId: 103,
-    creationTime: 'February 19',
-  },
-  {
-    id: 104,
-    title: 'Hungry, craving pancakes',
-    content: 'Is anyone else hungry or is it just me?',
-    userId: 104,
-    creationTime: 'January 5',
-  },
-];
-*/
 
 export interface Thread {
   id: number;
@@ -48,20 +12,77 @@ export interface Thread {
   user_id: string;
   creation_time: Date;
   title: string;
+  thread_tag: string;
+  upvotes: number;
+  isPinned?: boolean;
+  user?: {
+    user_name: string;
+  };
 }
 
 interface Props {
-  projectDiscussion: Thread[],
-  projectId: number,
-  projectName: string
+  projectDiscussion: Thread[];
+  projectId: number;
+  projectName: string;
 }
 
-export default function Discussions({ projectDiscussion, projectId, projectName }: Props) {
+export default function Discussions({
+  projectDiscussion,
+  projectId,
+  projectName,
+}: Props) {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [currentTab, setCurrentTab] = useState<[string, Thread[]]>([
+    'general-discussion',
+    filterGeneral(),
+  ]);
+
+  function filterGeneral(): Thread[] {
+    return projectDiscussion.filter((thread: Thread) => {
+      thread.thread_tag === 'general-discussion';
+    });
+  }
+
+  function filterNewIdeas(): Thread[] {
+    return projectDiscussion.filter((thread: Thread) => {
+      thread.thread_tag === 'new-ideas';
+    });
+  }
+
+  function filterHottest(): Thread[] {
+    const hotTopics: Thread[] = projectDiscussion;
+    hotTopics.sort((a, b) => a.upvotes - b.upvotes);
+    return hotTopics;
+  }
+
+  function filterNewest(): Thread[] {
+    const newest: Thread[] = projectDiscussion;
+    newest.sort(
+      (a, b) =>
+        new Date(b.creation_time).getDate() -
+        new Date(a.creation_time).getDate()
+    );
+    return newest;
+  }
+
+  function handleClick(e: any): any {
+    if (e.target.value === 'general-discussion') {
+      setCurrentTab(['general-discussion', filterGeneral()]);
+    }
+    if (e.target.value === 'new-ideas') {
+      setCurrentTab(['new-ideas', filterNewIdeas()]);
+    }
+    if (e.target.value === 'newest') {
+      setCurrentTab(['newest', filterNewest()]);
+    }
+    if (e.target.value === 'hot-topics') {
+      setCurrentTab(['hot-topics', filterHottest()]);
+    }
+  }
 
   return (
     <>
-      <button 
+      <button
         className={styles.addThreadBtn}
         onClick={() => setShowModal(true)}
       >
@@ -74,12 +95,71 @@ export default function Discussions({ projectDiscussion, projectId, projectName 
         projectName={projectName}
       />
       <div className={styles.discussionsContainer}>
-        {projectDiscussion.map((thread: Thread, index: Key | null | undefined) => (
-          <DiscussionInstance
-            key={index}
-            thread={thread}
-          />
-        ))}
+        <div className={styles.discussionsTabs}>
+          <ul className={styles.ulContainer}>
+            <li className={styles.liContainer} role='presentation'>
+              <button
+                className={`${
+                  currentTab[0] === 'general-discussion'
+                    ? styles.btnContainer
+                    : styles.buttonContainer
+                }`}
+                type='button'
+                value='general-discussion'
+                onClick={handleClick}
+              >
+                General Discussions 📢
+              </button>
+            </li>
+            <li className={styles.liContainer} role='presentation'>
+              <button
+                className={`${
+                  currentTab[0] === 'new-ideas'
+                    ? styles.btnContainer
+                    : styles.buttonContainer
+                }`}
+                type='button'
+                value='new-ideas'
+                onClick={handleClick}
+              >
+                New Ideas 💡
+              </button>
+            </li>
+            <li className={styles.liContainer} role='presentation'>
+              <button
+                className={`${
+                  currentTab[0] === 'newest'
+                    ? styles.btnContainer
+                    : styles.buttonContainer
+                }`}
+                type='button'
+                value='newest'
+                onClick={handleClick}
+              >
+                Newest ⏫
+              </button>
+            </li>
+            <li className={styles.liContainer} role='presentation'>
+              <button
+                className={`${
+                  currentTab[0] === 'hot-topics'
+                    ? styles.btnContainer
+                    : styles.buttonContainer
+                }`}
+                type='button'
+                value='hot-topics'
+                onClick={handleClick}
+              >
+                Hot Topics 🔥
+              </button>
+            </li>
+          </ul>
+        </div>
+        {projectDiscussion.map(
+          (thread: Thread, index: Key | null | undefined) => (
+            <DiscussionInstance key={index} thread={thread} />
+          )
+        )}
       </div>
     </>
   );

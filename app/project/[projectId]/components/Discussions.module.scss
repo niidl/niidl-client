@@ -35,6 +35,52 @@ $main-discussion-instance-border-color: rgb(22, 104, 104);
   }
 }
 
+.discussionsTabs {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid $main-discussion-instance-border-color;
+  width: 100%;
+
+  .ulContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -1px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    list-style-type: none;
+
+    .liContainer {
+      margin-right: 0.5rem;
+
+      .buttonContainer {
+        padding: 0.5rem;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: $main-discussion-instance-border-color;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      .btnContainer {
+        padding: 0.5rem;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: transparent;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        transition: border-color 0.2s ease-in-out, color 0.15s ease-in-out;
+      }
+
+      .buttonContainer:hover {
+        color: $main-discussion-instance-border-color;
+        border-bottom-color: $main-discussion-instance-border-color;
+        cursor: pointer;
+        transition: 0.2s ease-in-out, color 0.15s ease-in-out;
+      }
+    }
+  }
+}
+
 .addThreadBtn {
   margin: 0 0 24px 0;
   padding: 12px 24px;

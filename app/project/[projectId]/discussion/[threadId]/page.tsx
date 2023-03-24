@@ -25,6 +25,10 @@ interface ThreadInfo {
   user: {
     user_name: string;
   };
+
+  thread_tag: string;
+  upvotes: number;
+  isPinned: boolean;
 }
 async function getMessages(
   projectId: number,
@@ -58,7 +62,7 @@ export default async function ThreadPage({ params }: any) {
     params.projectId,
     params.threadId
   );
- 
+
   return (
     <div className={styles.threadBody}>
       <div>
