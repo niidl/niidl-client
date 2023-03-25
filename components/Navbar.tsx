@@ -2,7 +2,8 @@
 import Link from 'next/link';
 import { signInWithPopup, GithubAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 interface CurrentUser {
   fbuid: string;
@@ -25,9 +26,16 @@ export default function Navbar() {
   const [infoFromFirebase, setInfoFromFirebase] = useState<User>();
   const [resetFirebaseUser, setResetFirebaseUser] = useState<User>();
   const provider = new GithubAuthProvider();
+  const dev = 'http://localhost:8080';
+  const prod = 'https://niidl.net';
+
+  useEffect(() => {
+    const userName = Cookies.get('userName');
+    setGithubUser(userName || '');
+  }, []);
 
   const login = async () => {
-    provider.addScope('repo');
+    provider.addScope('public_repo');
     await signInWithPopup(auth, provider).then(function (result) {
       let user = result.user;
       const currentUser = new User(
@@ -37,9 +45,9 @@ export default function Navbar() {
         user.providerData[0].uid
       );
       setInfoFromFirebase(currentUser);
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      //localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      fetch('http://localhost:8080/userAuth', {
+      fetch(`${dev}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -51,7 +59,7 @@ export default function Navbar() {
         .then((data) => {
           try {
             console.log(data);
-            localStorage.setItem('githubName', JSON.stringify(data));
+            //localStorage.setItem('githubName', JSON.stringify(data));
             setGithubUser(data);
           } catch (error) {
             console.error('Invalid response', error);
@@ -64,8 +72,7 @@ export default function Navbar() {
   };
 
   const logout = async () => {
-    console.log('at least in logout')
-    fetch('http://localhost:8080/logout', {
+    fetch(`${dev}/logout`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -77,10 +84,8 @@ export default function Navbar() {
       .then((data) => {
         try {
           console.log(data);
-          localStorage.setItem('githubName', JSON.stringify(data));
           setGithubUser(data);
         } catch (error) {
-          
           console.error('Invalid response', error);
         }
       })
@@ -96,13 +101,13 @@ export default function Navbar() {
       </Link>
 
       <div>
-        {githubUser.length > 1 ? (
+        {githubUser ? (
           <>
             <div>{githubUser}</div>
             <button
               onClick={async () => {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('githubName');
+                //localStorage.removeItem('currentUser');
+                //localStorage.removeItem('githubName');
                 setGithubUser('');
                 setInfoFromFirebase(resetFirebaseUser);
                 await logout();

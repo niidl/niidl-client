@@ -120,7 +120,6 @@ export default function Home() {
         singleProj.tags = cleanedTags;
         allProjectsArray.push(singleProj);
       }
-      console.log('in fetchAllProj useEffect', allProjectsArray);
       setAllProjects(allProjectsArray);
     }
     fetchAllProjects();
