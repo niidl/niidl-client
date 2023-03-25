@@ -118,7 +118,7 @@ export default function Home() {
       if (newFilter.length) {
         setFilteredProjects(newFilter);
       } else {
-        window.alert('There is no projects under this filters.')
+        window.alert('There is no projects under this filters.');
       }
     } else {
       setFilteredProjects(() => {

@@ -39,19 +39,19 @@ export default function Discussions({
 
   function filterGeneral(): Thread[] {
     return projectDiscussion.filter((thread: Thread) => {
-      thread.thread_tag === 'general-discussion';
+      return thread.thread_tag === 'general-discussion';
     });
   }
 
   function filterNewIdeas(): Thread[] {
     return projectDiscussion.filter((thread: Thread) => {
-      thread.thread_tag === 'new-ideas';
+      return thread.thread_tag === 'new-ideas';
     });
   }
 
   function filterHottest(): Thread[] {
     const hotTopics: Thread[] = projectDiscussion;
-    hotTopics.sort((a, b) => a.upvotes - b.upvotes);
+    hotTopics.sort((a, b) => a.upvotes + b.upvotes);
     return hotTopics;
   }
 
@@ -136,7 +136,7 @@ export default function Discussions({
                 value='newest'
                 onClick={handleClick}
               >
-                Newest ⏫
+                Newest 🆕
               </button>
             </li>
             <li className={styles.liContainer} role='presentation'>
@@ -155,11 +155,21 @@ export default function Discussions({
             </li>
           </ul>
         </div>
-        {projectDiscussion.map(
-          (thread: Thread, index: Key | null | undefined) => (
-            <DiscussionInstance key={index} thread={thread} />
-          )
-        )}
+        <div className={styles.instancesContainer}>
+          {currentTab[1]
+            .sort((a: Thread, b: Thread) => {
+              if (a.isPinned && !b.isPinned) {
+                return -1;
+              }
+              if (!a.isPinned && b.isPinned) {
+                return 1;
+              }
+              return 0;
+            })
+            .map((thread: Thread, index: Key | null | undefined) => (
+              <DiscussionInstance key={index} thread={thread} />
+            ))}
+        </div>
       </div>
     </>
   );
