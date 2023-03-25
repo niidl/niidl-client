@@ -53,6 +53,7 @@ export default function Home() {
         cleanedTags.push(tag.tag_name);
       });
 
+
       singleProj.id = data[i].id;
       singleProj.project_name = data[i].project_name;
       singleProj.tags = cleanedTags;
