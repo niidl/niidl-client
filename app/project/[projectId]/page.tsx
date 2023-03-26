@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
 import projectCategoryStyles from '../../../components/ProjectCategory.module.scss';
-import Discussions from './components/Discussions';
 import Issues from './components/Issues';
 import Repository from './components/Repository';
+import Discussions from './discussion/components/Discussions';
 
 export interface SingleProj {
   id: number;
@@ -46,7 +46,6 @@ async function getProjectInfo(projectId: number): Promise<SingleProj> {
   });
   return res.json();
 }
-
 export default async function ProjectPage({ params }: any) {
   const project: SingleProj = await getProjectInfo(params.projectId);
 
