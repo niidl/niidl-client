@@ -1,5 +1,4 @@
 'use client';
-
 import styles from './page.module.scss';
 import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
@@ -17,6 +16,10 @@ export interface ProjectData {
   project_name: string;
   tags: Array<{ id: number; tag_name: string; project_id: number }>;
 }
+
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
 
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
@@ -40,9 +43,11 @@ export default function Home() {
     fetchCategories();
   }, []);
 
+console.log(`${isProduction}/projects`)
+
   async function fetchAllProjects(): Promise<void> {
     const allProjectsArray: Array<Project> = [];
-    const res = await fetch('https://niidl.net/projects');
+    const res = await fetch(`${isProduction}/projects`);
     const data: ProjectData[] = await res.json();
 
     for (let i = 0; i < data.length; i++) {
@@ -64,7 +69,7 @@ export default function Home() {
   }
 
   async function fetchCategories(): Promise<void> {
-    const response = await fetch('https://niidl.net/tagNames');
+    const response = await fetch(`${isProduction}/tagNames`);
     const data: Array<{ tag_name: '' }> = await response.json();
     const cleanedTags: Array<string> = data.map((single) => {
       return single.tag_name;

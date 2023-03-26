@@ -20,7 +20,6 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
   const username = Cookies.get('userName');
   const [userUpvotedThreads, setUserUpvotedThreads] =
     useState<UpvotedThreads[] | null>();
-  console.log(username)
 
   useEffect(() => {
     getUserUpvotedThreads();
@@ -34,7 +33,7 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
     setUserUpvotedThreads(data);
   }
 
-  console.log(projectDiscussion)
+  console.log(userUpvotedThreads)
 
   function filterGeneral(): Thread[] {
     return projectDiscussion.filter((thread: Thread) => {

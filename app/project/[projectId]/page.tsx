@@ -40,8 +40,12 @@ export interface SingleProj {
   directory: string;
 }
 
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 async function getProjectInfo(projectId: number): Promise<SingleProj> {
-  const res = await fetch(`https://niidl.net/projects/${projectId}`, {
+  const res = await fetch(`${isProduction}/projects/${projectId}`, {
     cache: 'no-store',
   });
   return res.json();
