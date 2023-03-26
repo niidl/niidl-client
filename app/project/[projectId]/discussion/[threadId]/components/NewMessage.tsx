@@ -5,7 +5,6 @@ import styles from '../page.module.scss';
 
 interface MessageObject {
   content: string;
-  user_id: string;
   thread_id: number;
 }
 
@@ -14,27 +13,26 @@ interface Props {
   project_id: number;
 }
 
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 export default function NewMessage({ thread_id, project_id }: Props) {
-  const dev = 'http://localhost:8080';
-  const prod = 'https://niidl.net';
   const router = useRouter();
 
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
     const textValue: string = e.target.textarea.value;
     e.target.textarea.value = '';
-    let userId: any = localStorage.getItem('currentUser');
-    userId = JSON.parse(userId);
 
     const newMessageObject: MessageObject = {
       content: textValue,
-      user_id: '456',
       thread_id: thread_id,
     };
 
     await axios
       .post(
-        `${dev}/projects/${project_id}/threads/${thread_id}/newMessage`,
+        `${isProduction}/projects/${project_id}/threads/${thread_id}/newMessage`,
         newMessageObject,
         {
           withCredentials: true,

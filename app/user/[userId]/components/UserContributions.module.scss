@@ -1,0 +1,77 @@
+$foreground-table-border-rgba: rgb(192, 192, 192);
+
+$main-contribution-instance-color: rgb(22, 104, 104);
+
+.userContributionsContainer {
+  width: 100%;
+  padding: 24px;
+  border: 2px solid $foreground-table-border-rgba;
+  border-radius: 16px;
+
+  & > span {
+    margin: 0 6px 0 0;
+  }
+}
+
+.userCodeContributionsContainer {
+  max-height: 368px;
+  overflow-y: scroll;
+  margin: 12px 0 0 0;
+  padding: 0 18px 0 0;
+}
+
+.userCodeContributionInstanceContainer {
+  width: 100%;
+  height: 72px;
+  background-color: darkslategrey;
+  border-radius: 4px;
+  margin: 12px 0;
+  padding: 12px 24px;
+
+  & > code {
+    color: #FFFFFF;
+  }
+}
+
+.userDiscussionContributionsContainer {
+  max-height: 368px;
+  overflow-y: scroll;
+  margin: 18px 0 0 0;
+  padding: 0 18px 0 0;
+  
+  .userDiscussionContributionInstance {
+    width: 100%;
+    border: 2px solid $main-contribution-instance-color;
+    border-radius: 16px;
+    margin: 0 0 12px 0;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .userDiscussionContributionInstanceContent {
+      width: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
+    }
+
+    .userDiscussionContributionInstanceThreadTitle {
+      font-size: 14px;
+
+      span {
+        font-style: italic;
+      }
+    }
+
+    .userDiscussionContributionInstanceTimeReference {
+      font-size: 12px;
+      margin: 8px 0 0 0;
+    }
+  }
+}
+
+.selectedView {
+  font-weight: 700;
+  text-decoration: underline;
+}

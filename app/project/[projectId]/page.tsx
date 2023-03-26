@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
 import projectCategoryStyles from '../../../components/ProjectCategory.module.scss';
-import Discussions from './components/Discussions';
 import Issues from './components/Issues';
 import Repository from './components/Repository';
+import Discussions from './discussion/components/Discussions';
 
 export interface SingleProj {
   id: number;
@@ -22,6 +22,12 @@ export interface SingleProj {
     user_id: string;
     creation_time: Date;
     title: string;
+    thread_tag: string;
+    upvotes: number;
+    isPinned: boolean;
+    user: {
+      user_name: string;
+    };
   }>;
   issues: Array<{
     issue_id: number;
@@ -34,15 +40,18 @@ export interface SingleProj {
   directory: string;
 }
 
-async function getProjectInfo (projectId: number): Promise<SingleProj> {
-  const res = await fetch(`https://niidl.net/projects/${projectId}`,
-    { cache: 'no-store' }
-  )
-  return res.json()
-}
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
 
+async function getProjectInfo(projectId: number): Promise<SingleProj> {
+  const res = await fetch(`${isProduction}/projects/${projectId}`, {
+    cache: 'no-store',
+  });
+  return res.json();
+}
 export default async function ProjectPage({ params }: any) {
-  const project: SingleProj = await getProjectInfo(params.projectId)
+  const project: SingleProj = await getProjectInfo(params.projectId);
 
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
@@ -84,7 +93,7 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Discussion</h2>
-        <Discussions 
+        <Discussions
           projectDiscussion={project.threads}
           projectId={project.id}
           projectName={project.project_name}
@@ -109,8 +118,10 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Repository</h2>
-        <Repository projectDirectory={project.directory} />
       </div>
     </div>
   );
 }
+/*
+        <Repository projectDirectory={project.directory} />
+*/

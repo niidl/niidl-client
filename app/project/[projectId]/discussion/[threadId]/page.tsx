@@ -25,13 +25,22 @@ interface ThreadInfo {
   user: {
     user_name: string;
   };
+
+  thread_tag: string;
+  upvotes: number;
+  isPinned: boolean;
 }
+
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 async function getMessages(
   projectId: number,
   threadId: number
 ): Promise<Message[]> {
   const res = await fetch(
-    `https://niidl.net/projects/${projectId}/threads/${threadId}/messages`,
+    `${isProduction}/projects/${projectId}/threads/${threadId}/messages`,
     { cache: 'no-store' }
   );
   return res.json();
@@ -42,7 +51,7 @@ async function getThreadInfo(
   threadId: number
 ): Promise<ThreadInfo> {
   const res = await fetch(
-    `https://niidl.net/projects/${projectId}/threads/${threadId}`,
+    `${isProduction}/projects/${projectId}/threads/${threadId}`,
     { cache: 'no-store' }
   );
   return res.json();
@@ -58,7 +67,7 @@ export default async function ThreadPage({ params }: any) {
     params.projectId,
     params.threadId
   );
- 
+
   return (
     <div className={styles.threadBody}>
       <div>
