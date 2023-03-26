@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from './Repository.module.scss';
 import Directory from './Directory';
 

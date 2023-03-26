@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface Props {
   files: any;
@@ -10,51 +10,71 @@ interface Props {
 
 const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const baseUrl = 'http://localhost:8080/';
 
   const handleFiles = async (url: string) => {
-    const newUrl = newUrlFile + url.split(userRepo + '/')[1];
+    const fileInfo = {
+      newUrlFile,
+      url,
+      userRepo,
+    };
 
-    const filesContent = await fetch(newUrl);
-    const filesData = await filesContent.text();
+    const filesJson = await fetch(baseUrl + 'repository/file', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(fileInfo),
+    });
+
+    const filesData = await filesJson.text();
 
     setCurrContent(filesData);
   };
 
-  if (files.type === 'file') {
-    return (
-      <>
-        <h3 onClick={() => handleFiles(files.download_url)}>{files.name}</h3>
-        <br />
-      </>
-    );
+  const getData = async () => {
+    const folderJson = await fetch(baseUrl + 'repository/folder', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: files.url }),
+    });
+    const folderData = await folderJson.json();
+
+    files.items = folderData;
+  };
+
+  if (files.type !== 'file') {
+    getData();
   }
 
-  (async () => {
-    const filesJson = await fetch(files.url);
-    const filesData = await filesJson.json();
-
-    files.items = filesData;
-  })();
-
-  console.log(files.name, files.items);
-
-  return (
-    <div>
-      <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
-      {isExpanded &&
-        files.items &&
-        files.items.map((file: any) => {
-          return (
-            <Directory
-              files={file}
-              setCurrContent={setCurrContent}
-              newUrlFile={newUrlFile}
-              userRepo={userRepo}
-              key={file.name}
-            />
-          );
-        })}
-    </div>
+  return useMemo(
+    () =>
+      files.type !== 'file' ? (
+        <div>
+          <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
+          {isExpanded &&
+            files.items &&
+            files.items.map((file: any) => {
+              return (
+                <Directory
+                  files={file}
+                  setCurrContent={setCurrContent}
+                  newUrlFile={newUrlFile}
+                  userRepo={userRepo}
+                  key={file.name}
+                />
+              );
+            })}
+        </div>
+      ) : (
+        <>
+          <h3 onClick={() => handleFiles(files.download_url)}>{files.name}</h3>
+          <br />
+        </>
+      ),
+    [isExpanded]
   );
 };
 
