@@ -1,11 +1,15 @@
 import styles from './NewProjectModal.module.scss';
 
 type Props = {
-  showModal: boolean,
-  onClose: Function
-}
+  showModal: boolean;
+  onClose: Function;
+};
 
 export default function NewProjectModal({ showModal, onClose }: Props) {
+  const isProduction: string = process.env.PRODUCTION
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
+
   if (!showModal) return null;
 
   function handleFormSubmit(event: any) {
@@ -17,28 +21,26 @@ export default function NewProjectModal({ showModal, onClose }: Props) {
       description: event.target.elements.projectDescription.value,
       github_url: event.target.elements.projectGithubRepo.value,
       owner: JSON.parse(localStorage.getItem('currentUser') || '').ghuid,
-      project_image: event.target.elements.projectImage.value
-    }
+      project_image: event.target.elements.projectImage.value,
+    };
 
-    fetch('https://niidl.net/projects/newProject', {
+    fetch(`${isProduction}/projects/newProject`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formBody)
+      body: JSON.stringify(formBody),
     });
 
     onClose();
   }
 
   return (
-    <div 
-      className={styles.newProjectModalBackground}
-      onClick={() => onClose()}
-    >
-      <div 
+    <div className={styles.newProjectModalBackground} onClick={() => onClose()}>
+      <div
         className={styles.newProjectModalContent}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={() => onClose()}
@@ -49,43 +51,37 @@ export default function NewProjectModal({ showModal, onClose }: Props) {
         <h2>Create New Project</h2>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor='project_name'>Project Title</label>
-            <input type={'text'} 
-              name={'project_name'} 
-              id={'projectName'} />
+            <label htmlFor="project_name">Project Title</label>
+            <input type={'text'} name={'project_name'} id={'projectName'} />
           </div>
 
           <div>
-            <label htmlFor='project_type'>Project Type</label>
-            <input type={'text'} 
-              name={'project_type'}
-              id={'projectType'} />
+            <label htmlFor="project_type">Project Type</label>
+            <input type={'text'} name={'project_type'} id={'projectType'} />
           </div>
 
           <div>
-            <label htmlFor='description'>Description</label>
-            <input type={'text'} 
+            <label htmlFor="description">Description</label>
+            <input
+              type={'text'}
               name={'description'}
-              id={'projectDescription'} />
+              id={'projectDescription'}
+            />
           </div>
 
           <div>
-            <label htmlFor='github_url'>Github Repository</label>
-            <input type={'text'}
-              name={'github_url'}
-              id={'projectGithubRepo'} />
+            <label htmlFor="github_url">Github Repository</label>
+            <input type={'text'} name={'github_url'} id={'projectGithubRepo'} />
           </div>
 
           <div>
-            <label htmlFor='project_image'>Project Image</label>
-            <input type={'text'}
-              name={'project_image'}
-              id={'projectImage'} />
+            <label htmlFor="project_image">Project Image</label>
+            <input type={'text'} name={'project_image'} id={'projectImage'} />
           </div>
 
           <input type={'submit'}></input>
         </form>
       </div>
     </div>
-  )
+  );
 }
