@@ -28,6 +28,10 @@ interface Props {
   projectName: string;
 }
 
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 export default function Discussions({
   projectDiscussion,
   projectId,
@@ -37,16 +41,16 @@ export default function Discussions({
     useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
-  const [refresh, setRefresh] = useState<boolean>(false)
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     fetchThreads();
-    refresh && setRefresh(false)
+    refresh && setRefresh(false);
   }, []);
 
   async function fetchThreads(): Promise<void> {
     const response = await fetch(
-      `https://niidl.net/projects/${projectId}/threads`
+      `${isProduction}/projects/${projectId}/threads`
     );
     const data: Thread[] = await response.json();
     setProjectThreads(data);
