@@ -1,9 +1,12 @@
 'use client';
 
 import styles from './Discussions.module.scss';
-import DiscussionInstance from './DiscussionInstance';
 import NewDiscussionModal from './NewDiscussionModal';
 import { useState, Key } from 'react';
+import { GeneralDiscussions } from './DiscussionExtraComponents/GeneralDiscussions';
+import { NewIdeasDiscussion } from './DiscussionExtraComponents/NewIdeasDiscussion';
+import { NewestDiscussion } from './DiscussionExtraComponents/NewestDiscussion';
+import { HottestDiscussion } from './DiscussionExtraComponents/HottestDiscussion';
 
 export interface Thread {
   id: number;
@@ -32,51 +35,33 @@ export default function Discussions({
   projectName,
 }: Props) {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [currentTab, setCurrentTab] = useState<[string, Thread[]]>([
-    'general-discussion',
-    filterGeneral(),
-  ]);
+  const [currentTab, setCurrentTab] = useState<string>('general-discussion');
 
-  function filterGeneral(): Thread[] {
-    return projectDiscussion.filter((thread: Thread) => {
-      return thread.thread_tag === 'general-discussion';
-    });
-  }
-
-  function filterNewIdeas(): Thread[] {
-    return projectDiscussion.filter((thread: Thread) => {
-      return thread.thread_tag === 'new-ideas';
-    });
-  }
-
-  function filterHottest(): Thread[] {
-    const hotTopics: Thread[] = projectDiscussion;
-    hotTopics.sort((a, b) => a.upvotes + b.upvotes);
-    return hotTopics;
-  }
-
-  function filterNewest(): Thread[] {
-    const newest: Thread[] = projectDiscussion;
-    newest.sort(
-      (a, b) =>
-        new Date(b.creation_time).getDate() -
-        new Date(a.creation_time).getDate()
-    );
-    return newest;
+  function renderSwitch(component: string) {
+    switch (component) {
+      case 'general-discussion':
+        return <GeneralDiscussions projectDiscussion={projectDiscussion}/>;
+      case 'new-ideas':
+        return <NewIdeasDiscussion projectDiscussion={projectDiscussion}/>;
+      case 'newest':
+        return <NewestDiscussion projectDiscussion={projectDiscussion}/>;
+      case 'hot-topics':
+        return <HottestDiscussion projectDiscussion={projectDiscussion}/>;
+    }
   }
 
   function handleClick(e: any): any {
     if (e.target.value === 'general-discussion') {
-      setCurrentTab(['general-discussion', filterGeneral()]);
+      setCurrentTab('general-discussion');
     }
     if (e.target.value === 'new-ideas') {
-      setCurrentTab(['new-ideas', filterNewIdeas()]);
+      setCurrentTab('new-ideas');
     }
     if (e.target.value === 'newest') {
-      setCurrentTab(['newest', filterNewest()]);
+      setCurrentTab('newest');
     }
     if (e.target.value === 'hot-topics') {
-      setCurrentTab(['hot-topics', filterHottest()]);
+      setCurrentTab('hot-topics');
     }
   }
 
@@ -155,21 +140,7 @@ export default function Discussions({
             </li>
           </ul>
         </div>
-        <div className={styles.instancesContainer}>
-          {currentTab[1]
-            .sort((a: Thread, b: Thread) => {
-              if (a.isPinned && !b.isPinned) {
-                return -1;
-              }
-              if (!a.isPinned && b.isPinned) {
-                return 1;
-              }
-              return 0;
-            })
-            .map((thread: Thread, index: Key | null | undefined) => (
-              <DiscussionInstance key={index} thread={thread} />
-            ))}
-        </div>
+        {renderSwitch(currentTab)}
       </div>
     </>
   );
