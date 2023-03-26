@@ -43,8 +43,6 @@ export default function Home() {
     fetchCategories();
   }, []);
 
-console.log(`${isProduction}/projects`)
-
   async function fetchAllProjects(): Promise<void> {
     const allProjectsArray: Array<Project> = [];
     const res = await fetch(`${isProduction}/projects`);

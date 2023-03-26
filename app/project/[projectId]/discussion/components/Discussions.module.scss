@@ -45,6 +45,7 @@ $main-discussion-instance-border-color: rgb(22, 104, 104);
       .upvoteButton {
         border: none;
         padding: 5px;
+        font-size: 1.1rem;
         border-radius: 3px;
       }
 
@@ -55,8 +56,8 @@ $main-discussion-instance-border-color: rgb(22, 104, 104);
       .upvoteButtonAfter {
         border: none;
         padding: 5px;
-        background-color: goldenrod;
-        box-shadow: 1px 1px 1px 1px gray;
+        font-size: 1.1rem;
+        color: green;
       }
 
       .upvoteButtonAfter:hover {

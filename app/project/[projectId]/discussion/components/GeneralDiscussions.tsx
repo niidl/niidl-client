@@ -16,8 +16,13 @@ export interface UpvotedThreads {
   isUpvoted: boolean;
 }
 
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
-  const username = Cookies.get('userName');
+  // const username = Cookies.get('userName');
+  const username = 'amandajones10'
   const [userUpvotedThreads, setUserUpvotedThreads] =
     useState<UpvotedThreads[] | null>();
 
@@ -27,7 +32,7 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
 
   async function getUserUpvotedThreads(): Promise<void> {
     const res = await fetch(
-      `https://niidl.net/projects/${projectId}/upvotes/${username}`
+      `${isProduction}/projects/${projectId}/upvotes/${username}`
     );
     const data: UpvotedThreads[] = await res.json();
     setUserUpvotedThreads(data);

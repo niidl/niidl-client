@@ -118,8 +118,10 @@ export default async function ProjectPage({ params }: any) {
 
       <div>
         <h2>Repository</h2>
-        <Repository projectDirectory={project.directory} />
       </div>
     </div>
   );
 }
+/*
+        <Repository projectDirectory={project.directory} />
+*/
