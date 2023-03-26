@@ -1,13 +1,23 @@
+import axios from 'axios';
+import { Thread } from './Discussions';
 import styles from './NewDiscussionModal.module.scss';
 
 type Props = {
-  showModal: boolean,
-  onClose: Function,
-  projectId: number,
-  projectName: string
-}
-
-export default function NewDiscussionModal({ showModal, onClose, projectId, projectName }: Props) {
+  showModal: boolean;
+  onClose: Function;
+  projectId: number;
+  projectName: string;
+  setProjectThreads: any;
+  projectThreads: Thread[] | Promise<Thread[]>;
+};
+export default function NewDiscussionModal({
+  showModal,
+  onClose,
+  projectId,
+  projectName,
+  setProjectThreads,
+  projectThreads,
+}: Props) {
   if (!showModal) return null;
 
   function handleFormSubmit(event: any) {
@@ -17,17 +27,18 @@ export default function NewDiscussionModal({ showModal, onClose, projectId, proj
       title: event.target.elements.discussionTitle.value,
       content: event.target.elements.discussionContent.value,
       project_id: projectId,
-      user_id: JSON.parse(localStorage.getItem('currentUser') || '').ghuid
-    }
+    };
 
-    fetch(`https://niidl.net/projects/${projectId}/newThread`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formBody)
+    axios.post(`https://niidl.net/projects/${projectId}/newThread`, formBody,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
     });
 
+    const newProjectThread: any = projectThreads
+    setProjectThreads(newProjectThread.push(formBody))
     onClose();
   }
 
@@ -38,7 +49,7 @@ export default function NewDiscussionModal({ showModal, onClose, projectId, proj
     >
       <div
         className={styles.newDiscussionModalContent}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={() => onClose()}
@@ -50,21 +61,17 @@ export default function NewDiscussionModal({ showModal, onClose, projectId, proj
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
             <label htmlFor='title'>Title</label>
-            <input type={'text'}
-              name={'title'}
-              id={'discussionTitle'} />
+            <input type={'text'} name={'title'} id={'discussionTitle'} />
           </div>
 
           <div>
             <label htmlFor='content'>Description</label>
-            <textarea
-              name={'content'}
-              id={'discussionContent'} />
+            <textarea name={'content'} id={'discussionContent'} />
           </div>
 
           <input type={'submit'}></input>
         </form>
       </div>
     </div>
-  )
+  );
 }

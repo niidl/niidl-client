@@ -1,12 +1,11 @@
 'use client';
-
 import styles from './Discussions.module.scss';
 import NewDiscussionModal from './NewDiscussionModal';
-import { useState, Key } from 'react';
-import { GeneralDiscussions } from './DiscussionExtraComponents/GeneralDiscussions';
-import { NewIdeasDiscussion } from './DiscussionExtraComponents/NewIdeasDiscussion';
-import { NewestDiscussion } from './DiscussionExtraComponents/NewestDiscussion';
-import { HottestDiscussion } from './DiscussionExtraComponents/HottestDiscussion';
+import { useState, Key, useEffect } from 'react';
+import { GeneralDiscussions } from './GeneralDiscussions';
+import { NewIdeasDiscussion } from './NewIdeasDiscussion';
+import { NewestDiscussion } from './NewestDiscussion';
+import { HottestDiscussion } from './HottestDiscussion';
 
 export interface Thread {
   id: number;
@@ -34,22 +33,55 @@ export default function Discussions({
   projectId,
   projectName,
 }: Props) {
+  const [projectThreads, setProjectThreads] =
+    useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
+
+  useEffect(() => {
+    fetchThreads();
+  }, []);
+
+  async function fetchThreads(): Promise<void> {
+    const response = await fetch(
+      `https://niidl.net/projects/${projectId}/threads`
+    );
+    const data: Thread[] = await response.json();
+    setProjectThreads(data);
+  }
 
   function renderSwitch(component: string) {
     switch (component) {
       case 'general-discussion':
-        return <GeneralDiscussions projectDiscussion={projectDiscussion}/>;
+        return (
+          <GeneralDiscussions
+            projectDiscussion={projectThreads}
+            projectId={projectId}
+          />
+        );
       case 'new-ideas':
-        return <NewIdeasDiscussion projectDiscussion={projectDiscussion}/>;
+        return (
+          <NewIdeasDiscussion
+            projectDiscussion={projectThreads}
+            projectId={projectId}
+          />
+        );
       case 'newest':
-        return <NewestDiscussion projectDiscussion={projectDiscussion}/>;
+        return (
+          <NewestDiscussion
+            projectDiscussion={projectThreads}
+            projectId={projectId}
+          />
+        );
       case 'hot-topics':
-        return <HottestDiscussion projectDiscussion={projectDiscussion}/>;
+        return (
+          <HottestDiscussion
+            projectDiscussion={projectThreads}
+            projectId={projectId}
+          />
+        );
     }
   }
-
   function handleClick(e: any): any {
     if (e.target.value === 'general-discussion') {
       setCurrentTab('general-discussion');
@@ -78,6 +110,8 @@ export default function Discussions({
         onClose={() => setShowModal(false)}
         projectId={projectId}
         projectName={projectName}
+        setProjectThreads={setProjectThreads}
+        projectThreads={projectThreads}
       />
       <div className={styles.discussionsContainer}>
         <div className={styles.discussionsTabs}>
