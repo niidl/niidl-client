@@ -4,6 +4,14 @@ $foreground-table-border-rgba: rgb(192, 192, 192);
   width: 90%;
   margin: 24px auto;
 
+  & > div {
+    margin: 0 0 36px 0;
+  }
+
+  h2 {
+    margin: 0 0 18px 0;
+  }
+
   .userDashboardBasicInfoContainer {
     display: flex;
     column-gap: 24px;
@@ -22,6 +30,7 @@ $foreground-table-border-rgba: rgb(192, 192, 192);
 
     .userDashboardUserLinksContainer {
       width: 100%;
+      margin: 36px 0 0 0;
       padding: 24px;
       border: 2px solid $foreground-table-border-rgba;
       border-radius: 16px;
@@ -31,7 +40,10 @@ $foreground-table-border-rgba: rgb(192, 192, 192);
         flex-flow: row wrap;
         column-gap: 12px;
       }
+
+      h3 {
+        margin: 0 0 8px 0;
+      }
     }
   }
 }  
-

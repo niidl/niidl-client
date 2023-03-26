@@ -24,11 +24,21 @@ export default function UserContributions({ userMessages }: Props) {
       <div className={styles.userContributionsContainer}>
         <span 
           onClick={() => setSelectedContributionView(() => 'Code')}
+          className={
+            selectedContributionView === 'Code'
+              ? styles.selectedView
+              : ''
+          }
         >
           Code
         </span>
         <span
           onClick={() => setSelectedContributionView(() => 'Discussion')}
+          className={
+            selectedContributionView === 'Discussion'
+              ? styles.selectedView
+              : ''
+          }
         >
           Discussion
         </span>
