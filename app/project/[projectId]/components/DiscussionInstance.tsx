@@ -5,10 +5,10 @@ import moment from 'moment';
 
 interface Props {
   thread: Thread;
+  hasPin: boolean;
 }
 
-
-export default function DiscussionInstance({ thread }: Props) {
+export default function DiscussionInstance({ thread, hasPin }: Props) {
   return (
     <div className={styles.discussionsMessageInstance}>
       <div className={styles.upvoteContainer}>
@@ -18,7 +18,7 @@ export default function DiscussionInstance({ thread }: Props) {
         <div className={styles.instanceMessageContainer}>
           <div className={styles.discussionMessageInstanceTitle}>
             <div>{thread.title}</div>
-            <div>{thread.isPinned && '📌'}</div>
+            {hasPin && <div>{thread.isPinned && '📌'}</div>}
           </div>
           <div className={styles.discussionMessageInstanceBottom}>
             {moment(thread.creation_time).fromNow()}
