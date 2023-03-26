@@ -47,7 +47,7 @@ export default function Navbar() {
       setInfoFromFirebase(currentUser);
       //localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      fetch(`${dev}/userAuth`, {
+      fetch(`${prod}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -72,7 +72,7 @@ export default function Navbar() {
   };
 
   const logout = async () => {
-    fetch(`${dev}/logout`, {
+    fetch(`${prod}/logout`, {
       method: 'POST',
       credentials: 'include',
       headers: {

@@ -37,9 +37,11 @@ export default function Discussions({
     useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
+  const [refresh, setRefresh] = useState<boolean>(false)
 
   useEffect(() => {
     fetchThreads();
+    refresh && setRefresh(false)
   }, []);
 
   async function fetchThreads(): Promise<void> {
@@ -110,8 +112,7 @@ export default function Discussions({
         onClose={() => setShowModal(false)}
         projectId={projectId}
         projectName={projectName}
-        setProjectThreads={setProjectThreads}
-        projectThreads={projectThreads}
+        setRefresh={setRefresh}
       />
       <div className={styles.discussionsContainer}>
         <div className={styles.discussionsTabs}>
