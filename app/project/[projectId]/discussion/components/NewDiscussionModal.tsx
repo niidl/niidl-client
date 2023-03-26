@@ -7,20 +7,18 @@ type Props = {
   onClose: Function;
   projectId: number;
   projectName: string;
-  setProjectThreads: any;
-  projectThreads: Thread[] | Promise<Thread[]>;
+  setRefresh: any;
 };
 export default function NewDiscussionModal({
   showModal,
   onClose,
   projectId,
   projectName,
-  setProjectThreads,
-  projectThreads,
+  setRefresh,
 }: Props) {
   if (!showModal) return null;
 
-  function handleFormSubmit(event: any) {
+  async function handleFormSubmit(event: any) {
     event.preventDefault();
 
     const formBody: any = {
@@ -29,16 +27,18 @@ export default function NewDiscussionModal({
       project_id: projectId,
     };
 
-    axios.post(`https://niidl.net/projects/${projectId}/newThread`, formBody,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-    });
+    await axios.post(
+      `https://niidl.net/projects/${projectId}/newThread`,
+      formBody,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    const newProjectThread: any = projectThreads
-    setProjectThreads(newProjectThread.push(formBody))
+    setRefresh(true);
     onClose();
   }
 
