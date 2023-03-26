@@ -10,14 +10,23 @@ const userMockData = [
     first_name: 'Bryan',
     last_name: 'Cendales',
     github_url: 'https://github.com/MrBCendales',
-    username: 'MrBCendales',
+    user_name: 'MrBCendales',
     email: 'bryan@bryancendales.com',
     github_profile_picture: 'https://avatars.githubusercontent.com/u/114232631?v=4',
-    links: {
-      twitter: 'https://twitter.com/mcdonalds',
-      linkedin: 'https://linkedin.com',
-      website: 'https://codechrysalis.io'
-    },
+    links: [
+      {
+        name: 'Twitter',
+        url: 'https://twitter.com/mcdonalds'
+      },
+      {
+        name: 'LinkedIn',
+        url: 'https://linkedin.com',
+      },
+      {
+        name: 'Website',
+        url: 'https://codechrysalis.io',
+      }
+    ],
     user_projects: [
       {
         id: -2,
@@ -33,30 +42,19 @@ const userMockData = [
 
 interface User {
   id: number,
-  first_name: string,
-  last_name: string,
+  first_name: string | null,
+  last_name: string | null,
   github_url: string,
-  username: string,
+  user_name: string,
   email: string,
   github_profile_picture: string,
-  links: {
-    twitter: string,
-    linkedin: string,
-    website: string
-  },
+  links: Array<{
+    name: string,
+    url: string
+  }>,
   user_projects: Array<{
     id: number,
     project_name: string
-  }>
-}
-
-interface UserMessages {
-  userMessages: Array<{
-    content: string,
-    creation_time: Date,
-    thread: {
-      title: string
-    }
   }>
 }
 
@@ -92,8 +90,8 @@ export default async function UserDashboard({ params }: any) {
         </div>
 
         <div>
-          <h2>{user.username}</h2>
-          <h3>{`${user.first_name} ${user.last_name}`}</h3>
+          <h2>{user.user_name}</h2>
+          <h3>{`${user.first_name ? user.first_name : ''} ${user.last_name ? user.last_name : ''}`}</h3>
           <h3>{user.email}</h3>
           
           <div className={styles.userDashboardUserLinksContainer}>
@@ -107,21 +105,21 @@ export default async function UserDashboard({ params }: any) {
               </Link>
 
               <Link
-                href={user.links.twitter}
+                href={user.links.filter(link => link.name === 'Twitter')[0].url}
                 target='_blank'
               >
                 <p>Twitter</p>
               </Link>
 
               <Link
-                href={user.links.linkedin}
+                href={user.links.filter(link => link.name === 'LinkedIn')[0].url}
                 target='_blank'
               >
                 <p>LinkedIn</p>
               </Link>
 
               <Link
-                href={user.links.website}
+                href={user.links.filter(link => link.name === 'Website')[0].url}
                 target='_blank'
               >
                 <p>Website</p>
