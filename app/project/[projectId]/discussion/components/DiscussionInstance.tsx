@@ -7,6 +7,7 @@ import { Thread } from './Discussions';
 import { UpvotedThreads } from './GeneralDiscussions';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { BiUpvote } from 'react-icons/bi'
 
 interface Props {
   thread: Thread;
@@ -23,6 +24,10 @@ export default function DiscussionInstance({
     checkUpvote();
   }, []);
 
+  const isProduction: string = process.env.PRODUCTION
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
+
   const username = Cookies.get('userName');
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
@@ -37,14 +42,14 @@ export default function DiscussionInstance({
 
   function upvote() {
     axios.post(
-      `https://niidl.net/projects/${thread.project_id}/upvotes/${username}`
+      `${isProduction}/projects/${thread.project_id}/upvotes/${username}`
     );
     setIsUpvoted(true);
   }
 
   function downvote() {
     axios.delete(
-      `https://niidl.net/projects/${thread.project_id}/upvotes/${username}`
+      `${isProduction}/projects/${thread.project_id}/upvotes/${username}`
     );
     setIsUpvoted(false);
   }
@@ -62,7 +67,7 @@ export default function DiscussionInstance({
           }`}
           onClick={handleClick}
         >
-          ⏫
+          <BiUpvote />
         </button>
       </div>
       <Link href={`project/${thread.project_id}/discussion/${thread.id}`}>

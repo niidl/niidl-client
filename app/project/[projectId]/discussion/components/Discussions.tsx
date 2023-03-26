@@ -124,7 +124,7 @@ export default function Discussions({
             <li className={styles.liContainer} role='presentation'>
               <button
                 className={`${
-                  currentTab[0] === 'general-discussion'
+                  currentTab === 'general-discussion'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
@@ -138,7 +138,7 @@ export default function Discussions({
             <li className={styles.liContainer} role='presentation'>
               <button
                 className={`${
-                  currentTab[0] === 'new-ideas'
+                  currentTab === 'new-ideas'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
@@ -152,7 +152,7 @@ export default function Discussions({
             <li className={styles.liContainer} role='presentation'>
               <button
                 className={`${
-                  currentTab[0] === 'newest'
+                  currentTab === 'newest'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
@@ -166,7 +166,7 @@ export default function Discussions({
             <li className={styles.liContainer} role='presentation'>
               <button
                 className={`${
-                  currentTab[0] === 'hot-topics'
+                  currentTab === 'hot-topics'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}

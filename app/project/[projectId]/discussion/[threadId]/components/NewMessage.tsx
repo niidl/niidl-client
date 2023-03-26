@@ -13,9 +13,11 @@ interface Props {
   project_id: number;
 }
 
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
 export default function NewMessage({ thread_id, project_id }: Props) {
-  const dev = 'http://localhost:8080';
-  const prod = 'https://niidl.net';
   const router = useRouter();
 
   async function handleSubmit(e: any): Promise<void> {
@@ -30,7 +32,7 @@ export default function NewMessage({ thread_id, project_id }: Props) {
 
     await axios
       .post(
-        `${prod}/projects/${project_id}/threads/${thread_id}/newMessage`,
+        `${isProduction}/projects/${project_id}/threads/${thread_id}/newMessage`,
         newMessageObject,
         {
           withCredentials: true,
