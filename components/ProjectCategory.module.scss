@@ -1,14 +1,24 @@
+$main-project-instance-color: rgb(22, 104, 104);
+$main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
+$main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
+
 .projectCategoryInstance {
-  margin: 0 20px 0 0;
+  margin: 0 24px 0 0;
   padding: 12px;
-  background-color: darkcyan;
+  border: 2px solid $main-project-instance-color;
+  color: $main-project-instance-color;
+  border-radius: 16px;
 
   &:hover {
-    background-color: pink;
-    opacity: 70%;
+    background-color: $main-project-instance-color-transp10;
   }
 }
 
 .selectedInstance {
-  background-color: pink;
+  background-color: $main-project-instance-color;
+  color: #FFFFFF;
+
+  &:hover {
+    background-color: $main-project-instance-color-transp90;
+  }
 }

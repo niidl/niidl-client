@@ -5,46 +5,6 @@ import Discussions from './components/Discussions';
 import Issues from './components/Issues';
 import Repository from './components/Repository';
 
-const allProjectsMockData = [
-  {
-    id: 101,
-    name: 'mymizu',
-    keywords: ['Education', 'JavaScript', 'Beginner-friendly'],
-  },
-  {
-    id: 102,
-    name: 'Honeycomb',
-    keywords: ['Science', 'JavaScript', 'Beginner-friendly'],
-  },
-  {
-    id: 103,
-    name: 'pURANIUM',
-    keywords: ['Science', 'Environment', 'Python'],
-  },
-  {
-    id: 105,
-    name: 'CodeLegion',
-    keywords: ['Education', 'Science', 'JavaScript', 'C#'],
-  },
-  {
-    id: 106,
-    name: 'RuddyRex',
-    keywords: ['Travel', 'JavaScript', 'Beginner-friendly'],
-  },
-  {
-    id: 107,
-    name: 'impact training',
-    keywords: ['Fitness', 'Health', 'Ruby'],
-  },
-];
-
-async function getProject(projectId: string) {
-  const res = await allProjectsMockData.filter(
-    (project) => String(project.id) === projectId
-  )[0];
-  return res;
-}
-
 export interface SingleProj {
   id: number;
   project_name: string;
@@ -62,6 +22,12 @@ export interface SingleProj {
     user_id: string;
     creation_time: Date;
     title: string;
+    thread_tag: string;
+    upvotes: number;
+    isPinned: boolean;
+    user: {
+      user_name: string;
+    };
   }>;
   issues: Array<{
     issue_id: number;
@@ -74,65 +40,20 @@ export interface SingleProj {
   directory: string;
 }
 
+async function getProjectInfo(projectId: number): Promise<SingleProj> {
+  const res = await fetch(`https://niidl.net/projects/${projectId}`, {
+    cache: 'no-store',
+  });
+  return res.json();
+}
+
 export default async function ProjectPage({ params }: any) {
-  const project: SingleProj = {
-    id: 0,
-    project_name: '',
-    description: '',
-    github_url: '',
-    owner: '',
-    project_image: '',
-    project_type: '',
-    tags: [],
-    contributors: [],
-    threads: [],
-    issues: [],
-    directory: '',
-  };
-  //const project = await getProject(params.projectId);
+  const project: SingleProj = await getProjectInfo(params.projectId);
 
-  async function fetchAllProjects(): Promise<void> {
-    try {
-      const response = await fetch(
-        `https://niidl.net/projects/${params.projectId}`
-      );
-      const data = await response.text();
-
-      if (!data) {
-        throw new Error('Empty response from server');
-      }
-
-      const jsonData: SingleProj = JSON.parse(data);
-
-      project.id = jsonData.id;
-      project.project_name = jsonData.project_name;
-      project.description = jsonData.description;
-      project.github_url = jsonData.github_url;
-      project.owner = jsonData.owner;
-      project.project_image = jsonData.project_image;
-      project.project_type = jsonData.project_type;
-      project.tags = jsonData.tags;
-      project.contributors = jsonData.contributors;
-      project.threads = jsonData.threads;
-      project.issues = jsonData.issues;
-      project.directory = jsonData.directory;
-      console.log(project);
-    } catch (error) {
-      console.error(error);
-    }
-  }
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
   });
 
-  const contributorNames: Array<string> = project.contributors.map(
-    (contributor) => {
-      return contributor.username;
-    }
-  );
-
-  await fetchAllProjects();
-  const test: string = project.directory;
   return (
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>

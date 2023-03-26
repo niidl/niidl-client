@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useMemo } from 'react';
+import styles from './Repository.module.scss';
 import Directory from './Directory';
 
 interface Props {
@@ -20,7 +21,7 @@ export default function Repository({ projectDirectory }: Props) {
   };
 
   return (
-    <div>
+    <div className={styles.projectRepositoryContainer}>
       <Directory
         files={firstDirectory}
         setCurrContent={setCurrContent}

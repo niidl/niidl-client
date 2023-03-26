@@ -1,13 +1,9 @@
 'use client';
 import Link from 'next/link';
-import {
-  signInWithPopup,
-  GithubAuthProvider,
-  getRedirectResult,
-  signOut,
-  signInWithRedirect,
-} from 'firebase/auth';
+import { signInWithPopup, GithubAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
+import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 interface CurrentUser {
   fbuid: string;
@@ -26,25 +22,34 @@ class User implements CurrentUser {
 }
 
 export default function Navbar() {
+  const [githubUser, setGithubUser] = useState<string>('');
+  const [infoFromFirebase, setInfoFromFirebase] = useState<User>();
+  const [resetFirebaseUser, setResetFirebaseUser] = useState<User>();
   const provider = new GithubAuthProvider();
+  const dev = 'http://localhost:8080';
+  const prod = 'https://niidl.net';
+
+  useEffect(() => {
+    const userName = Cookies.get('userName');
+    setGithubUser(userName || '');
+  }, []);
 
   const login = async () => {
-    provider.addScope('repo');
+    provider.addScope('public_repo');
     await signInWithPopup(auth, provider).then(function (result) {
-      let test = result.user.providerData[0].uid;
       let user = result.user;
-      console.log(user);
-      console.log('test', test);
       const currentUser = new User(
         user.uid,
         user.displayName,
         user.email,
         user.providerData[0].uid
       );
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      setInfoFromFirebase(currentUser);
+      //localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      fetch('https://www.niidl.net/userAuth', {
+      fetch(`${dev}/userAuth`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -52,10 +57,10 @@ export default function Navbar() {
       })
         .then((response) => response.text())
         .then((data) => {
-          console.log('component/navbar.data', data);
           try {
-            const parsedData = JSON.parse(data);
-            localStorage.setItem('githubName', JSON.stringify(parsedData));
+            console.log(data);
+            //localStorage.setItem('githubName', JSON.stringify(data));
+            setGithubUser(data);
           } catch (error) {
             console.error('Invalid response', error);
           }
@@ -66,6 +71,29 @@ export default function Navbar() {
     });
   };
 
+  const logout = async () => {
+    fetch(`${dev}/logout`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        try {
+          console.log(data);
+          setGithubUser(data);
+        } catch (error) {
+          console.error('Invalid response', error);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
+
   return (
     <div className={'navbar'}>
       <Link href="/">
@@ -73,18 +101,28 @@ export default function Navbar() {
       </Link>
 
       <div>
-        <button onClick={login}>Login</button>
-        <button onClick={login}>Signup</button>
-        <button
-          onClick={async () => {
-            console.log('signout');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('githubName');
-            await signOut(auth);
-          }}
-        >
-          Logout
-        </button>
+        {githubUser ? (
+          <>
+            <div>{githubUser}</div>
+            <button
+              onClick={async () => {
+                //localStorage.removeItem('currentUser');
+                //localStorage.removeItem('githubName');
+                setGithubUser('');
+                setInfoFromFirebase(resetFirebaseUser);
+                await logout();
+                await signOut(auth);
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <button onClick={login}>Login</button>
+            <button onClick={login}>Signup</button>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,16 +1,23 @@
 .main {
-  margin: 0;
-  padding: 0;
-  box-sizing: 0;
-}
+  & > div:first-child {
+    margin: 24px auto;
+    width: 90%;
 
-.main > div:first-child {
-  margin: 24px auto;
-  width: 90%;
+    & > button {
+      margin: 0 0 36px 0;
+      padding: 12px 24px;
+    }
+  }
 
-  & > button {
-    margin: 12px 0 24px 0;
-    padding: 12px 24px;
+  h1,
+  h2 {
+    margin: 0 0 18px 0;
+  }
+
+  .addOrSearchContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
