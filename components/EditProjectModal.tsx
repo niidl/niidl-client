@@ -6,13 +6,11 @@ type Props = {
   projectCategories: string[];
 };
 
-export default function NewProjectModal({
+export default function EditProjectModal({
   showModal,
   onClose,
   projectCategories,
 }: Props) {
-  const baseUrl = 'https://niidl.net/';
-
   function handleFormSubmit(event: any) {
     event.preventDefault();
 
@@ -25,7 +23,7 @@ export default function NewProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    // fetch(baseUrl + 'projects/newProject', {
+    // fetch('https://niidl.net/projects/newProject', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -40,19 +38,6 @@ export default function NewProjectModal({
         tags.push(option.name);
       }
     }
-
-    const tagObj: any = {
-      tags: tags,
-      project_id: 1,
-    };
-
-    // fetch(baseUrl + 'projects/:projectId/newTag', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(tagObj),
-    // });
 
     onClose();
   }

@@ -175,6 +175,7 @@ export default function Home() {
         <NewProjectModal
           showModal={showModal}
           onClose={() => setShowModal(false)}
+          projectCategories={projectCategories}
         />
         <div>
           <h2>Project Categories</h2>
