@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './page.module.scss';
 import projectCategoryStyles from '../../../components/ProjectCategory.module.scss';
 import Issues from './components/Issues';
@@ -45,14 +46,22 @@ const isProduction: string = process.env.PRODUCTION
   : 'http://localhost:8080';
 
 async function getProjectInfo(projectId: number): Promise<SingleProj> {
-  const res = await fetch(`${isProduction}/projects/${projectId}`, {
-    cache: 'no-store',
-  });
-  return res.json();
+  if (projectId < -5000) {
+    const client = `${isProduction}/githubProjects/${projectId}`;
+    const response = await fetch(client, { cache: 'no-store' });
+    const githubInfo = await response.json();
+    return githubInfo;
+  } else {
+    const res = await fetch(`${isProduction}/projects/${projectId}`, {
+      cache: 'no-store',
+    });
+    const info = await res.json();
+    return info;
+  }
 }
+
 export default async function ProjectPage({ params }: any) {
   const project: SingleProj = await getProjectInfo(params.projectId);
-
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
   });
@@ -92,32 +101,61 @@ export default async function ProjectPage({ params }: any) {
       </div>
 
       <div>
-        <h2>Discussion</h2>
-        <Discussions
-          projectDiscussion={project.threads}
-          projectId={project.id}
-          projectName={project.project_name}
-        />
+        {project.contributors ? (
+          <>
+            <h2>Discussion</h2>
+            <Discussions
+              projectDiscussion={project.threads}
+              projectId={project.id}
+              projectName={project.project_name}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div>
-        <h2>Issues</h2>
-        <Issues projectIssues={project.issues} />
+        {project.issues ? (
+          <>
+            <h2>Issues</h2>
+            <Issues projectIssues={project.issues} />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div>
-        <h2>Contributor</h2>
-        <div>
-          <ul>
-            {project.contributors.map((contributor) => (
-              <li key={contributor.contributor_id}>{contributor.username}</li>
-            ))}
-          </ul>
-        </div>
+        {project.contributors ? (
+          <>
+            <h2>Contributor</h2>
+            <div>
+              <ul>
+                {project.contributors.map((contributor) => (
+                  <li key={contributor.contributor_id}>
+                    {contributor.username}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div>
-        <h2>Repository</h2>
+        {project.github_url ? (
+          <>
+            <h2>Repository</h2>
+            <Link href={`${project.github_url}`} key={project.id}>
+              {project.github_url}
+            </Link>
+          </>
+        ) : (
+          <h2>Repository</h2>
+        )}
       </div>
     </div>
   );
