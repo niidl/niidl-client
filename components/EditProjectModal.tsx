@@ -12,6 +12,10 @@ export default function EditProjectModal({
   projectCategories,
 }: Props) {
   function handleFormSubmit(event: any) {
+    const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
     event.preventDefault();
 
     const formBody: any = {
@@ -23,8 +27,9 @@ export default function EditProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    // fetch('https://niidl.net/projects/newProject', {
+    // fetch(`${isProduction}/projects/newProject`, {
     //   method: 'POST',
+    //   credentials: 'include',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
