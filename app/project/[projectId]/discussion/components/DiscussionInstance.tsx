@@ -7,23 +7,21 @@ import { Thread } from './Discussions';
 import { UpvotedThreads } from './GeneralDiscussions';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { BiUpvote } from 'react-icons/bi'
+import { BiUpvote } from 'react-icons/bi';
 
 interface Props {
   thread: Thread;
   hasPin: boolean;
   userUpvotedThreads?: UpvotedThreads[] | null;
+  setUserUpvotedThreads: any;
 }
 
 export default function DiscussionInstance({
   thread,
   hasPin,
   userUpvotedThreads,
+  setUserUpvotedThreads,
 }: Props) {
-  useEffect(() => {
-    checkUpvote();
-  }, []);
-
   const isProduction: string = process.env.PRODUCTION
     ? 'https://niidl.net'
     : 'http://localhost:8080';
@@ -31,27 +29,62 @@ export default function DiscussionInstance({
   const username = Cookies.get('userName');
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
+  useEffect(() => {
+    checkUpvote();
+  }, [userUpvotedThreads]);
+
   function checkUpvote() {
-    const idToString: string = thread.id.toString();
-    for (const threadKey in userUpvotedThreads) {
-      if (threadKey === idToString) {
-        setIsUpvoted(true);
+    if (userUpvotedThreads) {
+      for (const threadKey of userUpvotedThreads) {
+        if (threadKey.thread_id === thread.id) {
+          setIsUpvoted(true);
+        }
       }
     }
   }
 
-  function upvote() {
-    axios.post(
-      `${isProduction}/projects/${thread.project_id}/upvotes/${username}`
-    );
-    setIsUpvoted(true);
+  async function upvote() {
+    await axios
+      .post(
+        `${isProduction}/projects/${thread.project_id}/threads/${thread.id}/upvotes/${username}`,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        setIsUpvoted(true);
+        const newUpvotes: any = userUpvotedThreads;
+        newUpvotes.push({
+          user_name: username,
+          thread_id: thread.id,
+        });
+        setUserUpvotedThreads(newUpvotes);
+      });
   }
 
-  function downvote() {
-    axios.delete(
-      `${isProduction}/projects/${thread.project_id}/upvotes/${username}`
-    );
-    setIsUpvoted(false);
+  async function downvote() {
+    await axios
+      .delete(
+        `${isProduction}/projects/${thread.project_id}/threads/${thread.id}/upvotes/${username}`,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
+        setIsUpvoted(false);
+        if (userUpvotedThreads) {
+          const newUpvotes: UpvotedThreads[] = userUpvotedThreads.filter(
+            (thr) => thr.thread_id !== thread.id
+          );
+          setUserUpvotedThreads(newUpvotes);
+        }
+      });
   }
 
   function handleClick() {
@@ -67,7 +100,7 @@ export default function DiscussionInstance({
           }`}
           onClick={handleClick}
         >
-          <BiUpvote />
+          {<BiUpvote />}
         </button>
       </div>
       <Link href={`project/${thread.project_id}/discussion/${thread.id}`}>

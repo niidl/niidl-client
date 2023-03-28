@@ -17,3 +17,84 @@
   display: flex;
   justify-content: space-between;
 }
+
+.messageContainer {
+  margin: 12px 4px;
+  padding: 8px 12px;
+  border: 1px solid gray;
+  border-radius: 12px;
+
+  .messageContainerTop {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .messageContainerBot {
+    display: flex;
+    margin: 12px 0px;
+    flex-direction: column;
+    justify-content: space-between;
+    white-space: pre-wrap;
+  }
+
+  .messageIcons {
+    display: flex;
+    justify-content: end;
+
+    .trash {
+      margin: 0px 4px;
+      font-size: 1.2rem;
+    }
+    .edit {
+      margin: 0px 4px;
+      font-size: 1.4rem;
+    }
+
+    .trash:hover {
+      color: firebrick;
+      cursor: pointer;
+    }
+    .edit:hover {
+      color: dodgerblue;
+      cursor: pointer;
+    }
+  }
+}
+
+.upvoteButton {
+  border: none;
+  padding: 5px;
+  font-size: 1.1rem;
+  border-radius: 3px;
+}
+
+.upvoteButton:hover {
+  cursor: pointer;
+}
+
+.upvoteButtonAfter {
+  border: none;
+  padding: 5px;
+  font-size: 1.1rem;
+  color: green;
+}
+
+.upvoteButtonAfter:hover {
+  cursor: pointer;
+}
+
+.lastContainer {
+  display: flex;
+  justify-content: space-between;
+
+  .upvotesContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h4 {
+      margin: 0 0 4px 8px;
+      color: darkkhaki;
+    }
+  }
+}
