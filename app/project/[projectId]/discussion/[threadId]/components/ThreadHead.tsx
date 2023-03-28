@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
 import ReactMarkdown from 'react-markdown';
+import EditProjectModal from './EditProjectModal';
 
 interface Props {
   threadInfo: ThreadInfo;

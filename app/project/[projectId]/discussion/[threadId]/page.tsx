@@ -3,7 +3,6 @@ import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import ThreadHead from './components/ThreadHead';
-import { GetServerSideProps } from 'next';
 import { cookies } from 'next/headers';
 
 interface Message {
@@ -34,9 +33,9 @@ export interface ThreadInfo {
 }
 
 export interface UpvotedMessages {
-  thread_id: number;
+  user_name: string;
+  message_id: number;
 }
-
 
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
@@ -67,7 +66,7 @@ async function getThreadInfo(
 async function getUpvotes(
   projectId: number,
   threadId: number,
-  username: string,
+  username: string
 ): Promise<UpvotedMessages[]> {
   const res = await fetch(
     `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
@@ -76,7 +75,7 @@ async function getUpvotes(
   return res.json();
 }
 
-async function getOwner(projectId: number, username: string): Promise<string> {
+async function getOwner(projectId: number, username: string): Promise<boolean> {
   const res = await fetch(
     `${isProduction}/projects/${projectId}/owner/${username}`
   );
@@ -84,7 +83,7 @@ async function getOwner(projectId: number, username: string): Promise<string> {
 }
 
 export default async function ThreadPage({ params }: any) {
-const username: any = cookies().get('userName');
+  const username: any = cookies().get('userName');
   const messages: Message[] = await getMessages(
     params.projectId,
     params.threadId
@@ -95,15 +94,13 @@ const username: any = cookies().get('userName');
     params.threadId
   );
 
-  const checkProjectOwner: string = await getOwner(params.projectId, username.value);
+  const isOwner: boolean = await getOwner(params.projectId, username.value);
 
   const allUpvotes: UpvotedMessages[] = await getUpvotes(
     params.projectId,
     params.threadId,
     username.value
   );
-
-  console.log(allUpvotes, checkProjectOwner)
 
   return (
     <div className={styles.threadBody}>
@@ -114,22 +111,30 @@ const username: any = cookies().get('userName');
         <ThreadHead threadInfo={threadInfo} />
       </div>
       {Array.isArray(messages) &&
-        messages.map((message, index) => {
-          return (
-            <div key={index}>
-              <ThreadMessage
-                content={message.content}
-                creation_time={message.creation_time}
-                username={message.user.user_name}
-                projectOwner={threadInfo.user.user_name}
-                projectId={threadInfo.project_id}
-                threadId={threadInfo.id}
-                messageId={message.id}
-                upvotes={message.upvotes}
-              />
-            </div>
-          );
-        })}
+        messages
+          .sort(
+            (a, b) =>
+              new Date(a.creation_time).getDate() -
+              new Date(b.creation_time).getDate()
+          )
+          .map((message, index) => {
+            return (
+              <div key={index}>
+                <ThreadMessage
+                  content={message.content}
+                  creation_time={message.creation_time}
+                  username={message.user.user_name}
+                  projectOwner={threadInfo.user.user_name}
+                  projectId={threadInfo.project_id}
+                  threadId={threadInfo.id}
+                  messageId={message.id}
+                  upvotes={message.upvotes}
+                  allUpvotes={allUpvotes}
+                  isOwner={isOwner}
+                />
+              </div>
+            );
+          })}
       <NewMessage
         thread_id={threadInfo.id}
         project_id={threadInfo.project_id}
