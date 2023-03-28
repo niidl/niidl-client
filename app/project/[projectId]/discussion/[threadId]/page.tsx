@@ -1,10 +1,10 @@
-import moment from 'moment';
+import Cookies from 'js-cookie';
 import ThreadMessage from './components/ThreadMessage';
 import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
-import Cookies from 'js-cookie';
 import ThreadHead from './components/ThreadHead';
+import { GetServerSideProps } from 'next';
 
 interface Message {
   id: number;
@@ -63,18 +63,26 @@ async function getThreadInfo(
   return res.json();
 }
 
-const username: any = Cookies.get('userName');
-
-async function getUpvotes(
-  projectId: number,
-  threadId: number
-): Promise<UpvotedMessages[]> {
-  const res = await fetch(
-    `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
-    { cache: 'no-store' }
-  );
-  return res.json();
+async function getUsername() {
+  const myGod = Cookies.get('userName')
+  return myGod
 }
+
+// async function getUpvotes(
+//   projectId: number,
+//   threadId: number
+// ): Promise<UpvotedMessages[]> {
+//   const res = await fetch(
+//     `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
+//     { cache: 'no-store' }
+//   );
+//   return res.json();
+// }
+
+// async function getOwner(projectId: number): Promise<string> {
+//   const res = await fetch(`${isProduction}/projects/${projectId}/owner/${username}`);
+//   return res.json();
+// }
 
 export default async function ThreadPage({ params }: any) {
   const messages: Message[] = await getMessages(
@@ -82,15 +90,20 @@ export default async function ThreadPage({ params }: any) {
     params.threadId
   );
 
+  // const checkProjectOwner: string = await getOwner(params.projectId, );
+
   const threadInfo: ThreadInfo = await getThreadInfo(
     params.projectId,
     params.threadId
   );
 
-  const allUpvotes: UpvotedMessages[] = await getUpvotes(
-    params.projectId,
-    params.threadId
-  );
+  const getMy = await getUsername()
+  console.log(getMy)
+
+  // const allUpvotes: UpvotedMessages[] = await getUpvotes(
+  //   params.projectId,
+  //   params.threadId
+  // );
 
   return (
     <div className={styles.threadBody}>
@@ -124,3 +137,4 @@ export default async function ThreadPage({ params }: any) {
     </div>
   );
 }
+
