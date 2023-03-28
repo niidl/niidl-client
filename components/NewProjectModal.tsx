@@ -5,6 +5,8 @@ type Props = {
   onClose: Function;
   projectCategories: string[];
   projectTypes: string[];
+  userName: string | undefined;
+  sessionId: string | undefined;
 };
 
 export default function NewProjectModal({
@@ -12,6 +14,8 @@ export default function NewProjectModal({
   onClose,
   projectCategories,
   projectTypes,
+  userName,
+  sessionId,
 }: Props) {
   const isProduction: string = process.env.PRODUCTION
     ? 'https://niidl.net'
@@ -21,11 +25,12 @@ export default function NewProjectModal({
     event.preventDefault();
 
     const formBody: any = {
+      sessId: sessionId + 'test',
       project_name: event.target.elements.projectName.value,
       project_type: event.target.elements.projectType.value,
       description: event.target.elements.projectDescription.value,
       github_url: event.target.elements.projectGithubRepo.value,
-      owner: JSON.parse(localStorage.getItem('currentUser') || '').ghuid,
+      owner: userName,
       project_image: event.target.elements.projectImage.value,
     };
 

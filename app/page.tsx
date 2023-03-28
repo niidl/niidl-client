@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
 import NewProjectModal from '@/components/NewProjectModal';
+import Cookies from 'js-cookie';
 
 export interface Project {
   id: number;
@@ -20,6 +21,9 @@ export interface ProjectData {
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
+
+const userName: string | undefined = Cookies.get('userName');
+const sessionId: string | undefined = Cookies.get('sessionToken');
 
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
@@ -194,6 +198,8 @@ export default function Home() {
           onClose={() => setShowModal(false)}
           projectCategories={projectCategories}
           projectTypes={projectTypes}
+          userName={userName}
+          sessionId={sessionId}
         />
         <div>
           <h2>Project Categories</h2>
