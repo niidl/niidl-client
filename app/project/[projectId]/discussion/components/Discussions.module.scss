@@ -30,14 +30,12 @@ $main-discussion-instance-border-color: rgb(22, 104, 104);
     border: 2px solid $main-discussion-instance-border-color;
     border-radius: 16px;
     margin: 0 0 12px 0;
-    padding: 5px 15px;
     display: flex;
     align-items: center;
     overflow: hidden;
-
     .upvoteContainer {
       height: 100px;
-      min-width: 30px;
+      width: 8%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -64,31 +62,28 @@ $main-discussion-instance-border-color: rgb(22, 104, 104);
         cursor: pointer;
       }
     }
+  }
 
-    .instanceMessageContainer {
-      width: 100%;
-      height: 100%;
-      padding: 20px 10px;
+  .instanceMessageContainer {
+    height: 100%;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+
+    .discussionMessageInstanceTitle {
+      margin: 12px 0 0 0;
+      font-weight: 600;
+      color: $main-discussion-instance-title-color;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+    }
 
-      .discussionMessageInstanceTitle {
-        width: 100%;
-        margin: 12px 0 0 0;
-        font-weight: 600;
-        color: $main-discussion-instance-title-color;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .discussionMessageInstanceBottom {
-        margin: 12px 0 0 0;
-        padding: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .discussionMessageInstanceBottom {
+      margin: 12px 0 0 0;
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }

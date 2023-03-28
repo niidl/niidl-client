@@ -21,6 +21,8 @@ interface Props {
   threadId: number;
   messageId: number;
   upvotes: number;
+  allUpvotes: UpvotedMessages[];
+  isOwner: boolean;
 }
 
 const isProduction: string = process.env.PRODUCTION
@@ -36,38 +38,45 @@ export default function ThreadMessage({
   threadId,
   messageId,
   upvotes,
+  allUpvotes,
+  isOwner,
 }: Props) {
   const loggedUser = Cookies.get('userName');
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
-  // const [userUpvotedMessages, setUserUpvotedMessages] = useState<
-    // UpvotedMessages[] | null
-  // >();
+  const [userUpvotedMessages, setUserUpvotedMessages] = useState<
+    UpvotedMessages[] | null
+  >(allUpvotes);
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const [canDelete, setCanDelete] = useState<boolean>(false);
+  const [countVotes, setCountVotes] = useState<number>(upvotes);
 
   useEffect(() => {
     checkUserRole();
+    checkUpvote();
   }, []);
 
   async function checkUserRole() {
     if (loggedUser === username) setCanEdit(true);
-    // if (checkProjectOwner) setCanDelete(true);
-    // if (checkProjectOwner && loggedUser === username) {
-    //   setCanDelete(false);
-    // }
+    if (isOwner) setCanDelete(true);
+    if (isOwner && loggedUser === username) {
+      setCanDelete(false);
+    }
   }
 
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
-  // function checkUpvote() {
-  //   const idToString: string = messageId.toString();
-  //   for (const threadKey in userUpvotedMessages) {
-  //     if (threadKey === idToString) {
-  //       setIsUpvoted(true);
-  //     }
-  //   }
-  // }
+  function checkUpvote() {
+    const idToString: number = messageId;
+    if (userUpvotedMessages) {
+      for (const message of userUpvotedMessages) {
+        if (message.message_id === idToString) {
+          setCountVotes(countVotes + 1);
+          setIsUpvoted(true);
+        }
+      }
+    }
+  }
 
   async function upvote() {
     await axios
@@ -83,6 +92,7 @@ export default function ThreadMessage({
       )
       .then((res) => {
         setIsUpvoted(true);
+        setCountVotes(countVotes + 1);
         router.refresh();
       });
   }
@@ -100,6 +110,7 @@ export default function ThreadMessage({
       )
       .then((res) => {
         setIsUpvoted(false);
+        setCountVotes(countVotes - 1);
         router.refresh();
       });
   }
@@ -148,7 +159,7 @@ export default function ThreadMessage({
           >
             {<BiUpvote />}
           </button>
-          <h4>{upvotes}</h4>
+          <h4>{countVotes}</h4>
         </div>
         <div className={styles.editMessage}>
           {canEdit && (

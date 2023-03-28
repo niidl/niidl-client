@@ -8,6 +8,7 @@ import { UpvotedThreads } from './GeneralDiscussions';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
+import { BsPinAngle } from 'react-icons/bs';
 
 interface Props {
   thread: Thread;
@@ -108,7 +109,7 @@ export default function DiscussionInstance({
         <div className={styles.instanceMessageContainer}>
           <div className={styles.discussionMessageInstanceTitle}>
             <div>{thread.title}</div>
-            {hasPin && <div>{thread.isPinned && '📌'}</div>}
+            {hasPin && <div>{thread.isPinned && <BsPinAngle />}</div>}
           </div>
           <div className={styles.discussionMessageInstanceBottom}>
             {moment(thread.creation_time).fromNow()}
