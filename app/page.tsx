@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
 import NewProjectModal from '@/components/NewProjectModal';
+import Cookies from 'js-cookie';
 
 export interface Project {
   id: number;
@@ -21,8 +22,12 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
+const userName: string | undefined = Cookies.get('userName');
+const sessionId: string | undefined = Cookies.get('sessionToken');
+
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
+  const [projectTypes, setProjectTypes] = useState<Array<string>>([]);
   const [selectedProjectCategories, setSelectedProjectCategories] = useState<
     string[]
   >([]);
@@ -34,7 +39,16 @@ export default function Home() {
       tags: [],
     },
   ]);
+  const [allGHProjects, setAllGHProjects] = useState<Project[]>([
+    {
+      id: 0,
+      project_name: '',
+      tags: [],
+    },
+  ]);
+
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const searchInputRef = useRef<any>();
 
@@ -42,8 +56,10 @@ export default function Home() {
     fetchAllProjects();
     fetchCategories();
     fetchGitHubProjects();
+    fetchProjectTypes();
   }, []);
 
+  ////////////
   async function fetchGitHubProjects(): Promise<any> {
     const gitHubProjectsArray: Array<Project> = [];
     const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
@@ -55,13 +71,12 @@ export default function Home() {
       gitHubData[i].tags.forEach((tag) => {
         cleanedTags.push(tag.tag_name);
       });
-
       singleProj.id = gitHubData[i].id;
       singleProj.project_name = gitHubData[i].project_name;
       singleProj.tags = cleanedTags;
       gitHubProjectsArray.push(singleProj);
     }
-    setAllProjects((current) => [...current, ...gitHubProjectsArray]);
+    setAllGHProjects(gitHubProjectsArray);
   }
 
   async function fetchAllProjects(): Promise<void> {
@@ -94,6 +109,15 @@ export default function Home() {
     setProjectCategories(cleanedTags);
   }
 
+  async function fetchProjectTypes(): Promise<void> {
+    const response = await fetch(`${isProduction}/projectTypes`);
+    const data: Array<{ type: '' }> = await response.json();
+    const cleanedTypes: Array<string> = data.map((single) => {
+      return single.type;
+    });
+    setProjectTypes(cleanedTypes);
+  }
+
   useEffect(() => {
     setFilteredProjects(filterByTags());
   }, [selectedProjectCategories]);
@@ -113,21 +137,34 @@ export default function Home() {
 
   function filterByTags() {
     let projectsUnderTag: Project[] = [];
-    let uniqueprojectsUnderTag: Project[] = [];
+    let uniqueProjectsUnderTag: Project[] = [];
+    let currentProjects: Project[] = [];
+
+    if (selectedProjectCategories.includes('Based on Github')) {
+      currentProjects = allGHProjects;
+    } else {
+      currentProjects = allProjects;
+    }
 
     for (let i = 0; i < selectedProjectCategories.length; i++) {
-      projectsUnderTag = [
-        ...projectsUnderTag,
-        ...allProjects.filter((project) =>
-          project.tags.includes(selectedProjectCategories[i])
-        ),
-      ];
-
-      uniqueprojectsUnderTag = projectsUnderTag.filter(
-        (project, index) => projectsUnderTag.indexOf(project) === index
-      );
+      if (i === 0) {
+        currentProjects.map((project) => {
+          if (project.tags.includes(selectedProjectCategories[i])) {
+            projectsUnderTag.push(project);
+          }
+        });
+        uniqueProjectsUnderTag = projectsUnderTag;
+      } else {
+        uniqueProjectsUnderTag = [];
+        projectsUnderTag.map((project) => {
+          if (project.tags.includes(selectedProjectCategories[i])) {
+            uniqueProjectsUnderTag.push(project);
+          }
+        });
+        projectsUnderTag = uniqueProjectsUnderTag;
+      }
     }
-    return uniqueprojectsUnderTag;
+    return uniqueProjectsUnderTag;
   }
 
   function handleSubmit(event: any): void {
@@ -182,6 +219,9 @@ export default function Home() {
           showModal={showModal}
           onClose={() => setShowModal(false)}
           projectCategories={projectCategories}
+          projectTypes={projectTypes}
+          userName={userName}
+          sessionId={sessionId}
         />
         <div>
           <h2>Project Categories</h2>
