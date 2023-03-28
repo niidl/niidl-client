@@ -4,18 +4,20 @@ type Props = {
   showModal: boolean;
   onClose: Function;
   projectCategories: string[];
+  projectTypes: string[];
 };
 
 export default function NewProjectModal({
   showModal,
   onClose,
   projectCategories,
+  projectTypes,
 }: Props) {
   const isProduction: string = process.env.PRODUCTION
-  ? 'https://niidl.net'
-  : 'http://localhost:8080';
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
 
-  function handleFormSubmit(event: any) {
+  async function handleFormSubmit(event: any) {
     event.preventDefault();
 
     const formBody: any = {
@@ -27,36 +29,38 @@ export default function NewProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    // fetch(isProduction + 'projects/newProject', {
-    //   method: 'POST',
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(formBody),
-    // });
+    await fetch(isProduction + '/projects/newProject', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formBody),
+    });
 
     const allOptions = event.target.elements.projectTags;
     const tags = [];
     for (const option of allOptions) {
       if (option.selected) {
-        tags.push(option.name);
+        tags.push(option.value);
       }
     }
 
-    const tagObj: any = {
-      tags: tags,
-      project_id: 1,
-    };
+    const tagArray: any = tags.map((tag) => {
+      return {
+        tag_name: tag,
+        github_url: formBody.github_url,
+      };
+    });
 
-    // fetch(isProduction + 'projects/:projectId/newTag', {
-    //   method: 'POST',
-    //credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(tagObj),
-    // });
+    await fetch(isProduction + '/projects/projectId/newTag', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(tagArray),
+    });
 
     onClose();
   }
@@ -82,7 +86,11 @@ export default function NewProjectModal({
 
           <div>
             <label htmlFor="project_type">Project Type</label>
-            <input type={'text'} name={'project_type'} id={'projectType'} />
+            <select name="projectType" id="projectType">
+              {projectTypes.map((type) => (
+                <option key={type}>{type}</option>
+              ))}
+            </select>
           </div>
 
           <div>

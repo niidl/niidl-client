@@ -23,6 +23,7 @@ const isProduction: string = process.env.PRODUCTION
 
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
+  const [projectTypes, setProjectTypes] = useState<Array<string>>([]);
   const [selectedProjectCategories, setSelectedProjectCategories] = useState<
     string[]
   >([]);
@@ -42,6 +43,7 @@ export default function Home() {
     fetchAllProjects();
     fetchCategories();
     fetchGitHubProjects();
+    fetchProjectTypes();
   }, []);
 
   async function fetchGitHubProjects(): Promise<any> {
@@ -92,6 +94,15 @@ export default function Home() {
       return single.tag_name;
     });
     setProjectCategories(cleanedTags);
+  }
+
+  async function fetchProjectTypes(): Promise<void> {
+    const response = await fetch(`${isProduction}/projectTypes`);
+    const data: Array<{ type: '' }> = await response.json();
+    const cleanedTypes: Array<string> = data.map((single) => {
+      return single.type;
+    });
+    setProjectTypes(cleanedTypes);
   }
 
   useEffect(() => {
@@ -182,6 +193,7 @@ export default function Home() {
           showModal={showModal}
           onClose={() => setShowModal(false)}
           projectCategories={projectCategories}
+          projectTypes={projectTypes}
         />
         <div>
           <h2>Project Categories</h2>
