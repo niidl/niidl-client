@@ -66,6 +66,7 @@ export default async function ProjectPage({ params }: any) {
     return tag.tag_name;
   });
 
+  console.log(project);
   return (
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
 import ReactMarkdown from 'react-markdown';
+import EditProjectModal from './EditProjectModal';
 
 interface Props {
   content: string;
@@ -64,7 +65,7 @@ export default function ThreadMessage({
   async function upvote() {
     await axios
       .post(
-        `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,
+        `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,{},
         {
           withCredentials: true,
           headers: {
@@ -100,7 +101,7 @@ export default function ThreadMessage({
   }
 
   function handleEdit(): void {
-    console.log('hello');
+    setShowModal(true);
   }
 
   // async function handleEdit(): Promise<void> {
@@ -172,6 +173,7 @@ export default function ThreadMessage({
           )}
         </div>
       </div>
+      {showModal && <EditProjectModal setShowModal={setShowModal} />}
     </div>
   );
 }

@@ -47,6 +47,7 @@ export default function DiscussionInstance({
     await axios
       .post(
         `${isProduction}/projects/${thread.project_id}/threads/${thread.id}/upvotes/${username}`,
+        {},
         {
           withCredentials: true,
           headers: {
