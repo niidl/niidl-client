@@ -150,9 +150,7 @@ export default async function ProjectPage({ params }: any) {
         {project.github_url ? (
           <>
             <h2>Repository</h2>
-            <Link href={`${project.github_url}`} key={project.id}>
-              {project.github_url}
-            </Link>
+            <Repository projectDirectory={project.directory} />
           </>
         ) : (
           <h2>Repository</h2>
@@ -162,5 +160,4 @@ export default async function ProjectPage({ params }: any) {
   );
 }
 /*
-        <Repository projectDirectory={project.directory} />
-*/
+ */
