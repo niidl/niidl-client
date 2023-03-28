@@ -1,10 +1,10 @@
-import Cookies from 'js-cookie';
 import ThreadMessage from './components/ThreadMessage';
 import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import ThreadHead from './components/ThreadHead';
 import { GetServerSideProps } from 'next';
+import { cookies } from 'next/headers';
 
 interface Message {
   id: number;
@@ -37,6 +37,7 @@ export interface UpvotedMessages {
   thread_id: number;
 }
 
+
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
@@ -63,47 +64,46 @@ async function getThreadInfo(
   return res.json();
 }
 
-async function getUsername() {
-  const myGod = Cookies.get('userName')
-  return myGod
+async function getUpvotes(
+  projectId: number,
+  threadId: number,
+  username: string,
+): Promise<UpvotedMessages[]> {
+  const res = await fetch(
+    `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
+    { cache: 'no-store' }
+  );
+  return res.json();
 }
 
-// async function getUpvotes(
-//   projectId: number,
-//   threadId: number
-// ): Promise<UpvotedMessages[]> {
-//   const res = await fetch(
-//     `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
-//     { cache: 'no-store' }
-//   );
-//   return res.json();
-// }
-
-// async function getOwner(projectId: number): Promise<string> {
-//   const res = await fetch(`${isProduction}/projects/${projectId}/owner/${username}`);
-//   return res.json();
-// }
+async function getOwner(projectId: number, username: string): Promise<string> {
+  const res = await fetch(
+    `${isProduction}/projects/${projectId}/owner/${username}`
+  );
+  return res.json();
+}
 
 export default async function ThreadPage({ params }: any) {
+const username: any = cookies().get('userName');
   const messages: Message[] = await getMessages(
     params.projectId,
     params.threadId
   );
-
-  // const checkProjectOwner: string = await getOwner(params.projectId, );
 
   const threadInfo: ThreadInfo = await getThreadInfo(
     params.projectId,
     params.threadId
   );
 
-  const getMy = await getUsername()
-  console.log(getMy)
+  const checkProjectOwner: string = await getOwner(params.projectId, username.value);
 
-  // const allUpvotes: UpvotedMessages[] = await getUpvotes(
-  //   params.projectId,
-  //   params.threadId
-  // );
+  const allUpvotes: UpvotedMessages[] = await getUpvotes(
+    params.projectId,
+    params.threadId,
+    username.value
+  );
+
+  console.log(allUpvotes, checkProjectOwner)
 
   return (
     <div className={styles.threadBody}>
@@ -137,4 +137,3 @@ export default async function ThreadPage({ params }: any) {
     </div>
   );
 }
-

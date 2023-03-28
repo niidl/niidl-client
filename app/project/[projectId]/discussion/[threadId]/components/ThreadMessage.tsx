@@ -21,7 +21,6 @@ interface Props {
   threadId: number;
   messageId: number;
   upvotes: number;
-  checkProjectOwner?: boolean;
 }
 
 const isProduction: string = process.env.PRODUCTION
@@ -37,14 +36,13 @@ export default function ThreadMessage({
   threadId,
   messageId,
   upvotes,
-  checkProjectOwner,
 }: Props) {
   const loggedUser = Cookies.get('userName');
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [userUpvotedMessages, setUserUpvotedMessages] = useState<
-    UpvotedMessages[] | null
-  >();
+  // const [userUpvotedMessages, setUserUpvotedMessages] = useState<
+    // UpvotedMessages[] | null
+  // >();
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const [canDelete, setCanDelete] = useState<boolean>(false);
 
@@ -54,22 +52,22 @@ export default function ThreadMessage({
 
   async function checkUserRole() {
     if (loggedUser === username) setCanEdit(true);
-    if (checkProjectOwner) setCanDelete(true);
-    if (checkProjectOwner && loggedUser === username) {
-      setCanDelete(false);
-    }
+    // if (checkProjectOwner) setCanDelete(true);
+    // if (checkProjectOwner && loggedUser === username) {
+    //   setCanDelete(false);
+    // }
   }
 
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
-  function checkUpvote() {
-    const idToString: string = messageId.toString();
-    for (const threadKey in userUpvotedMessages) {
-      if (threadKey === idToString) {
-        setIsUpvoted(true);
-      }
-    }
-  }
+  // function checkUpvote() {
+  //   const idToString: string = messageId.toString();
+  //   for (const threadKey in userUpvotedMessages) {
+  //     if (threadKey === idToString) {
+  //       setIsUpvoted(true);
+  //     }
+  //   }
+  // }
 
   async function upvote() {
     await axios
