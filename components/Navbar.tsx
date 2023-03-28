@@ -30,7 +30,9 @@ export default function Navbar() {
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-  
+  const isProductionServer: string = process.env.PRODUCTION
+  ? 'https://niidl.vercel.app'
+  : 'http://localhost:3000';
 
   useEffect(() => {
     const userName = Cookies.get('userName');
@@ -48,7 +50,6 @@ export default function Navbar() {
         user.providerData[0].uid
       );
       setInfoFromFirebase(currentUser);
-      //localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
       fetch(`${isProduction}/userAuth`, {
         method: 'POST',
@@ -108,7 +109,7 @@ export default function Navbar() {
       <div>
         {githubUser ? (
           <>
-            <Link href={`http://localhost:3000/user/${userName}`}>
+            <Link href={`${isProductionServer}/user/${userName}`}>
               <div>
                 {
                   githubUser
