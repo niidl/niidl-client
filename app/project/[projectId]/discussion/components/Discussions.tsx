@@ -41,11 +41,11 @@ export default function Discussions({
     useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
-  const [refresh, setRefresh] = useState<boolean>(false);
+  //const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     fetchThreads();
-    refresh && setRefresh(false);
+    //refresh && setRefresh(false);
   }, []);
 
   async function fetchThreads(): Promise<void> {
@@ -112,11 +112,11 @@ export default function Discussions({
         + Add Thread
       </button>
       <NewDiscussionModal
-        showModal={showModal}
-        onClose={() => setShowModal(false)}
+      showModal={showModal}
         projectId={projectId}
         projectName={projectName}
-        setRefresh={setRefresh}
+        setShowModal={setShowModal}
+        // setRefresh={setRefresh}
       />
       <div className={styles.discussionsContainer}>
         <div className={styles.discussionsTabs}>
