@@ -21,10 +21,10 @@ const isProduction: string = process.env.PRODUCTION
   : 'http://localhost:8080';
 
 export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
-  // const username = Cookies.get('userName');
-  const username = 'amandajones10'
-  const [userUpvotedThreads, setUserUpvotedThreads] =
-    useState<UpvotedThreads[] | null>();
+  const username = Cookies.get('userName');
+  const [userUpvotedThreads, setUserUpvotedThreads] = useState<
+    UpvotedThreads[] | null
+  >();
 
   useEffect(() => {
     getUserUpvotedThreads();
@@ -37,8 +37,6 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
     const data: UpvotedThreads[] = await res.json();
     setUserUpvotedThreads(data);
   }
-
-  console.log(userUpvotedThreads)
 
   function filterGeneral(): Thread[] {
     return projectDiscussion.filter((thread: Thread) => {
@@ -64,12 +62,9 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
             thread={thread}
             hasPin={true}
             userUpvotedThreads={userUpvotedThreads}
+            setUserUpvotedThreads={setUserUpvotedThreads}
           />
         ))}
     </div>
   );
 };
-/*
-
-            userUpvotedThreads={userUpvotedThreads}
-*/
