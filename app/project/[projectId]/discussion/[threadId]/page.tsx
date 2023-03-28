@@ -92,8 +92,6 @@ export default async function ThreadPage({ params }: any) {
     params.threadId
   );
 
-  console.log(allUpvotes)
-
   return (
     <div className={styles.threadBody}>
       <div>

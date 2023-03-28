@@ -20,6 +20,11 @@ export default function EditProjectModal({ setShowModal }: Props) {
         >
           Close
         </button>
+      </div>
+    </div>
+  );
+}
+/*
         <h2>Edit Message</h2>
         <form onSubmit={handleFormSubmit}>
           <div>
@@ -29,8 +34,4 @@ export default function EditProjectModal({ setShowModal }: Props) {
           <input type={'submit'}></input>
         </form>
       </div>
-    </div>
-  );
-}
-/*
  */

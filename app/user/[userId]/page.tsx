@@ -79,9 +79,7 @@ async function getUserData(userName: string): Promise<any> {
       'Content-Type': 'application/json',
     },
   });
-  console.log(response.body);
   const allUserInfo: any = await response.json();
-  console.log('all', allUserInfo);
   return allUserInfo;
 }
 
