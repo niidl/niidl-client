@@ -5,6 +5,7 @@ import projectCategoryStyles from '../../../components/ProjectCategory.module.sc
 import Issues from './components/Issues';
 import Repository from './components/Repository';
 import Discussions from './discussion/components/Discussions';
+import EditProjectButton from './components/EditProjectButton';
 
 export interface SingleProj {
   id: number;
@@ -66,7 +67,6 @@ export default async function ProjectPage({ params }: any) {
     return tag.tag_name;
   });
 
-  console.log(project);
   return (
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>
@@ -87,6 +87,7 @@ export default async function ProjectPage({ params }: any) {
         </div>
       </div>
 
+      <EditProjectButton projectInfo={project}></EditProjectButton>
       <div>
         <h2>Technologies</h2>
         <div className={styles.projectTechnologiesContainer}>
@@ -147,17 +148,20 @@ export default async function ProjectPage({ params }: any) {
       </div>
 
       <div>
-        {project.github_url ? (
+        {project.contributors ? (
           <>
             <h2>Repository</h2>
             <Repository projectDirectory={project.directory} />
           </>
         ) : (
-          <h2>Repository</h2>
+          <>
+            <h2>Repository</h2>
+            <Link href={`${project.github_url}`} key={project.id}>
+              {project.github_url}
+            </Link>
+          </>
         )}
       </div>
     </div>
   );
 }
-/*
- */
