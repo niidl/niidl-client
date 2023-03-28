@@ -47,6 +47,13 @@ export default function Home() {
     const allProjectsArray: Array<Project> = [];
     const res = await fetch(`${isProduction}/projects`);
     const data: ProjectData[] = await res.json();
+    ///////////// Github entries
+    const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
+    const gitHubData: ProjectData[] = await gitHubResponse.json();
+    gitHubData.map((project) => {
+      data.push(project);
+    });
+    //////////// Github Entries
 
     for (let i = 0; i < data.length; i++) {
       const singleProj: Project = { id: 0, project_name: '', tags: [] };
@@ -55,7 +62,6 @@ export default function Home() {
       data[i].tags.forEach((tag) => {
         cleanedTags.push(tag.tag_name);
       });
-
 
       singleProj.id = data[i].id;
       singleProj.project_name = data[i].project_name;
@@ -144,16 +150,16 @@ export default function Home() {
           <button onClick={() => setShowModal(true)}>+ Add Project</button>
 
           <form onSubmit={handleSubmit}>
-            <div className='relative'>
+            <div className="relative">
               <input
-                type='search'
-                id='default-search'
+                type="search"
+                id="default-search"
                 ref={searchInputRef}
-                className='searchInput'
-                placeholder='Search for your project...'
+                className="searchInput"
+                placeholder="Search for your project..."
                 required
               />
-              <button type='submit' className='searchButton'>
+              <button type="submit" className="searchButton">
                 Search
               </button>
             </div>

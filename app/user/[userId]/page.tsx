@@ -10,14 +10,23 @@ const userMockData = [
     first_name: 'Bryan',
     last_name: 'Cendales',
     github_url: 'https://github.com/MrBCendales',
-    username: 'MrBCendales',
+    user_name: 'MrBCendales',
     email: 'bryan@bryancendales.com',
     github_profile_picture: 'https://avatars.githubusercontent.com/u/114232631?v=4',
-    links: {
-      twitter: 'https://twitter.com/mcdonalds',
-      linkedin: 'https://linkedin.com',
-      website: 'https://codechrysalis.io'
-    },
+    links: [
+      {
+        name: 'Twitter',
+        url: 'https://twitter.com/mcdonalds'
+      },
+      {
+        name: 'LinkedIn',
+        url: 'https://linkedin.com',
+      },
+      {
+        name: 'Website',
+        url: 'https://codechrysalis.io',
+      }
+    ],
     user_projects: [
       {
         id: -2,
@@ -33,49 +42,62 @@ const userMockData = [
 
 interface User {
   id: number,
-  first_name: string,
-  last_name: string,
+  first_name: string | null,
+  last_name: string | null,
   github_url: string,
-  username: string,
+  user_name: string,
   email: string,
   github_profile_picture: string,
-  links: {
-    twitter: string,
-    linkedin: string,
-    website: string
-  },
+  links: Array<{
+    name: string,
+    url: string
+  }>,
   user_projects: Array<{
     id: number,
     project_name: string
   }>
 }
 
-interface UserMessages {
-  userMessages: Array<{
-    content: string,
-    creation_time: Date,
-    thread: {
-      title: string
-    }
-  }>
+interface BioLink {
+  name: string,
+  url: string
 }
 
-function getUserData(userId: string): User {
-  const res = userMockData.filter(user => String(user.id) === userId)[0];
+const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
 
-  return res;
+async function getUserData(): Promise<any> {
+  const response = await fetch(`${isProduction}/users/data`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({})
+  })
+  const allUserInfo = await response.json();
+
+  return allUserInfo;
 }
 
-async function getUserMessages(userId: string): Promise<any> {
-  const res = await fetch(`https://niidl.net/users/456/messages`);
-  const data = await res.json();
+async function getUserMessages(): Promise<any> {
+  const response = await fetch(`${isProduction}/users/messages`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({})
+  });
+  const userMessages = await response.json();
   
-  return data;
+  return userMessages;
 }
 
 export default async function UserDashboard({ params }: any) {
-  const user = await getUserData(params.userId);
-  const userMessages = await getUserMessages(params.userId);
+  const user = await getUserData();
+  const userMessages = await getUserMessages();
 
   return (
     <main className={styles.userDashboardMainContainer}>
@@ -92,8 +114,8 @@ export default async function UserDashboard({ params }: any) {
         </div>
 
         <div>
-          <h2>{user.username}</h2>
-          <h3>{`${user.first_name} ${user.last_name}`}</h3>
+          <h2>{user.user_name}</h2>
+          <h3>{`${user.first_name ? user.first_name : ''} ${user.last_name ? user.last_name : ''}`}</h3>
           <h3>{user.email}</h3>
           
           <div className={styles.userDashboardUserLinksContainer}>
@@ -107,21 +129,21 @@ export default async function UserDashboard({ params }: any) {
               </Link>
 
               <Link
-                href={user.links.twitter}
+                href={user.links.filter((link:BioLink) => link.name === 'Twitter')[0].url}
                 target='_blank'
               >
                 <p>Twitter</p>
               </Link>
 
               <Link
-                href={user.links.linkedin}
+                href={user.links.filter((link:BioLink) => link.name === 'LinkedIn')[0].url}
                 target='_blank'
               >
                 <p>LinkedIn</p>
               </Link>
 
               <Link
-                href={user.links.website}
+                href={user.links.filter((link:BioLink) => link.name === 'Website')[0].url}
                 target='_blank'
               >
                 <p>Website</p>

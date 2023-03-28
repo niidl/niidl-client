@@ -11,7 +11,9 @@ export default function NewProjectModal({
   onClose,
   projectCategories,
 }: Props) {
-  const baseUrl = 'https://niidl.net/';
+  const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
 
   function handleFormSubmit(event: any) {
     event.preventDefault();
@@ -25,8 +27,9 @@ export default function NewProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    // fetch(baseUrl + 'projects/newProject', {
+    // fetch(isProduction + 'projects/newProject', {
     //   method: 'POST',
+    //   credentials: 'include',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
@@ -46,8 +49,9 @@ export default function NewProjectModal({
       project_id: 1,
     };
 
-    // fetch(baseUrl + 'projects/:projectId/newTag', {
+    // fetch(isProduction + 'projects/:projectId/newTag', {
     //   method: 'POST',
+    //credentials: 'include',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
