@@ -11,7 +11,7 @@ export interface SingleProj {
   owner: string;
   project_image: string;
   project_type: string;
-  tags: Array<{ tag_name: string }>;
+  tags: Array<{ tag_name: string; id: number }>;
   contributors: Array<{ username: string; contributor_id: number }>;
   threads: Array<{
     id: number;

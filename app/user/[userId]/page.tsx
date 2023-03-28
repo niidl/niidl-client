@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './page.module.scss';
 import UserProjects from './components/UserProjects';
 import UserContributions from './components/UserContributions';
+import Cookies from 'js-cookie';
 
 const userMockData = [
   {
@@ -69,8 +70,8 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-async function getUserData(): Promise<any> {
-  const response = await fetch(`${isProduction}/users/data`, {
+async function getUserData(userName: string): Promise<any> {
+  const response = await fetch(`${isProduction}/users/data/${userName}`, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-store',
@@ -82,8 +83,8 @@ async function getUserData(): Promise<any> {
   return allUserInfo;
 }
 
-async function getUserProjects(): Promise<UserProject[]> {
-  const response = await fetch(`${isProduction}/users/projects`, {
+async function getUserProjects(userName: string): Promise<UserProject[]> {
+  const response = await fetch(`${isProduction}/users/projects/${userName}`, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-cache',
@@ -96,8 +97,8 @@ async function getUserProjects(): Promise<UserProject[]> {
   return userProjects;
 }
 
-async function getUserMessages(): Promise<any> {
-  const response = await fetch(`${isProduction}/users/messages`, {
+async function getUserMessages(userName: string): Promise<any> {
+  const response = await fetch(`${isProduction}/users/messages/${userName}`, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-cache',
@@ -112,9 +113,10 @@ async function getUserMessages(): Promise<any> {
 }
 
 export default async function UserDashboard({ params }: any) {
-  const user = await getUserData();
-  const userMessages = await getUserMessages();
-  const userProjects = await getUserProjects();
+  const userName = params.userId;
+  const user = await getUserData(userName);
+  const userMessages = await getUserMessages(userName);
+  const userProjects = await getUserProjects(userName);
 
   return (
     <main className={styles.userDashboardMainContainer}>

@@ -16,7 +16,7 @@ export interface SingleProj {
   owner: string;
   project_image: string;
   project_type: string;
-  tags: Array<{ tag_name: string }>;
+  tags: Array<{ tag_name: string; id: number }>;
   contributors: Array<{ username: string; contributor_id: number }>;
   threads: Array<{
     id: number;
@@ -52,7 +52,7 @@ export default function EditProjectModal({
 }: Props) {
   const initialTags = projectInfo.tags.map((tagObj) => tagObj.tag_name);
 
-  function handleFormSubmit(event: any) {
+  async function handleFormSubmit(event: any) {
     const isProduction: string = process.env.PRODUCTION
       ? 'https://niidl.net'
       : 'http://localhost:8080';
@@ -66,25 +66,58 @@ export default function EditProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    // fetch(`${isProduction}/projects/${projectInfo.id}`, {
-    //   method: 'PUT',
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(formBody),
-    // });
+    await fetch(`${isProduction}/projects/${projectInfo.id}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formBody),
+    });
 
     const allOptions = event.target.elements.projectTags;
-    const newTags = [];
+    const newTags: any = [];
     for (const option of allOptions) {
       if (option.selected) {
-        newTags.push(option.name);
+        newTags.push(option.value);
       }
     }
 
-    // const tagsToDelete = initialTags.filter(tag => )
-    const tagsToCreate = onClose();
+    const tagsToDelete = {
+      allTagIds: projectInfo.tags
+        .filter((tag: any) => !newTags.includes(tag.tag_name))
+        .map((tagObj) => tagObj.id),
+    };
+
+    const tagsToCreate = newTags
+      .filter((tag: string) => !initialTags.includes(tag))
+      .map((tag: string) => {
+        return { tag_name: tag, github_url: projectInfo.github_url };
+      });
+
+    if (tagsToCreate.length) {
+      await fetch(isProduction + '/projects/projectId/newTag', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tagsToCreate),
+      });
+    }
+
+    if (tagsToDelete.allTagIds.length) {
+      await fetch(isProduction + '/projects/:projectId/tags/:tagId', {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tagsToDelete),
+      });
+    }
+
+    onClose();
   }
 
   return showModal ? (

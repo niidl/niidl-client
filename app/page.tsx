@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
 import NewProjectModal from '@/components/NewProjectModal';
+import Cookies from 'js-cookie';
 
 export interface Project {
   id: number;
@@ -21,8 +22,12 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
+const userName: string | undefined = Cookies.get('userName');
+const sessionId: string | undefined = Cookies.get('sessionToken');
+
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
+  const [projectTypes, setProjectTypes] = useState<Array<string>>([]);
   const [selectedProjectCategories, setSelectedProjectCategories] = useState<
     string[]
   >([]);
@@ -51,6 +56,7 @@ export default function Home() {
     fetchAllProjects();
     fetchCategories();
     fetchGitHubProjects();
+    fetchProjectTypes();
   }, []);
 
   ////////////
@@ -101,6 +107,15 @@ export default function Home() {
       return single.tag_name;
     });
     setProjectCategories(cleanedTags);
+  }
+
+  async function fetchProjectTypes(): Promise<void> {
+    const response = await fetch(`${isProduction}/projectTypes`);
+    const data: Array<{ type: '' }> = await response.json();
+    const cleanedTypes: Array<string> = data.map((single) => {
+      return single.type;
+    });
+    setProjectTypes(cleanedTypes);
   }
 
   useEffect(() => {
@@ -204,6 +219,9 @@ export default function Home() {
           showModal={showModal}
           onClose={() => setShowModal(false)}
           projectCategories={projectCategories}
+          projectTypes={projectTypes}
+          userName={userName}
+          sessionId={sessionId}
         />
         <div>
           <h2>Project Categories</h2>
