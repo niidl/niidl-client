@@ -26,8 +26,13 @@ export default function Navbar() {
   const [infoFromFirebase, setInfoFromFirebase] = useState<User>();
   const [resetFirebaseUser, setResetFirebaseUser] = useState<User>();
   const provider = new GithubAuthProvider();
-  const dev = 'http://localhost:8080';
-  const prod = 'https://niidl.net';
+  const isProduction: string = process.env.PRODUCTION
+  ? 'https://niidl.net'
+  : 'http://localhost:8080';
+
+  const isProductionServer: string = process.env.PRODUCTION
+  ? 'https://niidl.vercel.app'
+  : 'http://localhost:3000';
 
   useEffect(() => {
     const userName = Cookies.get('userName');
@@ -45,9 +50,8 @@ export default function Navbar() {
         user.providerData[0].uid
       );
       setInfoFromFirebase(currentUser);
-      //localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-      fetch(`${dev}/userAuth`, {
+      fetch(`${isProduction}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -72,7 +76,7 @@ export default function Navbar() {
   };
 
   const logout = async () => {
-    fetch(`${dev}/logout`, {
+    fetch(`${isProduction}/logout`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -94,6 +98,8 @@ export default function Navbar() {
       });
   };
 
+  const userName = Cookies.get('userName');
+
   return (
     <div className={'navbar'}>
       <Link href="/">
@@ -103,7 +109,13 @@ export default function Navbar() {
       <div>
         {githubUser ? (
           <>
-            <div>{githubUser}</div>
+            <Link href={`${isProductionServer}/user/${userName}`}>
+              <div>
+                {
+                  githubUser
+                }
+              </div>
+            </Link>
             <button
               onClick={async () => {
                 //localStorage.removeItem('currentUser');

@@ -51,13 +51,14 @@ interface User {
   links: Array<{
     name: string,
     url: string
-  }>,
-  user_projects: Array<{
-    id: number,
-    project_name: string
   }>
 }
 
+interface UserProject {
+  id: number,
+  project_name: string,
+  project_image: string,
+}
 interface BioLink {
   name: string,
   url: string
@@ -67,44 +68,66 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
+
 async function getUserData(): Promise<any> {
-  const response = await fetch(`${isProduction}/users/data`, {
+  const response = await fetch(`http://localhost:8080/users/data`, {
     method: 'GET',
     credentials: 'include',
+    cache: 'no-store' ,
     headers: {
       'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({})
-  })
-  const allUserInfo = await response.json();
-
+    }
+  });
+  console.log(response.body)
+  const allUserInfo:any = await response.json();
+  console.log('all', allUserInfo)
   return allUserInfo;
+}
+
+async function getUserProjects(): Promise<UserProject[]>{
+  const response = await fetch(`${isProduction}/users/projects`, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type' : 'application/json',
+    }
+  });
+  const userProjects:UserProject[] = await response.json();
+
+  return userProjects
 }
 
 async function getUserMessages(): Promise<any> {
   const response = await fetch(`${isProduction}/users/messages`, {
     method: 'GET',
     credentials: 'include',
+    cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({})
-  });
+    }
+  })
+
   const userMessages = await response.json();
   
   return userMessages;
 }
 
+
+
 export default async function UserDashboard({ params }: any) {
+
   const user = await getUserData();
   const userMessages = await getUserMessages();
+  const userProjects = await getUserProjects();
+
 
   return (
     <main className={styles.userDashboardMainContainer}>
       <div className={styles.userDashboardBasicInfoContainer}>
         <div className={styles.userDashboardBasicInfoImageContainer}>
           <Image 
-            src={'https://avatars.githubusercontent.com/u/114232631?v=4'}
+            src={user.github_profile_picture}
             width={1000}
             height={1000}
             className={styles.userDashboardImage}
@@ -118,7 +141,7 @@ export default async function UserDashboard({ params }: any) {
           <h3>{`${user.first_name ? user.first_name : ''} ${user.last_name ? user.last_name : ''}`}</h3>
           <h3>{user.email}</h3>
           
-          <div className={styles.userDashboardUserLinksContainer}>
+          {/* <div className={styles.userDashboardUserLinksContainer}>
             <h3>Links</h3>
             <div>
               <Link 
@@ -149,14 +172,14 @@ export default async function UserDashboard({ params }: any) {
                 <p>Website</p>
               </Link>
             </div>
-          </div>
+          </div>  */}
         </div>
       </div>
 
       <div>
         <h2>My Projects</h2>
         <UserProjects 
-          userProjects={user.user_projects}
+          userProjects={userProjects}
         />
       </div>
 
