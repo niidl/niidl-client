@@ -48,11 +48,11 @@ export default function Home() {
     const res = await fetch(`${isProduction}/projects`);
     const data: ProjectData[] = await res.json();
     ///////////// Github entries
-    const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
-    const gitHubData: ProjectData[] = await gitHubResponse.json();
-    gitHubData.map((project) => {
-      data.push(project);
-    });
+    // const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
+    // const gitHubData: ProjectData[] = await gitHubResponse.json();
+    // gitHubData.map((project) => {
+    //   data.push(project);
+    // });
     //////////// Github Entries
 
     for (let i = 0; i < data.length; i++) {
