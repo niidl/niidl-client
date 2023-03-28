@@ -41,20 +41,33 @@ export default function Home() {
   useEffect(() => {
     fetchAllProjects();
     fetchCategories();
+    fetchGitHubProjects();
   }, []);
+
+  async function fetchGitHubProjects(): Promise<any> {
+    const gitHubProjectsArray: Array<Project> = [];
+    const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
+    const gitHubData: ProjectData[] = await gitHubResponse.json();
+    for (let i = 0; i < gitHubData.length; i++) {
+      const singleProj: Project = { id: 0, project_name: '', tags: [] };
+      const cleanedTags: Array<string> = [];
+
+      gitHubData[i].tags.forEach((tag) => {
+        cleanedTags.push(tag.tag_name);
+      });
+
+      singleProj.id = gitHubData[i].id;
+      singleProj.project_name = gitHubData[i].project_name;
+      singleProj.tags = cleanedTags;
+      gitHubProjectsArray.push(singleProj);
+    }
+    setAllProjects((current) => [...current, ...gitHubProjectsArray]);
+  }
 
   async function fetchAllProjects(): Promise<void> {
     const allProjectsArray: Array<Project> = [];
     const res = await fetch(`${isProduction}/projects`);
     const data: ProjectData[] = await res.json();
-    ///////////// Github entries
-    // const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
-    // const gitHubData: ProjectData[] = await gitHubResponse.json();
-    // gitHubData.map((project) => {
-    //   data.push(project);
-    // });
-    //////////// Github Entries
-
     for (let i = 0; i < data.length; i++) {
       const singleProj: Project = { id: 0, project_name: '', tags: [] };
       const cleanedTags: Array<string> = [];
