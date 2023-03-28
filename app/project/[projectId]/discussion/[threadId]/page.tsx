@@ -1,10 +1,10 @@
-import moment from 'moment';
 import ThreadMessage from './components/ThreadMessage';
 import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
-import Cookies from 'js-cookie';
 import ThreadHead from './components/ThreadHead';
+import { GetServerSideProps } from 'next';
+import { cookies } from 'next/headers';
 
 interface Message {
   id: number;
@@ -37,6 +37,7 @@ export interface UpvotedMessages {
   thread_id: number;
 }
 
+
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
@@ -63,11 +64,10 @@ async function getThreadInfo(
   return res.json();
 }
 
-const username: any = Cookies.get('userName');
-
 async function getUpvotes(
   projectId: number,
-  threadId: number
+  threadId: number,
+  username: string,
 ): Promise<UpvotedMessages[]> {
   const res = await fetch(
     `${isProduction}/projects/${projectId}/threads/${threadId}/upvotes/${username}`,
@@ -76,7 +76,15 @@ async function getUpvotes(
   return res.json();
 }
 
+async function getOwner(projectId: number, username: string): Promise<string> {
+  const res = await fetch(
+    `${isProduction}/projects/${projectId}/owner/${username}`
+  );
+  return res.json();
+}
+
 export default async function ThreadPage({ params }: any) {
+const username: any = cookies().get('userName');
   const messages: Message[] = await getMessages(
     params.projectId,
     params.threadId
@@ -87,10 +95,15 @@ export default async function ThreadPage({ params }: any) {
     params.threadId
   );
 
+  const checkProjectOwner: string = await getOwner(params.projectId, username.value);
+
   const allUpvotes: UpvotedMessages[] = await getUpvotes(
     params.projectId,
-    params.threadId
+    params.threadId,
+    username.value
   );
+
+  console.log(allUpvotes, checkProjectOwner)
 
   return (
     <div className={styles.threadBody}>

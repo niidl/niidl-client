@@ -6,7 +6,7 @@ import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
 import ReactMarkdown from 'react-markdown';
@@ -40,32 +40,40 @@ export default function ThreadMessage({
   const loggedUser = Cookies.get('userName');
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [userUpvotedMessages, setUserUpvotedMessages] = useState<
-    UpvotedMessages[] | null
-  >();
+  // const [userUpvotedMessages, setUserUpvotedMessages] = useState<
+    // UpvotedMessages[] | null
+  // >();
+  const [canEdit, setCanEdit] = useState<boolean>(false);
+  const [canDelete, setCanDelete] = useState<boolean>(false);
 
-  let canEdit: boolean = false;
-  let canDelete: boolean = false;
+  useEffect(() => {
+    checkUserRole();
+  }, []);
 
-  if (loggedUser === username) canEdit = true;
-  if (projectOwner === loggedUser) canDelete = true;
-  if (projectOwner === username) canDelete = false;
+  async function checkUserRole() {
+    if (loggedUser === username) setCanEdit(true);
+    // if (checkProjectOwner) setCanDelete(true);
+    // if (checkProjectOwner && loggedUser === username) {
+    //   setCanDelete(false);
+    // }
+  }
 
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
-  function checkUpvote() {
-    const idToString: string = messageId.toString();
-    for (const threadKey in userUpvotedMessages) {
-      if (threadKey === idToString) {
-        setIsUpvoted(true);
-      }
-    }
-  }
+  // function checkUpvote() {
+  //   const idToString: string = messageId.toString();
+  //   for (const threadKey in userUpvotedMessages) {
+  //     if (threadKey === idToString) {
+  //       setIsUpvoted(true);
+  //     }
+  //   }
+  // }
 
   async function upvote() {
     await axios
       .post(
-        `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,{},
+        `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,
+        {},
         {
           withCredentials: true,
           headers: {
@@ -104,23 +112,6 @@ export default function ThreadMessage({
     setShowModal(true);
   }
 
-  // async function handleEdit(): Promise<void> {
-  //   await axios
-  //     .put(
-  //       `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}`,
-  //       editedMessage,
-  //       {
-  //         withCredentials: true,
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       router.refresh();
-  //     });
-  // }
-
   async function handleDelete(): Promise<void> {
     await axios
       .delete(
@@ -146,6 +137,7 @@ export default function ThreadMessage({
       <div className={styles.messageContainerBot}>
         <ReactMarkdown children={content} />
       </div>
+
       <div className={styles.lastContainer}>
         <div className={styles.upvotesContainer}>
           <button
@@ -158,7 +150,6 @@ export default function ThreadMessage({
           </button>
           <h4>{upvotes}</h4>
         </div>
-
         <div className={styles.editMessage}>
           {canEdit && (
             <div className={styles.messageIcons}>
@@ -173,7 +164,15 @@ export default function ThreadMessage({
           )}
         </div>
       </div>
-      {showModal && <EditProjectModal setShowModal={setShowModal} />}
+      {showModal && (
+        <EditProjectModal
+          setShowModal={setShowModal}
+          projectId={projectId}
+          threadId={threadId}
+          messageId={messageId}
+          content={content}
+        />
+      )}
     </div>
   );
 }
