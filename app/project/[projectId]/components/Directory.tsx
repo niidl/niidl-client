@@ -11,8 +11,8 @@ interface Props {
 const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const isProduction: string = process.env.PRODUCTION
-  ? 'https://niidl.net'
-  : 'http://localhost:8080';
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
 
   const handleFiles = async (url: string) => {
     const fileInfo = {
@@ -21,7 +21,7 @@ const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
       userRepo,
     };
 
-    const filesJson = await fetch(isProduction + 'repository/file', {
+    const filesJson = await fetch(isProduction + '/repository/file', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
   };
 
   const getData = async () => {
-    const folderJson = await fetch(`${isProduction}repository/folder`, {
+    const folderJson = await fetch(`${isProduction}/repository/folder`, {
       method: 'POST',
       credentials: 'include',
       headers: {
