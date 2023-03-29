@@ -2,7 +2,7 @@
 
 import styles from './UserContributions.module.scss';
 import { useState } from 'react';
-import UserCodeContributions from './UserCodeContributions';
+//import UserCodeContributions from './UserCodeContributions';
 import UserDiscussionContributions from './UserDiscussionContributions';
 
 interface Props {
@@ -22,7 +22,7 @@ export default function UserContributions({ userMessages }: Props) {
   return (
     <div>
       <div className={styles.userContributionsContainer}>
-        <span 
+         {/* <span 
           onClick={() => setSelectedContributionView(() => 'Code')}
           className={
             selectedContributionView === 'Code'
@@ -31,7 +31,7 @@ export default function UserContributions({ userMessages }: Props) {
           }
         >
           Code
-        </span>
+        </span> */}
         <span
           onClick={() => setSelectedContributionView(() => 'Discussion')}
           className={
@@ -39,17 +39,19 @@ export default function UserContributions({ userMessages }: Props) {
               ? styles.selectedView
               : ''
           }
-        >
+        > 
           Discussion
         </span>
-
-        {
+        <UserDiscussionContributions 
+            userMessages={userMessages}
+          />
+        {/* {
           selectedContributionView === 'Code' ?
           <UserCodeContributions /> :
           <UserDiscussionContributions 
             userMessages={userMessages}
           />
-        }
+        } */}
       </div>
     </div>
   )
