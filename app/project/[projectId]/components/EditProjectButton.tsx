@@ -1,5 +1,4 @@
 'use client';
-import { type } from 'os';
 import { useState, useEffect } from 'react';
 import EditProjectModal from './EditProjectModal';
 

@@ -6,6 +6,7 @@ import Issues from './components/Issues';
 import Repository from './components/Repository';
 import Discussions from './discussion/components/Discussions';
 import EditProjectButton from './components/EditProjectButton';
+import { cookies } from 'next/headers';
 
 export interface SingleProj {
   id: number;
@@ -61,11 +62,23 @@ async function getProjectInfo(projectId: number): Promise<SingleProj> {
   }
 }
 
+async function getOwner(projectId: number, username: string): Promise<boolean> {
+  const res = await fetch(
+    `${isProduction}/projects/${projectId}/owner/${username}`
+  );
+  return res.json();
+}
+
 export default async function ProjectPage({ params }: any) {
+  const username: any = cookies().get('userName');
   const project: SingleProj = await getProjectInfo(params.projectId);
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
   });
+
+  const isOwner: boolean = username
+    ? await getOwner(params.projectId, username.value)
+    : false;
 
   return (
     <div className={styles.projectPageInfoContainer}>
@@ -87,7 +100,7 @@ export default async function ProjectPage({ params }: any) {
         </div>
       </div>
 
-      <EditProjectButton projectInfo={project}></EditProjectButton>
+      {isOwner && <EditProjectButton projectInfo={project}></EditProjectButton>}
       <div>
         <h2>Technologies</h2>
         <div className={styles.projectTechnologiesContainer}>
