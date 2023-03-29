@@ -146,7 +146,7 @@ export default function ThreadMessage({
         <h4>{moment(creation_time).fromNow()}</h4>
       </div>
       <div className={styles.messageContainerBot}>
-        <ReactMarkdown children={content} />
+        <ReactMarkdown>{content}</ReactMarkdown>
       </div>
 
       <div className={styles.lastContainer}>
