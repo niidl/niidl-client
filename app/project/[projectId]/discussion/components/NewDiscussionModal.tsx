@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Thread } from './Discussions';
@@ -19,14 +19,13 @@ export default function NewDiscussionModal({
   if (!showModal) return null;
 
   const isProduction: string = process.env.PRODUCTION
-? 'https://niidl.net'
-: 'http://localhost:8080';
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
 
-const projectTypes: Array<string> =['general-discussion', 'new-ideas']
-const router = useRouter()
+  const projectTypes: Array<string> = ['general-discussion', 'new-ideas'];
 
   async function handleFormSubmit(event: any) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const formBody: any = {
       title: event.target.elements.discussionTitle.value,
@@ -35,22 +34,16 @@ const router = useRouter()
       thread_tag: event.target.elements.projectType.value,
     };
 
-    await axios.post(
-      `${isProduction}/projects/${projectId}/newThread`,
-      formBody,
-      {
+    await axios
+      .post(`${isProduction}/projects/${projectId}/newThread`, formBody, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
-      }
-    ).then((res) =>{
-     
-      setShowModal(false)
-  })
-
-    
-    
+      })
+      .then((res) => {
+        setShowModal(false);
+      });
   }
 
   return (
@@ -71,12 +64,12 @@ const router = useRouter()
         <h2>Create New Discussion</h2>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor='title'>Title</label>
+            <label htmlFor="title">Title</label>
             <input type={'text'} name={'title'} id={'discussionTitle'} />
           </div>
 
           <div>
-            <label htmlFor='content'>Description</label>
+            <label htmlFor="content">Description</label>
             <textarea name={'content'} id={'discussionContent'} />
           </div>
 
@@ -85,14 +78,13 @@ const router = useRouter()
             <select
               name="projectType"
               id="projectType"
-              defaultValue={"General Discussion"}
+              defaultValue={'General Discussion'}
             >
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </select>
           </div>
-
 
           <input type={'submit'}></input>
         </form>
