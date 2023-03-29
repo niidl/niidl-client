@@ -18,6 +18,8 @@ export interface ProjectData {
   tags: Array<{ id: number; tag_name: string; project_id: number }>;
 }
 
+console.log(process.env.PRODUCTION);
+
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
@@ -200,16 +202,16 @@ export default function Home() {
           <button onClick={() => setShowModal(true)}>+ Add Project</button>
 
           <form onSubmit={handleSubmit}>
-            <div className="relative">
+            <div className='relative'>
               <input
-                type="search"
-                id="default-search"
+                type='search'
+                id='default-search'
                 ref={searchInputRef}
-                className="searchInput"
-                placeholder="Search for your project..."
+                className='searchInput'
+                placeholder='Search for your project...'
                 required
               />
-              <button type="submit" className="searchButton">
+              <button type='submit' className='searchButton'>
                 Search
               </button>
             </div>
