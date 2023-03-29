@@ -103,7 +103,7 @@ export default async function ProjectPage({ params }: any) {
       </div>
 
       <div>
-        {project.contributors ? (
+        {project.contributors && (
           <>
             <h2>Discussion</h2>
             <Discussions
@@ -112,24 +112,20 @@ export default async function ProjectPage({ params }: any) {
               projectName={project.project_name}
             />
           </>
-        ) : (
-          <></>
         )}
       </div>
 
       <div>
-        {project.issues ? (
+        {project.issues && (
           <>
             <h2>Issues</h2>
             <Issues projectIssues={project.issues} />
           </>
-        ) : (
-          <></>
         )}
       </div>
 
       <div>
-        {project.contributors ? (
+        {project.contributors && (
           <>
             <h2>Contributor</h2>
             <div>
@@ -142,8 +138,6 @@ export default async function ProjectPage({ params }: any) {
               </ul>
             </div>
           </>
-        ) : (
-          <></>
         )}
       </div>
 
