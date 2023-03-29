@@ -3,6 +3,7 @@ import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import ThreadHead from './components/ThreadHead';
+import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
 
 interface Message {
@@ -98,11 +99,9 @@ export default async function ThreadPage({ params }: any) {
     ? await getOwner(params.projectId, username.value)
     : false;
 
-  const allUpvotes: UpvotedMessages[] = await getUpvotes(
-    params.projectId,
-    params.threadId,
-    username.value
-  );
+  const allUpvotes: UpvotedMessages[] = username
+    ? await getUpvotes(params.projectId, params.threadId, username.value)
+    : [];
 
   return (
     <div className={styles.threadBody}>
@@ -137,10 +136,14 @@ export default async function ThreadPage({ params }: any) {
               </div>
             );
           })}
-      <NewMessage
-        thread_id={threadInfo.id}
-        project_id={threadInfo.project_id}
-      />
+      {username ? (
+        <NewMessage
+          thread_id={threadInfo.id}
+          project_id={threadInfo.project_id}
+        />
+      ) : (
+        <LoginToMessage />
+      )}
     </div>
   );
 }
