@@ -1,8 +1,7 @@
 // 'use client';
 import './globals.scss';
 import React from 'react';
-import Link from 'next/link';
-import Navbar from '@/components/Navbar';
+import { Navbar } from '@/components/Navbar';
 //import { useAuth } from '@/auth/auth';
 
 export const metadata = {
@@ -15,9 +14,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
-    <html lang='en'>
+    <html lang="en">
       <body>
         <Navbar />
         {children}

@@ -4,6 +4,7 @@ import { signInWithPopup, GithubAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 interface CurrentUser {
   fbuid: string;
@@ -21,81 +22,74 @@ class User implements CurrentUser {
   ) {}
 }
 
-export default function Navbar() {
-  const [githubUser, setGithubUser] = useState<string>('');
-  const [infoFromFirebase, setInfoFromFirebase] = useState<User>();
-  const [resetFirebaseUser, setResetFirebaseUser] = useState<User>();
-  const provider = new GithubAuthProvider();
+const login = async () => {
   const isProduction: string = process.env.PRODUCTION
-  ? 'https://niidl.net'
-  : 'http://localhost:8080';
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
 
-  const isProductionServer: string = process.env.PRODUCTION
-  ? 'https://niidl.vercel.app'
-  : 'http://localhost:3000';
+  const provider = new GithubAuthProvider();
+  provider.addScope('public_repo');
+  await signInWithPopup(auth, provider).then(async (result) => {
+    let user = result.user;
+    const currentUser = new User(
+      user.uid,
+      user.displayName,
+      user.email,
+      user.providerData[0].uid
+    );
 
-  useEffect(() => {
-    const userName = Cookies.get('userName');
-    setGithubUser(userName || '');
-  }, []);
-
-  const login = async () => {
-    provider.addScope('public_repo');
-    await signInWithPopup(auth, provider).then(function (result) {
-      let user = result.user;
-      const currentUser = new User(
-        user.uid,
-        user.displayName,
-        user.email,
-        user.providerData[0].uid
-      );
-      setInfoFromFirebase(currentUser);
-
-      fetch(`${isProduction}/userAuth`, {
+    try {
+      await fetch(`${isProduction}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(currentUser),
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+};
+
+function Navbar() {
+  const [githubUser, setGithubUser] = useState<string | undefined>('');
+  const router = useRouter();
+  const isProduction: string = process.env.PRODUCTION
+    ? 'https://niidl.net'
+    : 'http://localhost:8080';
+
+  const isProductionServer: string = process.env.PRODUCTION
+    ? 'https://niidl.vercel.app'
+    : 'http://localhost:3000';
+
+  useEffect(() => {
+    const userName = Cookies.get('userName');
+    setGithubUser(userName || '');
+  }, [Cookies.get('userName')]);
+
+  const logout = async () => {
+    try {
+      await fetch(`${isProduction}/logout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
       })
         .then((response) => response.text())
         .then((data) => {
           try {
-            console.log(data);
-            //localStorage.setItem('githubName', JSON.stringify(data));
             setGithubUser(data);
           } catch (error) {
             console.error('Invalid response', error);
           }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
         });
-    });
-  };
-
-  const logout = async () => {
-    fetch(`${isProduction}/logout`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        try {
-          console.log(data);
-          setGithubUser(data);
-        } catch (error) {
-          console.error('Invalid response', error);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const userName = Cookies.get('userName');
@@ -110,20 +104,16 @@ export default function Navbar() {
         {githubUser ? (
           <>
             <Link href={`${isProductionServer}/user/${userName}`}>
-              <div>
-                {
-                  githubUser
-                }
-              </div>
+              <div>{githubUser}</div>
             </Link>
             <button
               onClick={async () => {
                 //localStorage.removeItem('currentUser');
                 //localStorage.removeItem('githubName');
                 setGithubUser('');
-                setInfoFromFirebase(resetFirebaseUser);
                 await logout();
                 await signOut(auth);
+                router.refresh();
               }}
             >
               Logout
@@ -131,11 +121,29 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <button onClick={login}>Login</button>
-            <button onClick={login}>Signup</button>
+            <button
+              onClick={async () => {
+                await login();
+                setGithubUser(Cookies.get('userName'));
+                router.refresh();
+              }}
+            >
+              Login
+            </button>
+            <button
+              onClick={async () => {
+                await login();
+                setGithubUser(Cookies.get('userName'));
+                router.refresh();
+              }}
+            >
+              Signup
+            </button>
           </>
         )}
       </div>
     </div>
   );
 }
+
+export { Navbar, login };

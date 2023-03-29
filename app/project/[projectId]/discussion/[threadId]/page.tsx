@@ -3,6 +3,7 @@ import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import ThreadHead from './components/ThreadHead';
+import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
 import { UpvotedThreads } from '../components/GeneralDiscussions';
 
@@ -110,16 +111,17 @@ export default async function ThreadPage({ params }: any) {
     ? await getOwner(params.projectId, username.value)
     : false;
 
-  const allMessagesUpvotes: UpvotedMessages[] = await getMessagesUpvotes(
-    params.projectId,
-    params.threadId,
-    username.value
-  );
+  const allMessagesUpvotes: UpvotedMessages[] = username
+    ? await getMessagesUpvotes(
+        params.projectId,
+        params.threadId,
+        username.value
+      )
+    : [];
 
-  const allThreadsUpvotes: UpvotedThreads[] = await getThreadsUpvotes(
-    params.projectId,
-    username.value
-  );
+  const allThreadsUpvotes: UpvotedThreads[] = username
+    ? await getThreadsUpvotes(params.projectId, username.value)
+    : [];
 
   return (
     <div className={styles.threadBody}>
@@ -161,10 +163,14 @@ export default async function ThreadPage({ params }: any) {
               </div>
             );
           })}
-      <NewMessage
-        thread_id={threadInfo.id}
-        project_id={threadInfo.project_id}
-      />
+      {username ? (
+        <NewMessage
+          thread_id={threadInfo.id}
+          project_id={threadInfo.project_id}
+        />
+      ) : (
+        <LoginToMessage />
+      )}
     </div>
   );
 }
