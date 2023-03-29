@@ -94,7 +94,9 @@ export default async function ThreadPage({ params }: any) {
     params.threadId
   );
 
-  const isOwner: boolean = await getOwner(params.projectId, username.value);
+  const isOwner: boolean = username
+    ? await getOwner(params.projectId, username.value)
+    : false;
 
   const allUpvotes: UpvotedMessages[] = await getUpvotes(
     params.projectId,
