@@ -42,6 +42,7 @@ const userMockData = [
   },
 ];
 
+
 interface User {
   id: number;
   first_name: string | null;
@@ -70,7 +71,7 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-async function getUserData(userName: string): Promise<any> {
+async function getUserData(userName: string): Promise<User> {
   const response = await fetch(`${isProduction}/users/data/${userName}`, {
     method: 'GET',
     credentials: 'include',
@@ -80,6 +81,7 @@ async function getUserData(userName: string): Promise<any> {
     },
   });
   const allUserInfo: any = await response.json();
+  console.log('allUser', allUserInfo)
   return allUserInfo;
 }
 
@@ -117,6 +119,8 @@ export default async function UserDashboard({ params }: any) {
   const user = await getUserData(userName);
   const userMessages = await getUserMessages(userName);
   const userProjects = await getUserProjects(userName);
+
+  console.log(user)
 
   return (
     <main className={styles.userDashboardMainContainer}>
