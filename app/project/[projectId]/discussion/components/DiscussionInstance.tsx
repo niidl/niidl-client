@@ -9,8 +9,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
 import { BsPinAngle } from 'react-icons/bs';
-import { cookies } from 'next/headers';
-import { getCookie } from 'cookies-next';
 
 interface Props {
   thread: Thread;
@@ -29,13 +27,22 @@ export default function DiscussionInstance({
     ? 'https://niidl.net'
     : 'http://localhost:8080';
 
-  const username = getCookie('userName'); // => 'value'
+  const [username, setUsername] = useState<string>('');
 
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
   useEffect(() => {
     checkUpvote();
   }, [userUpvotedThreads]);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  async function getUser(): Promise<void> {
+    const user: any = Cookies.get('userName');
+    setUsername(user);
+  }
 
   function checkUpvote() {
     if (userUpvotedThreads) {
@@ -46,8 +53,6 @@ export default function DiscussionInstance({
       }
     }
   }
-
-  console.log(username);
 
   async function upvote() {
     await axios

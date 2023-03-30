@@ -168,7 +168,6 @@ export default function Home() {
   }
 
   function filterByTags() {
-    console.log(showVim);
     let projectsUnderTag: Project[] = [];
     let uniqueProjectsUnderTag: Project[] = [];
     let currentProjects: Project[] = [];
