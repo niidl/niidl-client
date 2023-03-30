@@ -39,7 +39,7 @@ const login = async () => {
     );
 
     try {
-      await fetch(`${isProduction}/userAuth`, {
+      const usernameJson = await fetch(`${isProduction}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -47,6 +47,10 @@ const login = async () => {
         },
         body: JSON.stringify(currentUser),
       });
+
+      const username = await usernameJson.text();
+
+      Cookies.set('userName', username);
     } catch (error) {
       console.error('Error:', error);
     }

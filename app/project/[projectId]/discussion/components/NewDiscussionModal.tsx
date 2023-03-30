@@ -16,7 +16,7 @@ export default function NewDiscussionModal({
   projectName,
   setShowModal,
 }: Props) {
-  if (!showModal) return null;
+  const router = useRouter();
 
   const isProduction: string = process.env.PRODUCTION
     ? 'https://niidl.net'
@@ -34,19 +34,24 @@ export default function NewDiscussionModal({
       thread_tag: event.target.elements.projectType.value,
     };
 
-    await axios
-      .post(`${isProduction}/projects/${projectId}/newThread`, formBody, {
+    setShowModal(false);
+    await axios.post(
+      `${isProduction}/projects/${projectId}/newThread`,
+      formBody,
+      {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-      .then((res) => {
-        setShowModal(false);
-      });
+      }
+    );
+    // .then((res) => {
+    //   console.log(res);
+    //   setShowModal(false);
+    // });
   }
 
-  return (
+  return showModal ? (
     <div
       className={styles.newDiscussionModalBackground}
       onClick={() => setShowModal(false)}
@@ -62,7 +67,12 @@ export default function NewDiscussionModal({
           Close
         </button>
         <h2>Create New Discussion</h2>
-        <form onSubmit={(e) => handleFormSubmit(e)}>
+        <form
+          onSubmit={(e) => {
+            handleFormSubmit(e);
+            router.refresh();
+          }}
+        >
           <div>
             <label htmlFor="title">Title</label>
             <input type={'text'} name={'title'} id={'discussionTitle'} />
@@ -90,5 +100,5 @@ export default function NewDiscussionModal({
         </form>
       </div>
     </div>
-  );
+  ) : null;
 }

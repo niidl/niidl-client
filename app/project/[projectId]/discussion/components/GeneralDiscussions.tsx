@@ -56,15 +56,17 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
           }
           return 0;
         })
-        .map((thread: Thread, index: Key | null | undefined) => (
-          <DiscussionInstance
-            key={index}
-            thread={thread}
-            hasPin={true}
-            userUpvotedThreads={userUpvotedThreads}
-            setUserUpvotedThreads={setUserUpvotedThreads}
-          />
-        ))}
+        .map((thread: Thread, index: Key | null | undefined) => {
+          return (
+            <DiscussionInstance
+              key={index}
+              thread={thread}
+              hasPin={true}
+              userUpvotedThreads={userUpvotedThreads}
+              setUserUpvotedThreads={setUserUpvotedThreads}
+            />
+          );
+        })}
     </div>
   );
 };

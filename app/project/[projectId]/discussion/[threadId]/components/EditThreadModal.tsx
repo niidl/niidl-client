@@ -27,22 +27,21 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
       title: titleReference.current.value,
       content: textReference.current.value,
     };
-
-    await axios
-      .put(
-        `${isProduction}/projects/${thread.project_id}/threads/${thread.id}`,
-        editedMessage,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        setShowModal(false);
-        router.refresh();
-      });
+    setShowModal(false);
+    await axios.put(
+      `${isProduction}/projects/${thread.project_id}/threads/${thread.id}`,
+      editedMessage,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    // .then((res) => {
+    //   setShowModal(false);
+    //   router.refresh();
+    // });
   }
 
   return (
@@ -54,9 +53,15 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
         />
         <div className={styles.editContainer}>
           <h2>Edit Thread</h2>
-          <form className={styles.formContainer} onSubmit={handleFormSubmit}>
+          <form
+            className={styles.formContainer}
+            onSubmit={(e) => {
+              handleFormSubmit(e);
+              router.refresh();
+            }}
+          >
             <div>
-              <label htmlFor='project_name'>Thread Title</label>
+              <label htmlFor="project_name">Thread Title</label>
               <input
                 type={'text'}
                 name={'project_name'}
