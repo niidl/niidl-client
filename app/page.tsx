@@ -18,8 +18,6 @@ export interface ProjectData {
   tags: Array<{ id: number; tag_name: string; project_id: number }>;
 }
 
-console.log(process.env.PRODUCTION);
-
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
