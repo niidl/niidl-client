@@ -61,7 +61,8 @@ export default function Home() {
   //////////////////////function//////////////////////////////////////////
 
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-
+  const [tagsOnly, setTagsOnly] = useState<Array<string>>([]);
+  const [langOnly, setLangOnly] = useState<Array<string>>([])
   const [showModal, setShowModal] = useState<boolean>(false);
   const searchInputRef = useRef<any>();
 
@@ -73,6 +74,8 @@ export default function Home() {
     fetchCategories();
     fetchGitHubProjects();
     fetchProjectTypes();
+    fetchLanguage();
+    fetchTags();
     fetchDemoGitHubProjects();
   }, []);
 
@@ -153,6 +156,24 @@ export default function Home() {
       return single.tag_name;
     });
     setProjectCategories(cleanedTags);
+  }
+
+  async function fetchTags(): Promise<void>{
+    const response = await fetch(`${isProduction}/tagNames/tagOnly`);
+    const data: Array<{tag_name:''}> = await response.json();
+    const cleanedTags: Array<string> = data.map((single)=>{
+      return single.tag_name
+    })
+    setTagsOnly(cleanedTags)
+  }
+
+  async function fetchLanguage(): Promise<void>{
+    const response = await fetch(`${isProduction}/tagNames/langOnly`);
+    const data: Array<{tag_name:''}> = await response.json();
+    const cleanedTags: Array<string> = data.map((single)=>{
+      return single.tag_name
+    })
+    setLangOnly(cleanedTags)
   }
 
   async function fetchProjectTypes(): Promise<void> {
@@ -277,6 +298,8 @@ export default function Home() {
           showModal={showModal}
           onClose={() => setShowModal(false)}
           projectCategories={projectCategories}
+          tagsOnly={tagsOnly}
+          langOnly={langOnly}
           projectTypes={projectTypes}
           userName={userName}
           sessionId={sessionId}
