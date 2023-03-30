@@ -48,7 +48,30 @@ const isProduction: string = process.env.PRODUCTION
   : 'http://localhost:8080';
 
 async function getProjectInfo(projectId: number): Promise<SingleProj> {
-  if (projectId < -5000) {
+  const demoArray = [
+    '-16408992',
+    '-13807606',
+    '-110058856',
+    '-12732573',
+    '-40997482',
+    '-4484451',
+    '-4037197',
+    '-995750',
+    '-7212645',
+    '-131770422',
+    '-268424739',
+    '-312262',
+    '-77358263',
+    '-3282',
+    '-331603',
+  ];
+  if (demoArray.includes(String(projectId))) {
+    console.log('it includes');
+    const client = `${isProduction}/githubProjectsDemo/${projectId}`;
+    const response = await fetch(client, { cache: 'no-store' });
+    const demoInfo = await response.json();
+    return demoInfo;
+  } else if (projectId < -2000) {
     const client = `${isProduction}/githubProjects/${projectId}`;
     const response = await fetch(client, { cache: 'no-store' });
     const githubInfo = await response.json();
