@@ -44,6 +44,8 @@ export default function DiscussionInstance({
     }
   }
 
+  console.log(username);
+
   async function upvote() {
     await axios
       .post(
