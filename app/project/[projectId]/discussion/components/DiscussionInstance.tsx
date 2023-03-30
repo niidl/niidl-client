@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
 import { BsPinAngle } from 'react-icons/bs';
 import { cookies } from 'next/headers';
+import { getCookie } from 'cookies-next';
 
 interface Props {
   thread: Thread;
@@ -28,8 +29,7 @@ export default function DiscussionInstance({
     ? 'https://niidl.net'
     : 'http://localhost:8080';
 
-  const usernameVal = cookies().get('userName');
-  const username = usernameVal?.value;
+  const username = getCookie('userName'); // => 'value'
 
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
