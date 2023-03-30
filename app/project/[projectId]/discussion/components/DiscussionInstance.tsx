@@ -28,7 +28,6 @@ export default function DiscussionInstance({
     : 'http://localhost:8080';
 
   const [username, setUsername] = useState<string>('');
-
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,6 +52,8 @@ export default function DiscussionInstance({
       }
     }
   }
+
+  console.log(username);
 
   async function upvote() {
     await axios
