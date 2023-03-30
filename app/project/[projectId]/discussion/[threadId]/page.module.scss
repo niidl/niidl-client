@@ -1,6 +1,34 @@
+$main-project-instance-color: rgb(22, 104, 104);
+$main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
+$main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
 .threadBody {
   margin: 40px 30px 10px;
+
+  .backContainer {
+
+    .backBtn {
+      margin: 0 0 24px 0;
+      width: 160px;
+      padding: 12px;
+      border: 2px solid $main-project-instance-color;
+      color: $main-project-instance-color;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .backBtn:hover {
+      background-color: $main-project-instance-color-transp10;
+    }
+  }
 }
+
+.threadHead {
+  .threadContent {
+    min-height: 100px;
+    padding: 10px;
+  }
+}
+
 .newMessageContainer {
   display: flex;
   flex-direction: column;
@@ -35,29 +63,6 @@
     flex-direction: column;
     justify-content: space-between;
     white-space: pre-wrap;
-  }
-
-  .messageIcons {
-    display: flex;
-    justify-content: end;
-
-    .trash {
-      margin: 0px 4px;
-      font-size: 1.2rem;
-    }
-    .edit {
-      margin: 0px 4px;
-      font-size: 1.4rem;
-    }
-
-    .trash:hover {
-      color: firebrick;
-      cursor: pointer;
-    }
-    .edit:hover {
-      color: dodgerblue;
-      cursor: pointer;
-    }
   }
 }
 
@@ -96,5 +101,28 @@
       margin: 0 0 4px 8px;
       color: darkkhaki;
     }
+  }
+}
+
+.messageIcons {
+  display: flex;
+  justify-content: end;
+
+  .trash {
+    margin: 0px 4px;
+    font-size: 1.2rem;
+  }
+  .edit {
+    margin: 0px 4px;
+    font-size: 1.4rem;
+  }
+
+  .trash:hover {
+    color: firebrick;
+    cursor: pointer;
+  }
+  .edit:hover {
+    color: dodgerblue;
+    cursor: pointer;
   }
 }

@@ -1,5 +1,5 @@
 'use client';
-import styles from './EditProjectModal.module.scss';
+import styles from './EditMessageModal.module.scss';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRef } from 'react';
 import axios from 'axios';
@@ -17,7 +17,7 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-export default function EditProjectModal({
+export default function EditMessageModal({
   setShowModal,
   threadId,
   projectId,

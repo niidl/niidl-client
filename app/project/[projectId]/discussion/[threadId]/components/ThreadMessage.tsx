@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
 import ReactMarkdown from 'react-markdown';
-import EditProjectModal from './EditProjectModal';
+import EditMessageModal from './EditMessageModal';
 
 interface Props {
   content: string;
@@ -146,7 +146,7 @@ export default function ThreadMessage({
         <h4>{moment(creation_time).fromNow()}</h4>
       </div>
       <div className={styles.messageContainerBot}>
-        <ReactMarkdown children={content} />
+        <ReactMarkdown>{content}</ReactMarkdown>
       </div>
 
       <div className={styles.lastContainer}>
@@ -176,7 +176,7 @@ export default function ThreadMessage({
         </div>
       </div>
       {showModal && (
-        <EditProjectModal
+        <EditMessageModal
           setShowModal={setShowModal}
           projectId={projectId}
           threadId={threadId}

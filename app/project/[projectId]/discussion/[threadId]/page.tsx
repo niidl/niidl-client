@@ -3,7 +3,9 @@ import NewMessage from './components/NewMessage';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import ThreadHead from './components/ThreadHead';
+import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
+import { UpvotedThreads } from '../components/GeneralDiscussions';
 
 interface Message {
   id: number;
@@ -63,7 +65,18 @@ async function getThreadInfo(
   return res.json();
 }
 
-async function getUpvotes(
+async function getThreadsUpvotes(
+  projectId: number,
+  username: string
+): Promise<UpvotedThreads[]> {
+  const res = await fetch(
+    `${isProduction}/projects/${projectId}/upvotes/${username}`,
+    { cache: 'no-store' }
+  );
+  return res.json();
+}
+
+async function getMessagesUpvotes(
   projectId: number,
   threadId: number,
   username: string
@@ -98,19 +111,32 @@ export default async function ThreadPage({ params }: any) {
     ? await getOwner(params.projectId, username.value)
     : false;
 
-  const allUpvotes: UpvotedMessages[] = await getUpvotes(
-    params.projectId,
-    params.threadId,
-    username.value
-  );
+  const allMessagesUpvotes: UpvotedMessages[] = username
+    ? await getMessagesUpvotes(
+        params.projectId,
+        params.threadId,
+        username.value
+      )
+    : [];
+
+  const allThreadsUpvotes: UpvotedThreads[] = username
+    ? await getThreadsUpvotes(params.projectId, username.value)
+    : [];
 
   return (
     <div className={styles.threadBody}>
       <div>
-        <Link href={`/project/${threadInfo.project_id}`}>
-          <h4>Back to Project.</h4>
-        </Link>
-        <ThreadHead threadInfo={threadInfo} />
+        <div className={styles.backContainer}>
+          <Link href={`/project/${threadInfo.project_id}`}>
+            <h4 className={styles.backBtn}>Back to Project.</h4>
+          </Link>
+        </div>
+
+        <ThreadHead
+          threadInfo={threadInfo}
+          isOwner={isOwner}
+          allThreadsUpvotes={allThreadsUpvotes}
+        />
       </div>
       {Array.isArray(messages) &&
         messages
@@ -131,16 +157,20 @@ export default async function ThreadPage({ params }: any) {
                   threadId={threadInfo.id}
                   messageId={message.id}
                   upvotes={message.upvotes}
-                  allUpvotes={allUpvotes}
+                  allUpvotes={allMessagesUpvotes}
                   isOwner={isOwner}
                 />
               </div>
             );
           })}
-      <NewMessage
-        thread_id={threadInfo.id}
-        project_id={threadInfo.project_id}
-      />
+      {username ? (
+        <NewMessage
+          thread_id={threadInfo.id}
+          project_id={threadInfo.project_id}
+        />
+      ) : (
+        <LoginToMessage />
+      )}
     </div>
   );
 }
