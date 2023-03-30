@@ -94,7 +94,6 @@ async function getOwner(projectId: number, username: string): Promise<boolean> {
 
 export default async function ProjectPage({ params }: any) {
   const username: any = cookies().get('userName');
-  console.log(username);
   const project: SingleProj = await getProjectInfo(params.projectId);
   const tagOnly: Array<string> = project.tags.map((tag) => {
     return tag.tag_name;
