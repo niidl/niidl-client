@@ -9,6 +9,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
 import { BsPinAngle } from 'react-icons/bs';
+import { cookies } from 'next/headers';
 
 interface Props {
   thread: Thread;
@@ -27,7 +28,9 @@ export default function DiscussionInstance({
     ? 'https://niidl.net'
     : 'http://localhost:8080';
 
-  const username = Cookies.get('userName');
+  const usernameVal = cookies().get('userName');
+  const username = usernameVal?.value;
+
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
   useEffect(() => {
