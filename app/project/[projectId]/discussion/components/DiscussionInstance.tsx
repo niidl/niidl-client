@@ -9,6 +9,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
 import { BsPinAngle } from 'react-icons/bs';
+import { cookies } from 'next/headers';
 
 interface Props {
   thread: Thread;
@@ -39,8 +40,8 @@ export default function DiscussionInstance({
   }, []);
 
   async function getUser(): Promise<void> {
-    const user: any = Cookies.get('userName');
-    setUsername(user);
+    const user: any = cookies().get('userName');
+    setUsername(user.value);
   }
 
   function checkUpvote() {
