@@ -54,11 +54,11 @@ export default function ThreadMessage({
   useEffect(() => {
     checkUserRole();
     checkUpvote();
-  }, []);
+  }, [loggedUser]);
 
   async function checkUserRole() {
-    if (loggedUser === username) setCanEdit(true);
-    if (isOwner) setCanDelete(true);
+    loggedUser === username ? setCanEdit(true) : setCanEdit(false);
+    isOwner ? setCanDelete(true) : setCanDelete(false);
     if (isOwner && loggedUser === username) {
       setCanDelete(false);
     }
