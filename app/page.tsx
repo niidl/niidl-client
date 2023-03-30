@@ -49,6 +49,17 @@ export default function Home() {
     },
   ]);
 
+  //////////////////////function//////////////////////////////////////////
+  const [showVim, setShowVim] = useState<Boolean>(false);
+  const [demoGHProjects, setdemoGHProjects] = useState<Project[]>([
+    {
+      id: 0,
+      project_name: '',
+      tags: [],
+    },
+  ]);
+  //////////////////////function//////////////////////////////////////////
+
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -59,9 +70,30 @@ export default function Home() {
     fetchCategories();
     fetchGitHubProjects();
     fetchProjectTypes();
+    fetchDemoGitHubProjects();
   }, []);
 
-  ////////////
+  //////////////////////FetchingDemo//////////////////////////////////////////
+  async function fetchDemoGitHubProjects(): Promise<any> {
+    const gitHubProjectsArray: Array<Project> = [];
+    const gitHubResponse = await fetch(`${isProduction}/githubProjectsDemo`);
+    const gitHubData: ProjectData[] = await gitHubResponse.json();
+    for (let i = 0; i < gitHubData.length; i++) {
+      const singleProj: Project = { id: 0, project_name: '', tags: [] };
+      const cleanedTags: Array<string> = [];
+
+      gitHubData[i].tags.forEach((tag) => {
+        cleanedTags.push(tag.tag_name);
+      });
+      singleProj.id = gitHubData[i].id;
+      singleProj.project_name = gitHubData[i].project_name;
+      singleProj.tags = cleanedTags;
+      gitHubProjectsArray.push(singleProj);
+    }
+    setdemoGHProjects(gitHubProjectsArray);
+  }
+  ///////////////////////////// FetchingDemo ///////////////////////////////
+
   async function fetchGitHubProjects(): Promise<any> {
     const gitHubProjectsArray: Array<Project> = [];
     const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
@@ -138,16 +170,18 @@ export default function Home() {
   }
 
   function filterByTags() {
+    console.log(showVim);
     let projectsUnderTag: Project[] = [];
     let uniqueProjectsUnderTag: Project[] = [];
     let currentProjects: Project[] = [];
+    setShowVim(false); //DemoVar
 
     if (selectedProjectCategories.includes('Based on Github')) {
       currentProjects = allGHProjects;
+      setShowVim(true); //DemoVar
     } else {
       currentProjects = allProjects;
     }
-
     for (let i = 0; i < selectedProjectCategories.length; i++) {
       if (i === 0) {
         currentProjects.map((project) => {
@@ -171,27 +205,36 @@ export default function Home() {
 
   function handleSubmit(event: any): void {
     event.preventDefault();
-    if (filteredProjects.length) {
-      const newFilter = filteredProjects.filter((project) => {
-        return project.project_name
-          .toLowerCase()
-          .includes(searchInputRef.current.value.toLowerCase());
-      });
-      if (newFilter.length) {
-        setFilteredProjects(newFilter);
-      } else {
-        window.alert('There is no projects under this filters.');
-      }
+    ///Demo if
+    if (
+      searchInputRef.current.value.toLowerCase() === 'vim' &&
+      showVim === true
+    ) {
+      setFilteredProjects(demoGHProjects);
+      //Demo if
     } else {
-      setFilteredProjects(() => {
-        return allProjects.filter((project) => {
+      if (filteredProjects.length) {
+        const newFilter = filteredProjects.filter((project) => {
           return project.project_name
             .toLowerCase()
             .includes(searchInputRef.current.value.toLowerCase());
         });
-      });
+        if (newFilter.length) {
+          setFilteredProjects(newFilter);
+        } else {
+          window.alert('There is no projects under this filters.');
+        }
+      } else {
+        setFilteredProjects(() => {
+          return allProjects.filter((project) => {
+            return project.project_name
+              .toLowerCase()
+              .includes(searchInputRef.current.value.toLowerCase());
+          });
+        });
+      }
+      searchInputRef.current.value = '';
     }
-    searchInputRef.current.value = '';
   }
 
   return (
