@@ -2,16 +2,19 @@
 import moment from 'moment';
 import Cookies from 'js-cookie';
 import styles from '../page.module.scss';
+
 import { ThreadInfo } from '../page';
 import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BiUpvote } from 'react-icons/bi';
+import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 import ReactMarkdown from 'react-markdown';
 import { UpvotedThreads } from '../../components/GeneralDiscussions';
 import EditThreadModal from './EditThreadModal';
+import Link from 'next/link';
+import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
 
 interface Props {
   threadInfo: ThreadInfo;
@@ -130,6 +133,14 @@ export default function ThreadHead({
   }
 
   return (
+    <div className={styles.threadBody}>
+      <div className={styles.threadHeadContainer}>
+      </div>
+    </div>
+
+  );
+}
+/*
     <div className={styles.threadContainer}>
       <div className={styles.threadContainerTop}>
         <div className={styles.threadHead}>
@@ -149,7 +160,7 @@ export default function ThreadHead({
                 }`}
                 onClick={handleClick}
               >
-                {<BiUpvote />}
+                {<HiOutlineArrowCircleUp />}
               </button>
               <h4>{countVotes}</h4>
             </div>
@@ -175,5 +186,5 @@ export default function ThreadHead({
         )}
       </div>
     </div>
-  );
-}
+
+*/
