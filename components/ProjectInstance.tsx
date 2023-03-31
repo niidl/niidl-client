@@ -10,10 +10,27 @@ const ProjectInstance: React.FC<Props> = ({ project }) => {
   return (
     <Link
       href={`/project/${project.id}`}
-      className={styles.filteredProjectInstance}
       key={project.project_name}
     >
-      <div>{project.project_name}</div>
+      <div className={styles.projectInstanceContainer}>
+        <div className={styles.projectInstanceImageContainer}>
+            <div className={styles.projectInstanceImage}></div>
+        </div>
+        <div className={styles.projectInstanceInfoContainer}>
+          <div className={styles.projectInstanceInfoTagContainer}>
+            {
+              project.tags.map(tag => 
+                <div className={styles.projectInstanceInfoTag}>
+                  {tag}
+                </div>
+              )
+            }
+          </div>
+          <h3 className={styles.projectInstanceInfoTitle}>
+            {project.project_name}
+          </h3>
+        </div>
+      </div>
     </Link>
   );
 };
