@@ -6,6 +6,7 @@ import ThreadHead from './components/ThreadHead';
 import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
 import { UpvotedThreads } from '../components/GeneralDiscussions';
+import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
 
 interface Message {
   id: number;
@@ -128,7 +129,10 @@ export default async function ThreadPage({ params }: any) {
       <div>
         <div className={styles.backContainer}>
           <Link href={`/project/${threadInfo.project_id}`}>
-            <h4 className={styles.backBtn}>Back to Project.</h4>
+            <h4>
+              <HiOutlineArrowLongLeft />
+              Back to Project.
+            </h4>
           </Link>
         </div>
 

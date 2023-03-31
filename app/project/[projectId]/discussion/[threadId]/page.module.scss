@@ -1,128 +1,133 @@
-$main-project-instance-color: rgb(22, 104, 104);
-$main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
-$main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
-.threadBody {
-  margin: 40px 30px 10px;
+// $main-project-instance-color: rgb(22, 104, 104);
+// $main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
+// $main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
+// .threadBody {
+//   .backContainer {
+//     .backBtn {
+//       margin: 0 0 24px 0;
+//       width: 160px;
+//       padding: 12px;
+//       border: 2px solid $main-project-instance-color;
+//       color: $main-project-instance-color;
+//       border-radius: 16px;
+//       text-align: center;
+//     }
+//
+//     .backBtn:hover {
+//       background-color: $main-project-instance-color-transp10;
+//     }
+//   }
+// }
+//
+// .threadHead {
+//   .threadContent {
+//     min-height: 100px;
+//     padding: 10px;
+//   }
+// }
+//
+// .newMessageContainer {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: start;
+// }
+//
+// .newMessageButton {
+//   width: 160px;
+//   margin: 0px 20px 2px;
+// }
+//
+// .userInfoContainer {
+//   display: flex;
+//   justify-content: space-between;
+// }
+//
+// .messageContainer {
+//   margin: 12px 4px;
+//   padding: 8px 12px;
+//   border: 1px solid gray;
+//   border-radius: 12px;
+//
+//   .messageContainerTop {
+//     display: flex;
+//     justify-content: space-between;
+//   }
+//
+//   .messageContainerBot {
+//     display: flex;
+//     margin: 12px 0px;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     white-space: pre-wrap;
+//   }
+// }
+//
+// .upvoteButton {
+//   border: none;
+//   padding: 5px;
+//   font-size: 1.1rem;
+//   border-radius: 3px;
+// }
+//
+// .upvoteButton:hover {
+//   cursor: pointer;
+// }
+//
+// .upvoteButtonAfter {
+//   border: none;
+//   padding: 5px;
+//   font-size: 1.1rem;
+//   color: green;
+// }
+//
+// .upvoteButtonAfter:hover {
+//   cursor: pointer;
+// }
+//
+// .lastContainer {
+//   display: flex;
+//   justify-content: space-between;
+//
+//   .upvotesContainer {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//
+//     h4 {
+//       margin: 0 0 4px 8px;
+//       color: darkkhaki;
+//     }
+//   }
+// }
+//
+// .messageIcons {
+//   display: flex;
+//   justify-content: end;
+//
+//   .trash {
+//     margin: 0px 4px;
+//     font-size: 1.2rem;
+//   }
+//   .edit {
+//     margin: 0px 4px;
+//     font-size: 1.4rem;
+//   }
+//
+//   .trash:hover {
+//     color: firebrick;
+//     cursor: pointer;
+//   }
+//   .edit:hover {
+//     color: dodgerblue;
+//     cursor: pointer;
+//   }
+// }
 
-  .backContainer {
-
-    .backBtn {
-      margin: 0 0 24px 0;
-      width: 160px;
-      padding: 12px;
-      border: 2px solid $main-project-instance-color;
-      color: $main-project-instance-color;
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .backBtn:hover {
-      background-color: $main-project-instance-color-transp10;
-    }
-  }
-}
-
-.threadHead {
-  .threadContent {
-    min-height: 100px;
-    padding: 10px;
-  }
-}
-
-.newMessageContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-}
-
-.newMessageButton {
-  width: 160px;
-  margin: 0px 20px 2px;
-}
-
-.userInfoContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.messageContainer {
-  margin: 12px 4px;
-  padding: 8px 12px;
-  border: 1px solid gray;
-  border-radius: 12px;
-
-  .messageContainerTop {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .messageContainerBot {
-    display: flex;
-    margin: 12px 0px;
-    flex-direction: column;
-    justify-content: space-between;
-    white-space: pre-wrap;
-  }
-}
-
-.upvoteButton {
-  border: none;
-  padding: 5px;
-  font-size: 1.1rem;
-  border-radius: 3px;
-}
-
-.upvoteButton:hover {
-  cursor: pointer;
-}
-
-.upvoteButtonAfter {
-  border: none;
-  padding: 5px;
-  font-size: 1.1rem;
-  color: green;
-}
-
-.upvoteButtonAfter:hover {
-  cursor: pointer;
-}
-
-.lastContainer {
-  display: flex;
-  justify-content: space-between;
-
-  .upvotesContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    h4 {
-      margin: 0 0 4px 8px;
-      color: darkkhaki;
-    }
-  }
-}
-
-.messageIcons {
-  display: flex;
-  justify-content: end;
-
-  .trash {
-    margin: 0px 4px;
-    font-size: 1.2rem;
-  }
-  .edit {
-    margin: 0px 4px;
-    font-size: 1.4rem;
-  }
-
-  .trash:hover {
-    color: firebrick;
-    cursor: pointer;
-  }
-  .edit:hover {
-    color: dodgerblue;
-    cursor: pointer;
-  }
+.threadHeadContainer {
+  background-color: blue;
+  height: 480px;
+  border-radius: 20px;
+  margin: 12px 78px;
+  box-shadow: gray 2px 2px 8px 4px;
 }
