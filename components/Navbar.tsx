@@ -74,6 +74,7 @@ function Navbar() {
   }, [Cookies.get('userName')]);
 
   const logout = async () => {
+    Cookies.remove('userName')
     try {
       await fetch(`${isProduction}/logout`, {
         method: 'POST',

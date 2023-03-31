@@ -4,6 +4,8 @@ type Props = {
   showModal: boolean;
   onClose: Function;
   projectCategories: string[];
+  tagsOnly: string[];
+  langOnly: string[];
   projectTypes: string[];
   userName: string | undefined;
   sessionId: string | undefined;
@@ -12,7 +14,8 @@ type Props = {
 export default function NewProjectModal({
   showModal,
   onClose,
-  projectCategories,
+  tagsOnly,
+  langOnly,
   projectTypes,
   userName,
   sessionId,
@@ -70,6 +73,10 @@ export default function NewProjectModal({
     onClose();
   }
 
+
+
+
+
   return showModal ? (
     <div className={styles.newProjectModalBackground} onClick={() => onClose()}>
       <div
@@ -115,7 +122,17 @@ export default function NewProjectModal({
           <div>
             <label htmlFor="tags">Tags</label>
             <select name={'tags'} id={'projectTags'} multiple>
-              {projectCategories.map((category) => {
+              {tagsOnly.map((category) => {
+                return (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                );
+              })}
+            </select>
+            <label htmlFor="tags">Langugages</label>
+            <select name={'tags'} id={'projectTags'} multiple>
+              {langOnly.map((category) => {
                 return (
                   <option value={category} key={category}>
                     {category}
