@@ -42,11 +42,13 @@ export default function ThreadHead({
   useEffect(() => {
     checkUserRole();
     checkUpvote();
-  }, []);
+  }, [loggedUser]);
 
   async function checkUserRole() {
-    if (loggedUser === threadInfo.user.user_name) setCanEdit(true);
-    if (isOwner) setCanDelete(true);
+    loggedUser === threadInfo.user.user_name
+      ? setCanEdit(true)
+      : setCanEdit(false);
+    isOwner ? setCanDelete(true) : setCanDelete(false);
     if (isOwner && loggedUser === threadInfo.user.user_name) {
       setCanDelete(false);
     }
@@ -59,7 +61,7 @@ export default function ThreadHead({
     if (userUpvotedThreads) {
       for (const thread of userUpvotedThreads) {
         if (thread.thread_id === idToString) {
-          setCountVotes(countVotes + 1);
+          setCountVotes(countVotes);
           setIsUpvoted(true);
         }
       }

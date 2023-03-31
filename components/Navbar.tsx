@@ -39,7 +39,7 @@ const login = async () => {
     );
 
     try {
-      await fetch(`${isProduction}/userAuth`, {
+      const usernameJson = await fetch(`${isProduction}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -47,6 +47,10 @@ const login = async () => {
         },
         body: JSON.stringify(currentUser),
       });
+
+      const username = await usernameJson.text();
+
+      Cookies.set('userName', username);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -92,6 +96,15 @@ function Navbar() {
     }
   };
 
+  const cookieLogin = async() => {
+    if (Cookies.get('AcceptedCookies')){
+      console.log('here', Cookies.get('AcceptedCookies'))
+      await login();
+    } else{
+      console.log('else')
+      router.push('/')
+    }
+  }
   const userName = Cookies.get('userName');
 
   return (
@@ -108,8 +121,6 @@ function Navbar() {
             </Link>
             <button
               onClick={async () => {
-                //localStorage.removeItem('currentUser');
-                //localStorage.removeItem('githubName');
                 setGithubUser('');
                 await logout();
                 await signOut(auth);
@@ -123,7 +134,7 @@ function Navbar() {
           <>
             <button
               onClick={async () => {
-                await login();
+                await cookieLogin();
                 setGithubUser(Cookies.get('userName'));
                 router.refresh();
               }}
@@ -132,7 +143,7 @@ function Navbar() {
             </button>
             <button
               onClick={async () => {
-                await login();
+                await cookieLogin();
                 setGithubUser(Cookies.get('userName'));
                 router.refresh();
               }}

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import ProjectCategory from '@/components/ProjectCategory';
 import ProjectInstance from '@/components/ProjectInstance';
 import NewProjectModal from '@/components/NewProjectModal';
+import CookieModal from '@/components/CookieModal';
 import Cookies from 'js-cookie';
 
 export interface Project {
@@ -28,6 +29,7 @@ const sessionId: string | undefined = Cookies.get('sessionToken');
 export default function Home() {
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
   const [projectTypes, setProjectTypes] = useState<Array<string>>([]);
+  const [acceptedCookies, setAcceptedCookies] = useState<boolean>(false)
   const [selectedProjectCategories, setSelectedProjectCategories] = useState<
     string[]
   >([]);
@@ -63,6 +65,9 @@ export default function Home() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const searchInputRef = useRef<any>();
 
+  let acceptedAllCookies:string|undefined = 'base'
+  acceptedAllCookies = Cookies.get('AcceptedCookies')
+
   useEffect(() => {
     fetchAllProjects();
     fetchCategories();
@@ -70,6 +75,10 @@ export default function Home() {
     fetchProjectTypes();
     fetchDemoGitHubProjects();
   }, []);
+
+  useEffect(() => {
+    cookieAcceptCheck();
+  }, [acceptedCookies])
 
   //////////////////////FetchingDemo//////////////////////////////////////////
   async function fetchDemoGitHubProjects(): Promise<any> {
@@ -90,7 +99,12 @@ export default function Home() {
     }
     setdemoGHProjects(gitHubProjectsArray);
   }
-  ///////////////////////////// FetchingDemo ///////////////////////////////
+  /////////////////////////////^^^ FetchingDemo ^^^///////////////////////////////
+
+  async function cookieAcceptCheck(){
+    if (acceptedAllCookies === 'Accepted' || acceptedAllCookies === 'Declined')
+    return setAcceptedCookies(true)
+  }
 
   async function fetchGitHubProjects(): Promise<any> {
     const gitHubProjectsArray: Array<Project> = [];
@@ -168,7 +182,6 @@ export default function Home() {
   }
 
   function filterByTags() {
-    console.log(showVim);
     let projectsUnderTag: Project[] = [];
     let uniqueProjectsUnderTag: Project[] = [];
     let currentProjects: Project[] = [];
@@ -238,6 +251,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div>
+      <div> {!acceptedCookies  && (<CookieModal SetAcceptedCookies={setAcceptedCookies}/>)} </div>
         <h1>Your thread to open-source projects.</h1>
         <NewProjectModal
           showModal={showModal}
