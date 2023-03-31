@@ -238,26 +238,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div>
-        <h1>Projects</h1>
-        <div className={styles.addOrSearchContainer}>
-          <button onClick={() => setShowModal(true)}>+ Add Project</button>
-
-          <form onSubmit={handleSubmit}>
-            <div className='relative'>
-              <input
-                type='search'
-                id='default-search'
-                ref={searchInputRef}
-                className='searchInput'
-                placeholder='Search for your project...'
-                required
-              />
-              <button type='submit' className='searchButton'>
-                Search
-              </button>
-            </div>
-          </form>
-        </div>
+        <h1>Your thread to open-source projects.</h1>
         <NewProjectModal
           showModal={showModal}
           onClose={() => setShowModal(false)}
@@ -267,7 +248,7 @@ export default function Home() {
           sessionId={sessionId}
         />
         <div>
-          <h2>Project Categories</h2>
+          {/* <h2>Project Categories</h2> */}
           <div className={styles.projectCategoriesContainer}>
             {projectCategories.map((projectCategory) => (
               <ProjectCategory
@@ -279,8 +260,46 @@ export default function Home() {
           </div>
         </div>
 
+        <div className={styles.addOrSearchContainer}>
+          <div className={styles.searchbarAndGithubBtnContainer}>
+            <form 
+              className={styles.projectSearchbarContainer}
+              onSubmit={handleSubmit}
+            >
+              <input
+                type='search'
+                id='default-search'
+                ref={searchInputRef}
+                className={styles.projectSearchbarInput}
+                placeholder='Search for your project...'
+                required
+              />
+              <button 
+                type='submit'
+                className={styles.projectSearchbarSearchBtn}
+              >
+                🔍
+              </button>
+            </form>
+
+            <button
+              className={styles.addProjectBtn}
+              onClick={() => true}
+            >
+              Projects Based on Github
+            </button>
+          </div>
+
+          <button 
+            className={styles.addProjectBtn}
+            onClick={() => setShowModal(true)}
+          >
+            + Add Project
+          </button>
+        </div>
+
         <div>
-          <h2>Filtered Projects</h2>
+          {/* <h2>Filtered Projects</h2> */}
           <div className={styles.filteredProjectsContainer}>
             {filteredProjects.length
               ? filteredProjects.map((filteredProject) => (

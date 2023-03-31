@@ -1,3 +1,5 @@
+@import '../src/sass/main';
+
 .main {
   & > div:first-child {
     margin: 24px auto;
@@ -18,7 +20,42 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .projectSearchbarContainer {
+      width: 50%;
+      position: relative;
+
+      .projectSearchbarInput {
+        width: 100%;
+        height: 48px;
+        font-size: 16px;
+        padding: 0 48px 0 20px;
+        border-radius: 64px;
+      }
+
+      .projectSearchbarSearchBtn {
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        position: absolute;
+        top: 8px;
+        right: 16px;
+      }
+    }
+
+    .addProjectBtn {
+      height: 48px;
+      font-size: 16px;
+      padding: 16px 32px;
+      border-radius: $border-radius;
+    }
   }
+}
+
+.searchbarAndGithubBtnContainer {
+  width: 80%;
+  display: flex;
+  column-gap: 24px;
 }
 
 .projectCategoriesContainer {
@@ -31,9 +68,9 @@
 
 .filteredProjectsContainer {
   width: 100%;
-  margin: 0 0 36px 0;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  row-gap: 20px;
+  margin: 36px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 36px;
 }
