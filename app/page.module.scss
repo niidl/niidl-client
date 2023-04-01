@@ -1,4 +1,4 @@
-@import '../src/sass/main';
+@import './_variables.module';
 
 .main {
   & > div:first-child {
@@ -30,7 +30,8 @@
         height: 48px;
         font-size: 16px;
         padding: 0 48px 0 20px;
-        border-radius: 64px;
+        border-radius: $border-radius-l;
+        border: 2px solid #D9D9D9;
       }
 
       .projectSearchbarSearchBtn {
@@ -38,7 +39,7 @@
         border: none;
         font-size: 16px;
         position: absolute;
-        top: 8px;
+        top: 12px;
         right: 16px;
       }
     }
@@ -47,7 +48,10 @@
       height: 48px;
       font-size: 16px;
       padding: 16px 32px;
-      border-radius: $border-radius;
+      border-radius: $border-radius-s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
