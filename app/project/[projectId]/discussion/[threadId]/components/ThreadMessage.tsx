@@ -9,8 +9,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'markdown-to-jsx';
 import EditMessageModal from './EditMessageModal';
+import { CodeBlock } from './ThreadMessageCode';
 
 interface Props {
   content: string;
@@ -146,7 +147,17 @@ export default function ThreadMessage({
         <h4>{moment(creation_time).fromNow()}</h4>
       </div>
       <div className={styles.messageContainerBot}>
-        <ReactMarkdown>{content}</ReactMarkdown>
+        {
+          <Markdown
+            options={{
+              overrides: {
+                code: { component: CodeBlock },
+              },
+            }}
+          >
+            {content}
+          </Markdown>
+        }
       </div>
 
       <div className={styles.lastContainer}>
