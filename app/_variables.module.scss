@@ -1,0 +1,17 @@
+$main-font: 'Rubik', sans-serif;
+
+$background-rgba: rgba(252, 252, 252, 1.0);
+$foreground-rgba: rgba(56, 56, 56, 1.0);
+
+$niidl-scarlet: rgba(207, 59, 12, 1.0);
+$niidl-indigo: rgba(49, 25, 144, 1.0);
+$niidl-gradient-to-bottom:
+  linear-gradient(to bottom, $niidl-scarlet, $niidl-indigo);
+
+$black-100: rgba(0, 0, 0, 1.0);
+$white-100: rgba(255, 255, 255, 1.0);
+
+$border-radius-s: 16px;
+$border-radius-l: 64px;
+
+$box-shadow: 4px 4px 16px 2px rgba(0, 0, 0, 0.12);

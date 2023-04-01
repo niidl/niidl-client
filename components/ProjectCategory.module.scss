@@ -1,24 +1,28 @@
-$main-project-instance-color: rgb(22, 104, 104);
-$main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
-$main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
+@import '../app/variables.module';
 
 .projectCategoryInstance {
   margin: 0 24px 0 0;
   padding: 12px;
-  border: 2px solid $main-project-instance-color;
-  color: $main-project-instance-color;
+  border: 2px solid transparent;
+  background: 
+    linear-gradient(to bottom, $background-rgba, $background-rgba) padding-box,
+    $niidl-gradient-to-bottom border-box;
+  color: $foreground-rgba;
   border-radius: 32px;
 
   &:hover {
-    background-color: $main-project-instance-color-transp10;
+    background: 
+      $niidl-gradient-to-bottom padding-box,
+      $niidl-gradient-to-bottom border-box;
+    color: $white-100;
+    box-shadow: $box-shadow;
+    transition:
+      box-shadow 0.15s ease-in-out;
   }
 }
 
 .selectedInstance {
-  background-color: $main-project-instance-color;
-  color: #FFFFFF;
-
-  &:hover {
-    background-color: $main-project-instance-color-transp90;
-  }
+  background: 
+    linear-gradient(to bottom, $niidl-scarlet, $niidl-indigo) border-box;
+  color: $white-100;
 }

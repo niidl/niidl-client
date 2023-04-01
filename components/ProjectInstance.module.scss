@@ -1,19 +1,13 @@
-$main-project-instance-color: rgb(22, 104, 104);
-$secondary-project-instance-color: rgb(38, 128, 128);
+@import '../app/variables.module';
 
 .projectInstanceContainer {
   width: 100%;
   height: 388px;
-  // background: linear-gradient(
-  //   45deg,
-  //   $main-project-instance-color,
-  //   $secondary-project-instance-color
-  // );
-  border-radius: 16px;
+  border-radius: $border-radius-s;
   color: #FFFFFF;
   font-weight: 600;
   font-size: 1.5rem;
-  box-shadow: 4px 4px 16px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: $box-shadow;
   overflow: hidden;
   display: flex;
   flex-flow: column nowrap;
@@ -21,11 +15,6 @@ $secondary-project-instance-color: rgb(38, 128, 128);
   align-items: center;
 
   &:hover {
-    // background: linear-gradient(
-    //   90deg,
-    //   $main-project-instance-color,
-    //   $secondary-project-instance-color
-    // );
     transform: scale(1.02) rotate(-0.5deg);
     transition: transform 0.25s ease-in-out;
   }
@@ -38,15 +27,15 @@ $secondary-project-instance-color: rgb(38, 128, 128);
   .projectInstanceImage  {
     width: 100%;
     height: 100%;
-    background-color: lightblue;
+    background-color: rgba(159, 149, 198, 1);
   }
 }
 
 .projectInstanceInfoContainer {
   width: 100%;
   height: auto;
-  background-color: #FFFFFF;
-  color: #000000;
+  background-color: $white-100;
+  color: $black-100;
   padding: 32px;
   overflow-x: clip;
   display: flex;
@@ -63,16 +52,18 @@ $secondary-project-instance-color: rgb(38, 128, 128);
     row-gap: 8px;
 
     .projectInstanceInfoTag {
+      color: $niidl-scarlet;
       font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.5px;
       padding: 8px 12px;
-      border: 1px solid #000000;
-      border-radius: 48px;
+      border: 1px solid $niidl-scarlet;
+      border-radius: $border-radius-l;
     }
   }
 
   .projectInstanceInfoTitle {
+    color: $niidl-indigo;
     letter-spacing: 0.5px;
     font-weight: 600;
     font-size: 24px;
