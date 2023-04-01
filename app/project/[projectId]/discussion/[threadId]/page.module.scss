@@ -1,7 +1,18 @@
 // $main-project-instance-color: rgb(22, 104, 104);
 // $main-project-instance-color-transp10: rgba(22, 104, 104, 0.1);
 // $main-project-instance-color-transp90: rgba(22, 104, 104, 0.9);
-// .threadBody {
+.threadBody {
+  margin: 12px 96px;
+
+  .backContainer {
+    padding: 12px;
+    align-items: center;
+
+    h4 {
+      font-weight: lighter;
+    }
+  }
+}
 //   .backContainer {
 //     .backBtn {
 //       margin: 0 0 24px 0;
@@ -123,11 +134,3 @@
 //     cursor: pointer;
 //   }
 // }
-
-.threadHeadContainer {
-  background-color: blue;
-  height: 480px;
-  border-radius: 20px;
-  margin: 12px 78px;
-  box-shadow: gray 2px 2px 8px 4px;
-}

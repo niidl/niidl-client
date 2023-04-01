@@ -130,7 +130,7 @@ export default async function ThreadPage({ params }: any) {
         <div className={styles.backContainer}>
           <Link href={`/project/${threadInfo.project_id}`}>
             <h4>
-              <HiOutlineArrowLongLeft />
+              <HiOutlineArrowLongLeft className={styles.arrowComponent}/>
               Back to Project.
             </h4>
           </Link>

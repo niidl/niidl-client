@@ -1,8 +1,7 @@
 'use client';
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import styles from '../page.module.scss';
-
+import styles from './ThreadHead.module.scss';
 import { ThreadInfo } from '../page';
 import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
@@ -60,10 +59,9 @@ export default function ThreadHead({
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
   function checkUpvote() {
-    const idToString: number = threadInfo.id;
     if (userUpvotedThreads) {
       for (const thread of userUpvotedThreads) {
-        if (thread.thread_id === idToString) {
+        if (thread.thread_id === threadInfo.id) {
           setCountVotes(countVotes);
           setIsUpvoted(true);
         }
@@ -133,57 +131,69 @@ export default function ThreadHead({
   }
 
   return (
-    <div className={styles.threadBody}>
+    <div className={styles.threadHeadBody}>
       <div className={styles.threadHeadContainer}>
+        <div className={styles.threadHeadTop}>
+          <h1>{threadInfo.title}</h1>
+        </div>
+        <div className={styles.threadHeadMid}>
+          <ReactMarkdown className={styles.threadContent}>
+            {threadInfo.content}
+          </ReactMarkdown>
+        </div>
+        <div className={styles.threadHeadBot}>
+          <div className={styles.threadHeadBotLeft}>
+            <img src='' alt=''></img>
+            <div className={styles.postInfoContainer}>
+              <h3>{threadInfo.user.user_name}</h3>
+              <p>{moment(threadInfo.creation_time).fromNow()}</p>
+            </div>
+          </div>
+          <div className={styles.threadHeadBotRight}>
+            {canEdit && (
+              <div className={styles.messageIcons}>
+                <CiEdit className={styles.edit} onClick={handleEdit} />
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            {canDelete && (
+              <div className={styles.messageIcons}>
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            <button
+              className={`${
+                isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
+              }`}
+              onClick={handleClick}
+            >
+              {<HiOutlineArrowCircleUp />}
+            </button>
+          </div>
+        </div>
       </div>
+      {showModal && (
+        <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
+      )}
     </div>
-
   );
 }
 /*
     <div className={styles.threadContainer}>
       <div className={styles.threadContainerTop}>
         <div className={styles.threadHead}>
-          <h1>{threadInfo.title}</h1>
           <div className={styles.userInfoContainer}>
-            <h3>{threadInfo.user.user_name}</h3>
-            <p>{moment(threadInfo.creation_time).fromNow()}</p>
           </div>
-          <ReactMarkdown className={styles.threadContent}>
-            {threadInfo.content}
-          </ReactMarkdown>
           <div className={styles.lastContainer}>
             <div className={styles.upvotesContainer}>
-              <button
-                className={`${
-                  isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
-                }`}
-                onClick={handleClick}
-              >
-                {<HiOutlineArrowCircleUp />}
-              </button>
               <h4>{countVotes}</h4>
             </div>
 
             <div className={styles.editThread}>
-              {canEdit && (
-                <div className={styles.messageIcons}>
-                  <CiEdit className={styles.edit} onClick={handleEdit} />
-                  <BsTrash className={styles.trash} onClick={handleDelete} />
-                </div>
-              )}
-              {canDelete && (
-                <div className={styles.messageIcons}>
-                  <BsTrash className={styles.trash} onClick={handleDelete} />
-                </div>
-              )}
             </div>
           </div>
           <hr />
         </div>
-        {showModal && (
-          <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
-        )}
       </div>
     </div>
 

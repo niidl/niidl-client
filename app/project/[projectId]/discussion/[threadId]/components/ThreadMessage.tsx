@@ -33,7 +33,6 @@ export default function ThreadMessage({
   content,
   creation_time,
   username,
-  projectOwner,
   projectId,
   threadId,
   messageId,

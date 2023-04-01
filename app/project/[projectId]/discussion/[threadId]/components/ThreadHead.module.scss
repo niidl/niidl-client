@@ -1,0 +1,26 @@
+.threadHeadBody {
+  border-radius: 20px;
+  border: solid 1px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  .threadHeadContainer {
+    padding: 48px 52px;
+    width: 100%;
+
+    .threadHeadTop {
+      font-size: 1.2rem;
+      padding: 8px 0;
+    }
+    .threadHeadMid {
+
+      font-size: 1.2rem;
+      padding: 8px 0;
+    }
+    .threadHeadBot {
+      background-color: green;
+    }
+  }
+}
