@@ -239,7 +239,6 @@ export default function Home() {
     ///Demo if
     if (searchInputRef.current.value.toLowerCase() === 'vim' && basedOnGithub) {
       setVIM(true);
-      console.log('Showing VIM');
       setFilteredProjects(demoGHProjects);
       //Demo if
     } else {
