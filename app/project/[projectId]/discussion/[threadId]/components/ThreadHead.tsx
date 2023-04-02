@@ -1,17 +1,18 @@
 'use client';
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import styles from '../page.module.scss';
+import styles from './ThreadHead.module.scss';
 import { ThreadInfo } from '../page';
 import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BiUpvote } from 'react-icons/bi';
-import ReactMarkdown from 'react-markdown';
+import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 import { UpvotedThreads } from '../../components/GeneralDiscussions';
 import EditThreadModal from './EditThreadModal';
+import Markdown from 'markdown-to-jsx';
+import { CodeBlock } from './ThreadMessageCode';
 
 interface Props {
   threadInfo: ThreadInfo;
@@ -57,10 +58,9 @@ export default function ThreadHead({
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
 
   function checkUpvote() {
-    const idToString: number = threadInfo.id;
     if (userUpvotedThreads) {
       for (const thread of userUpvotedThreads) {
-        if (thread.thread_id === idToString) {
+        if (thread.thread_id === threadInfo.id) {
           setCountVotes(countVotes);
           setIsUpvoted(true);
         }
@@ -68,7 +68,7 @@ export default function ThreadHead({
     }
   }
 
-  async function upvote() {
+  async function upvote(e: any) {
     await axios
       .post(
         `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}/upvotes/${loggedUser}`,
@@ -87,7 +87,7 @@ export default function ThreadHead({
       });
   }
 
-  async function downvote() {
+  async function downvote(e: any) {
     await axios
       .delete(
         `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}/upvotes/${loggedUser}`,
@@ -105,8 +105,8 @@ export default function ThreadHead({
       });
   }
 
-  function handleClick() {
-    isUpvoted ? downvote() : upvote();
+  function handleClick(e: any) {
+    isUpvoted ? downvote(e) : upvote(e);
   }
 
   function handleEdit(): void {
@@ -130,50 +130,61 @@ export default function ThreadHead({
   }
 
   return (
-    <div className={styles.threadContainer}>
-      <div className={styles.threadContainerTop}>
-        <div className={styles.threadHead}>
+    <div className={styles.threadHeadBody}>
+      <div className={styles.threadHeadContainer}>
+        <div className={styles.threadHeadTop}>
           <h1>{threadInfo.title}</h1>
-          <div className={styles.userInfoContainer}>
-            <h3>{threadInfo.user.user_name}</h3>
-            <p>{moment(threadInfo.creation_time).fromNow()}</p>
-          </div>
-          <ReactMarkdown className={styles.threadContent}>
-            {threadInfo.content}
-          </ReactMarkdown>
-          <div className={styles.lastContainer}>
-            <div className={styles.upvotesContainer}>
-              <button
-                className={`${
-                  isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
-                }`}
-                onClick={handleClick}
-              >
-                {<BiUpvote />}
-              </button>
-              <h4>{countVotes}</h4>
-            </div>
-
-            <div className={styles.editThread}>
-              {canEdit && (
-                <div className={styles.messageIcons}>
-                  <CiEdit className={styles.edit} onClick={handleEdit} />
-                  <BsTrash className={styles.trash} onClick={handleDelete} />
-                </div>
-              )}
-              {canDelete && (
-                <div className={styles.messageIcons}>
-                  <BsTrash className={styles.trash} onClick={handleDelete} />
-                </div>
-              )}
-            </div>
-          </div>
-          <hr />
         </div>
-        {showModal && (
-          <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
-        )}
+        <div className={styles.threadHeadMid}>
+          {
+            <Markdown
+              options={{
+                overrides: {
+                  code: { component: CodeBlock },
+                },
+              }}
+            >
+              {threadInfo.content}
+            </Markdown>
+          }
+        </div>
+        <div className={styles.threadHeadBot}>
+          <div className={styles.threadHeadBotLeft}>
+            <img src={threadInfo.user.github_profile_picture} alt=''></img>
+            <div className={styles.postInfoContainer}>
+              <h3>
+                {' '}
+                posted by <span>{threadInfo.user.user_name}</span>
+              </h3>
+              <p>{moment(threadInfo.creation_time).fromNow()}</p>
+            </div>
+          </div>
+          <div className={styles.threadHeadBotRight}>
+            {canEdit && (
+              <div className={styles.messageIcons}>
+                <CiEdit className={styles.edit} onClick={handleEdit} />
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            {canDelete && (
+              <div className={styles.messageIcons}>
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            <button
+              className={`${
+                isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
+              }`}
+              onClick={handleClick}
+            >
+              {<HiOutlineArrowCircleUp className={styles.icon} />}
+            </button>
+            <p>{countVotes}</p>
+          </div>
+        </div>
       </div>
+      {showModal && (
+        <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
+      )}
     </div>
-  );
-}
+  )}

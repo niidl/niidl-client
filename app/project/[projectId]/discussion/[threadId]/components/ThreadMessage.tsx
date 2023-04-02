@@ -24,6 +24,7 @@ interface Props {
   upvotes: number;
   allUpvotes: UpvotedMessages[];
   isOwner: boolean;
+  githubPhoto: string;
 }
 
 const isProduction: string = process.env.PRODUCTION
@@ -34,13 +35,13 @@ export default function ThreadMessage({
   content,
   creation_time,
   username,
-  projectOwner,
   projectId,
   threadId,
   messageId,
   upvotes,
   allUpvotes,
   isOwner,
+  githubPhoto,
 }: Props) {
   const loggedUser = Cookies.get('userName');
   const router = useRouter();
