@@ -1,17 +1,17 @@
 'use client';
 import Cookies from 'js-cookie';
 import moment from 'moment';
-import styles from '../page.module.scss';
+import styles from './ThreadMessage.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
 import Markdown from 'markdown-to-jsx';
 import EditMessageModal from './EditMessageModal';
 import { CodeBlock } from './ThreadMessageCode';
+import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 
 interface Props {
   content: string;
@@ -142,7 +142,69 @@ export default function ThreadMessage({
   }
 
   return (
-    <div className={styles.messageContainer}>
+    <div className={styles.threadMessageBody}>
+      <div className={styles.threadMessageContainer}>
+        <div className={styles.threadMessageMid}>
+          {
+            <Markdown
+              options={{
+                overrides: {
+                  code: { component: CodeBlock },
+                },
+              }}
+            >
+              {content}
+            </Markdown>
+          }
+        </div>
+        <div className={styles.threadMessageBot}>
+          <div className={styles.threadMessageBotLeft}>
+            <img src={githubPhoto} alt=''></img>
+            <div className={styles.postInfoContainer}>
+              <h3>
+                {' '}
+                posted by <span>{username}</span>
+              </h3>
+              <p>{moment(creation_time).fromNow()}</p>
+            </div>
+          </div>
+          <div className={styles.threadMessageBotRight}>
+            {canEdit && (
+              <div className={styles.messageIcons}>
+                <CiEdit className={styles.edit} onClick={handleEdit} />
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            {canDelete && (
+              <div className={styles.messageIcons}>
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            <button
+              className={`${
+                isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
+              }`}
+              onClick={handleClick}
+            >
+              {<HiOutlineArrowCircleUp className={styles.icon} />}
+            </button>
+            <p>{countVotes}</p>
+          </div>
+        </div>
+      </div>
+      {showModal && (
+        <EditMessageModal
+          setShowModal={setShowModal}
+          projectId={projectId}
+          threadId={threadId}
+          messageId={messageId}
+          content={content}
+        />
+      )}
+    </div>
+  );
+}
+/*
       <div className={styles.messageContainerTop}>
         <h3>{username}</h3>
         <h4>{moment(creation_time).fromNow()}</h4>
@@ -187,15 +249,5 @@ export default function ThreadMessage({
           )}
         </div>
       </div>
-      {showModal && (
-        <EditMessageModal
-          setShowModal={setShowModal}
-          projectId={projectId}
-          threadId={threadId}
-          messageId={messageId}
-          content={content}
-        />
-      )}
-    </div>
-  );
-}
+
+*/
