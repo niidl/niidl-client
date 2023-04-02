@@ -180,5 +180,5 @@ export default function ThreadHead({
         <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
       )}
     </div>
-  );
-}
+
+*/
