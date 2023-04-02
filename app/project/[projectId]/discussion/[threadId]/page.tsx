@@ -126,14 +126,13 @@ export default async function ThreadPage({ params }: any) {
     ? await getThreadsUpvotes(params.projectId, username.value)
     : [];
 
-  console.log(threadInfo)
   return (
     <div className={styles.threadBody}>
       <div>
         <div className={styles.backContainer}>
           <Link href={`/project/${threadInfo.project_id}`}>
             <h4>
-              <HiOutlineArrowLongLeft className={styles.arrowComponent}/>
+              <HiOutlineArrowLongLeft className={styles.arrowComponent} />
               Back to Project.
             </h4>
           </Link>
