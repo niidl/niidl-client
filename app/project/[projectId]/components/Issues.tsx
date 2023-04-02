@@ -21,11 +21,22 @@ export default function Issues({ projectIssues }: Props) {
       {projectIssues
         ? projectIssues.map((issue: Issue) => {
             return (
-              <Link href={`${issue.html_url}`} key={issue.issue_id}>
+              <Link 
+                href={`${issue.html_url}`} 
+                key={issue.issue_id}
+                target='_blank'
+              >
                 <div className={styles.issueInstance}>
-                  <div>{issue.title}</div>
                   <div>
-                    {moment(issue.created_at).fromNow()} by {issue.issue_author}
+                    <div className={styles.issueInstanceTitle}>
+                      {issue.title}
+                    </div>
+                    <div className={styles.issueInstanceAuthor}>
+                      by {issue.issue_author}
+                    </div>
+                  </div>
+                  <div className={styles.issueInstanceTimestamp}>
+                    {moment(issue.created_at).fromNow()}
                   </div>
                 </div>
               </Link>
