@@ -65,10 +65,10 @@ export default function EditMessageModal({
               name={'content'}
               id={'messageContent'}
               ref={reference}
-              placeholder={'New message content...'}
+              rows={6}
               className={styles.textArea}
               defaultValue={content}
-            />
+            ></textarea>
             <input className={styles.submitButton} type={'submit'}></input>
           </form>
         </div>

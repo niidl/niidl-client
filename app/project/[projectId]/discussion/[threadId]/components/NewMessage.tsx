@@ -1,7 +1,8 @@
 'use client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import styles from '../page.module.scss';
+import { useRef } from 'react';
+import styles from './NewMessage.module.scss';
 
 interface MessageObject {
   content: string;
@@ -19,11 +20,13 @@ const isProduction: string = process.env.PRODUCTION
 
 export default function NewMessage({ thread_id, project_id }: Props) {
   const router = useRouter();
+  const textInputRef: any = useRef();
 
   async function handleSubmit(e: any): Promise<void> {
     e.preventDefault();
-    const textValue: string = e.target.textarea.value;
-    e.target.textarea.value = '';
+
+    const textValue: any = textInputRef.current.value;
+    textInputRef.current.value = '';
 
     const newMessageObject: MessageObject = {
       content: textValue,
@@ -50,15 +53,19 @@ export default function NewMessage({ thread_id, project_id }: Props) {
     <div>
       <form onSubmit={handleSubmit} className={styles.newMessageContainer}>
         <textarea
-          id="message"
+          id='message'
           rows={4}
-          name="textarea"
-          placeholder="Leave a comment..."
-          className="text-area"
-          style={{ resize: 'vertical', margin: '20px', width: '600px' }}
+          name='textarea'
+          placeholder='Leave a comment...'
+          ref={textInputRef}
+          className={styles.textInput}
+          required
         ></textarea>
         <button className={styles.newMessageButton}>Post</button>
       </form>
     </div>
   );
 }
+/*
+
+*/
