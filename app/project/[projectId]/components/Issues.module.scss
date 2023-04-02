@@ -14,12 +14,11 @@
     border: 2px solid transparent;
     border-radius: 16px;
     box-shadow: $box-shadow;
-    margin: 12px auto 0 auto;
+    margin: 16px auto 0 auto;
     padding: 36px 24px;
-    transform: scale(1);
     transition: 
       transform 0.25s ease-in-out,
-      border 0.25 ease-in-out;
+      border 0.25s ease-in-out;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;

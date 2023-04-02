@@ -126,7 +126,6 @@ export default async function ProjectPage({ params }: any) {
           </div>
           <div>{project.description}</div>
           <div>
-            {/* <h2>Technologies</h2> */}
             <div className={styles.projectTechnologiesContainer}>
               {tagOnly.map((keyword) => (
                 <div
@@ -169,14 +168,24 @@ export default async function ProjectPage({ params }: any) {
         {project.contributors && (
           <>
             <h2>Contributors</h2>
-            <div>
-              <ul>
-                {project.contributors.map((contributor) => (
-                  <li key={contributor.contributor_id}>
+            <div className={styles.projectContributorsContainer}>
+              {project.contributors.map((contributor) => (
+                <div 
+                  className={styles.projectContributorInstanceContainer}
+                  key={contributor.contributor_id}
+                >
+                  <div className={styles.projectContributorImageContainer}>
+                    <div className={styles.projectContributorImageMock}>
+                    </div>
+                  </div>
+
+                  <span
+                    className={styles.projectContributorUsername}
+                  >
                     {contributor.username}
-                  </li>
-                ))}
-              </ul>
+                  </span>
+                </div>
+              ))}
             </div>
           </>
         )}
