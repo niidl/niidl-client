@@ -1,7 +1,12 @@
 import styles from '../../loading.module.scss';
 
 export default function Loading() {
-  /*let ranNum = Math.floor(Math.random() * 100);
-  let loadedImage = '';*/
-  return <div className={styles.loadingImage}>niidl</div>;
+  return (
+    <div className={styles.loadingMessage}>
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingLoader}></div>
+      </div>
+      <div className={styles.niidlLoadName}>niidl</div>
+    </div>
+  );
 }
