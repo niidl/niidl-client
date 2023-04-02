@@ -69,7 +69,7 @@ export default function ThreadHead({
     }
   }
 
-  async function upvote() {
+  async function upvote(e: any) {
     await axios
       .post(
         `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}/upvotes/${loggedUser}`,
@@ -88,7 +88,7 @@ export default function ThreadHead({
       });
   }
 
-  async function downvote() {
+  async function downvote(e: any) {
     await axios
       .delete(
         `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}/upvotes/${loggedUser}`,
@@ -106,8 +106,8 @@ export default function ThreadHead({
       });
   }
 
-  function handleClick() {
-    isUpvoted ? downvote() : upvote();
+  function handleClick(e: any) {
+    isUpvoted ? downvote(e) : upvote(e);
   }
 
   function handleEdit(): void {
@@ -143,9 +143,12 @@ export default function ThreadHead({
         </div>
         <div className={styles.threadHeadBot}>
           <div className={styles.threadHeadBotLeft}>
-            <img src='' alt=''></img>
+            <img
+              src='https://avatars.githubusercontent.com/u/56119907?v=4'
+              alt=''
+            ></img>
             <div className={styles.postInfoContainer}>
-              <h3>{threadInfo.user.user_name}</h3>
+              <h3> posted by {threadInfo.user.user_name}</h3>
               <p>{moment(threadInfo.creation_time).fromNow()}</p>
             </div>
           </div>
@@ -169,6 +172,7 @@ export default function ThreadHead({
             >
               {<HiOutlineArrowCircleUp />}
             </button>
+            <p>{countVotes}</p>
           </div>
         </div>
       </div>
@@ -178,23 +182,3 @@ export default function ThreadHead({
     </div>
   );
 }
-/*
-    <div className={styles.threadContainer}>
-      <div className={styles.threadContainerTop}>
-        <div className={styles.threadHead}>
-          <div className={styles.userInfoContainer}>
-          </div>
-          <div className={styles.lastContainer}>
-            <div className={styles.upvotesContainer}>
-              <h4>{countVotes}</h4>
-            </div>
-
-            <div className={styles.editThread}>
-            </div>
-          </div>
-          <hr />
-        </div>
-      </div>
-    </div>
-
-*/

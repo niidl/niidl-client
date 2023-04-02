@@ -1,10 +1,11 @@
 .threadHeadBody {
   border-radius: 20px;
-  border: solid 1px black;
+  border: solid 1px pink;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: lightgrey 4px 4px 10px;
 
   .threadHeadContainer {
     padding: 48px 52px;
@@ -15,12 +16,66 @@
       padding: 8px 0;
     }
     .threadHeadMid {
-
       font-size: 1.2rem;
       padding: 8px 0;
     }
     .threadHeadBot {
-      background-color: green;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+
+      .threadHeadBotLeft {
+        display: flex;
+        align-items: center;
+
+        img {
+          border-radius: 50%;
+          width: 60px;
+          margin: 0 24px 0 0;
+        }
+
+        .postInfoContainer {
+          h3 {
+            padding: 8px 0;
+          }
+          p {
+            font-size: 0.9rem;
+          }
+        }
+      }
+
+      .threadHeadBotRight {
+        display: flex;
+        align-items: center;
+
+        :not(:last-child):hover {
+          cursor: pointer;
+        }
+
+        * {
+          margin: 0 4px;
+        }
+
+        .edit {
+          font-size: 1.8rem;
+        }
+
+        .trash {
+          font-size: 1.8rem;
+        }
+
+        .upvoteButton {
+          all: unset;
+          font-size: 3.5rem;
+        }
+
+        .upvoteButtonAfter {
+          all: unset;
+          font-size: 3.5rem;
+          color: green;
+        }
+      }
     }
   }
 }
