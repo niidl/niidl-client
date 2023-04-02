@@ -35,7 +35,9 @@ export default function ThreadHead({
 
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const [canDelete, setCanDelete] = useState<boolean>(false);
-  const [countVotes, setCountVotes] = useState<number>(threadInfo.upvotes);
+  const [countVotes, setCountVotes] = useState<number>(
+    threadInfo.upvotes_threads
+  );
   const [userUpvotedThreads, setUserUpvotedMessages] = useState<
     UpvotedThreads[] | null
   >(allThreadsUpvotes);
@@ -150,7 +152,7 @@ export default function ThreadHead({
         </div>
         <div className={styles.threadHeadBot}>
           <div className={styles.threadHeadBotLeft}>
-            <img src={threadInfo.user.github_profile_picture} alt=''></img>
+            <img src={threadInfo.user.github_profile_picture} alt=""></img>
             <div className={styles.postInfoContainer}>
               <h3>
                 {' '}
@@ -187,4 +189,5 @@ export default function ThreadHead({
         <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
       )}
     </div>
-  )}
+  );
+}

@@ -26,7 +26,7 @@ export interface SingleProj {
     creation_time: Date;
     title: string;
     thread_tag: string;
-    upvotes: number;
+    upvotes_threads: number;
     isPinned: boolean;
     user: {
       user_name: string;
@@ -118,7 +118,7 @@ export default async function ProjectPage({ params }: any) {
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
-          <Link href={project.github_url} target='_blank'>
+          <Link href={project.github_url} target="_blank">
             <h1>{project.project_name}</h1>
           </Link>
           <div className={styles.projectBasicInfoProjectType}>

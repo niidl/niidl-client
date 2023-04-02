@@ -1,7 +1,7 @@
 'use client';
 import styles from './Discussions.module.scss';
 import NewDiscussionModal from './NewDiscussionModal';
-import { useState, Key, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GeneralDiscussions } from './GeneralDiscussions';
 import { NewIdeasDiscussion } from './NewIdeasDiscussion';
 import { NewestDiscussion } from './NewestDiscussion';
@@ -15,7 +15,7 @@ export interface Thread {
   creation_time: Date;
   title: string;
   thread_tag: string;
-  upvotes: number;
+  upvotes_threads: number;
   isPinned?: boolean;
   user?: {
     user_name: string;
@@ -112,7 +112,7 @@ export default function Discussions({
         + Add Thread
       </button>
       <NewDiscussionModal
-      showModal={showModal}
+        showModal={showModal}
         projectId={projectId}
         projectName={projectName}
         setShowModal={setShowModal}
@@ -121,57 +121,57 @@ export default function Discussions({
       <div className={styles.discussionsContainer}>
         <div className={styles.discussionsTabs}>
           <ul className={styles.ulContainer}>
-            <li className={styles.liContainer} role='presentation'>
+            <li className={styles.liContainer} role="presentation">
               <button
                 className={`${
                   currentTab === 'general-discussion'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
-                type='button'
-                value='general-discussion'
+                type="button"
+                value="general-discussion"
                 onClick={handleClick}
               >
                 General Discussions 📢
               </button>
             </li>
-            <li className={styles.liContainer} role='presentation'>
+            <li className={styles.liContainer} role="presentation">
               <button
                 className={`${
                   currentTab === 'new-ideas'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
-                type='button'
-                value='new-ideas'
+                type="button"
+                value="new-ideas"
                 onClick={handleClick}
               >
                 New Ideas 💡
               </button>
             </li>
-            <li className={styles.liContainer} role='presentation'>
+            <li className={styles.liContainer} role="presentation">
               <button
                 className={`${
                   currentTab === 'newest'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
-                type='button'
-                value='newest'
+                type="button"
+                value="newest"
                 onClick={handleClick}
               >
                 Newest 🆕
               </button>
             </li>
-            <li className={styles.liContainer} role='presentation'>
+            <li className={styles.liContainer} role="presentation">
               <button
                 className={`${
                   currentTab === 'hot-topics'
                     ? styles.btnContainer
                     : styles.buttonContainer
                 }`}
-                type='button'
-                value='hot-topics'
+                type="button"
+                value="hot-topics"
                 onClick={handleClick}
               >
                 Hot Topics 🔥

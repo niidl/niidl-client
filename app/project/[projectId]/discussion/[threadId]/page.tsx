@@ -18,7 +18,7 @@ interface Message {
     user_name: string;
     github_profile_picture: string;
   };
-  upvotes: number;
+  upvotes_messages: number;
 }
 
 export interface ThreadInfo {
@@ -33,7 +33,7 @@ export interface ThreadInfo {
     github_profile_picture: string;
   };
   thread_tag: string;
-  upvotes: number;
+  upvotes_threads: number;
   isPinned: boolean;
 }
 
@@ -162,7 +162,7 @@ export default async function ThreadPage({ params }: any) {
                   projectId={threadInfo.project_id}
                   threadId={threadInfo.id}
                   messageId={message.id}
-                  upvotes={message.upvotes}
+                  upvotes_messages={message.upvotes_messages}
                   allUpvotes={allMessagesUpvotes}
                   isOwner={isOwner}
                   githubPhoto={message.user.github_profile_picture}
