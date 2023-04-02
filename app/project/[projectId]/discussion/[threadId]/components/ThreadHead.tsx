@@ -129,8 +129,6 @@ export default function ThreadHead({
       });
   }
 
-  console.log(threadInfo)
-
   return (
     <div className={styles.threadHeadBody}>
       <div className={styles.threadHeadContainer}>
@@ -189,5 +187,4 @@ export default function ThreadHead({
         <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
       )}
     </div>
-
-*/
+  )}
