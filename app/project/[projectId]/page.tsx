@@ -20,7 +20,8 @@ export interface SingleProj {
   contributors: Array<{
     username: string;
     contributor_id: number;
-    image: string }>;
+    image: string;
+  }>;
   threads: Array<{
     id: number;
     content: string;
@@ -121,7 +122,7 @@ export default async function ProjectPage({ params }: any) {
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
-          <Link href={project.github_url} target='_blank'>
+          <Link href={project.github_url} target="_blank">
             <h1>{project.project_name}</h1>
           </Link>
           <div className={styles.projectBasicInfoProjectType}>
@@ -174,10 +175,11 @@ export default async function ProjectPage({ params }: any) {
             <div className={styles.projectContributorsContainer}>
               {project.contributors.map((contributor) => (
                 <Link
+                  key={contributor.contributor_id}
                   href={`https://github.com/${contributor.username}`}
-                  target='_blank'
+                  target="_blank"
                 >
-                  <div 
+                  <div
                     className={styles.projectContributorInstanceContainer}
                     key={contributor.contributor_id}
                   >
@@ -191,9 +193,7 @@ export default async function ProjectPage({ params }: any) {
                       />
                     </div>
 
-                    <span
-                      className={styles.projectContributorUsername}
-                    >
+                    <span className={styles.projectContributorUsername}>
                       {contributor.username}
                     </span>
                   </div>
