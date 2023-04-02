@@ -9,6 +9,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BiUpvote } from 'react-icons/bi';
 import { BsPinAngle } from 'react-icons/bs';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   thread: Thread;
@@ -29,6 +30,8 @@ export default function DiscussionInstance({
 
   const username = Cookies.get('userName');
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     checkUpvote();
@@ -64,6 +67,7 @@ export default function DiscussionInstance({
           thread_id: thread.id,
         });
         setUserUpvotedThreads(newUpvotes);
+        router.refresh();
       });
   }
 
@@ -86,6 +90,7 @@ export default function DiscussionInstance({
           );
           setUserUpvotedThreads(newUpvotes);
         }
+        router.refresh();
       });
   }
 

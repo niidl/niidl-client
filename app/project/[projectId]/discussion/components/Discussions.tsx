@@ -1,7 +1,7 @@
 'use client';
 import styles from './Discussions.module.scss';
 import NewDiscussionModal from './NewDiscussionModal';
-import { useState, Key, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GeneralDiscussions } from './GeneralDiscussions';
 import { NewIdeasDiscussion } from './NewIdeasDiscussion';
 import { NewestDiscussion } from './NewestDiscussion';
@@ -15,7 +15,7 @@ export interface Thread {
   creation_time: Date;
   title: string;
   thread_tag: string;
-  upvotes: number;
+  upvotes_threads: number;
   isPinned?: boolean;
   user?: {
     user_name: string;

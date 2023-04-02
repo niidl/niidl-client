@@ -21,7 +21,7 @@ interface Props {
   projectId: number;
   threadId: number;
   messageId: number;
-  upvotes: number;
+  upvotes_messages: number;
   allUpvotes: UpvotedMessages[];
   isOwner: boolean;
   githubPhoto: string;
@@ -38,7 +38,7 @@ export default function ThreadMessage({
   projectId,
   threadId,
   messageId,
-  upvotes,
+  upvotes_messages,
   allUpvotes,
   isOwner,
   githubPhoto,
@@ -51,7 +51,7 @@ export default function ThreadMessage({
   >(allUpvotes);
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const [canDelete, setCanDelete] = useState<boolean>(false);
-  const [countVotes, setCountVotes] = useState<number>(upvotes);
+  const [countVotes, setCountVotes] = useState<number>(upvotes_messages);
 
   useEffect(() => {
     checkUserRole();
@@ -73,7 +73,6 @@ export default function ThreadMessage({
     if (userUpvotedMessages) {
       for (const message of userUpvotedMessages) {
         if (message.message_id === idToString) {
-          setCountVotes(countVotes + 1);
           setIsUpvoted(true);
         }
       }

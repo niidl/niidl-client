@@ -20,7 +20,7 @@ export interface SingleProj {
     creation_time: Date;
     title: string;
     thread_tag: string;
-    upvotes: number;
+    upvotes_threads: number;
     isPinned: boolean;
     user: {
       user_name: string;
