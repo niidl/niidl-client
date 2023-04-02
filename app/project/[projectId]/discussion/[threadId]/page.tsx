@@ -7,7 +7,6 @@ import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
 import { UpvotedThreads } from '../components/GeneralDiscussions';
 import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
-import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
 
 interface Message {
   id: number;
@@ -17,6 +16,7 @@ interface Message {
   creation_time: Date;
   user: {
     user_name: string;
+    github_profile_picture: string;
   };
   upvotes: number;
 }
@@ -30,6 +30,7 @@ export interface ThreadInfo {
   title: string;
   user: {
     user_name: string;
+    github_profile_picture: string;
   };
   thread_tag: string;
   upvotes: number;
@@ -125,6 +126,7 @@ export default async function ThreadPage({ params }: any) {
     ? await getThreadsUpvotes(params.projectId, username.value)
     : [];
 
+  console.log(threadInfo)
   return (
     <div className={styles.threadBody}>
       <div>
@@ -164,6 +166,7 @@ export default async function ThreadPage({ params }: any) {
                   upvotes={message.upvotes}
                   allUpvotes={allMessagesUpvotes}
                   isOwner={isOwner}
+                  githubPhoto={message.user.github_profile_picture}
                 />
               </div>
             );

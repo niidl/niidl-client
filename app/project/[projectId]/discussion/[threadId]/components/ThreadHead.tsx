@@ -9,11 +9,10 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { HiOutlineArrowCircleUp } from 'react-icons/hi';
-import ReactMarkdown from 'react-markdown';
 import { UpvotedThreads } from '../../components/GeneralDiscussions';
 import EditThreadModal from './EditThreadModal';
-import Link from 'next/link';
-import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
+import Markdown from 'markdown-to-jsx';
+import { CodeBlock } from './ThreadMessageCode';
 
 interface Props {
   threadInfo: ThreadInfo;
@@ -130,6 +129,8 @@ export default function ThreadHead({
       });
   }
 
+  console.log(threadInfo)
+
   return (
     <div className={styles.threadHeadBody}>
       <div className={styles.threadHeadContainer}>
@@ -137,18 +138,26 @@ export default function ThreadHead({
           <h1>{threadInfo.title}</h1>
         </div>
         <div className={styles.threadHeadMid}>
-          <ReactMarkdown className={styles.threadContent}>
-            {threadInfo.content}
-          </ReactMarkdown>
+          {
+            <Markdown
+              options={{
+                overrides: {
+                  code: { component: CodeBlock },
+                },
+              }}
+            >
+              {threadInfo.content}
+            </Markdown>
+          }
         </div>
         <div className={styles.threadHeadBot}>
           <div className={styles.threadHeadBotLeft}>
-            <img
-              src='https://avatars.githubusercontent.com/u/56119907?v=4'
-              alt=''
-            ></img>
+            <img src={threadInfo.user.github_profile_picture} alt=''></img>
             <div className={styles.postInfoContainer}>
-              <h3> posted by {threadInfo.user.user_name}</h3>
+              <h3>
+                {' '}
+                posted by <span>{threadInfo.user.user_name}</span>
+              </h3>
               <p>{moment(threadInfo.creation_time).fromNow()}</p>
             </div>
           </div>
@@ -170,7 +179,7 @@ export default function ThreadHead({
               }`}
               onClick={handleClick}
             >
-              {<HiOutlineArrowCircleUp />}
+              {<HiOutlineArrowCircleUp className={styles.icon} />}
             </button>
             <p>{countVotes}</p>
           </div>
@@ -180,5 +189,5 @@ export default function ThreadHead({
         <EditThreadModal setShowModal={setShowModal} thread={threadInfo} />
       )}
     </div>
-
-*/
+  );
+}

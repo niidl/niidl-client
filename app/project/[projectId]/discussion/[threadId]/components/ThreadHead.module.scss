@@ -1,11 +1,18 @@
+@import '../../../../../variables.module';
+
 .threadHeadBody {
-  border-radius: 20px;
-  border: solid 1px pink;
+  font-family: $main-font;
+  color: $black-100;
+  border-radius: $border-radius-s;
+  background: linear-gradient(to bottom, $background-rgba, $background-rgba)
+      padding-box,
+    $niidl-gradient-to-bottom border-box;
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: lightgrey 4px 4px 10px;
+  box-shadow: $box-shadow;
 
   .threadHeadContainer {
     padding: 48px 52px;
@@ -15,10 +22,13 @@
       font-size: 1.2rem;
       padding: 8px 0;
     }
+
     .threadHeadMid {
       font-size: 1.2rem;
       padding: 8px 0;
+      font-weight: 300;
     }
+
     .threadHeadBot {
       display: flex;
       justify-content: space-between;
@@ -38,7 +48,14 @@
         .postInfoContainer {
           h3 {
             padding: 8px 0;
+            font-weight: 200;
+
+            span {
+              color: $niidl-scarlet;
+              font-weight: 800;
+            }
           }
+
           p {
             font-size: 0.9rem;
           }
@@ -68,12 +85,36 @@
         .upvoteButton {
           all: unset;
           font-size: 3.5rem;
+          color: $foreground-rgba;
         }
 
         .upvoteButtonAfter {
           all: unset;
           font-size: 3.5rem;
-          color: green;
+          color: $niidl-scarlet;
+        }
+
+        .edit:hover {
+          color: $niidl-scarlet
+        }
+
+        .trash:hover {
+          color: $niidl-scarlet
+        }
+
+        .upvoteButton:hover {
+          color: $niidl-scarlet
+        }
+
+        .upvoteButtonAfter:hover {
+          color: $foreground-rgba
+        }
+
+        p {
+          font-size: 1.5rem;
+          text-align: center;
+          margin: 0 0 16px 0;
+          color: $niidl-scarlet;
         }
       }
     }
