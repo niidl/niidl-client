@@ -41,11 +41,9 @@ export default function Discussions({
     useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
-  //const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     fetchThreads();
-    //refresh && setRefresh(false);
   }, []);
 
   async function fetchThreads(): Promise<void> {
@@ -104,83 +102,76 @@ export default function Discussions({
   }
 
   return (
-    <>
-      <button
-        className={styles.addThreadBtn}
-        onClick={() => setShowModal(true)}
-      >
-        + Add Thread
-      </button>
+    <div className={styles.discussionsBodyContainer}>
       <NewDiscussionModal
-      showModal={showModal}
+        showModal={showModal}
         projectId={projectId}
         projectName={projectName}
         setShowModal={setShowModal}
-        // setRefresh={setRefresh}
       />
       <div className={styles.discussionsContainer}>
         <div className={styles.discussionsTabs}>
-          <ul className={styles.ulContainer}>
-            <li className={styles.liContainer} role='presentation'>
-              <button
-                className={`${
-                  currentTab === 'general-discussion'
-                    ? styles.btnContainer
-                    : styles.buttonContainer
-                }`}
-                type='button'
-                value='general-discussion'
-                onClick={handleClick}
-              >
-                General Discussions 📢
-              </button>
-            </li>
-            <li className={styles.liContainer} role='presentation'>
-              <button
-                className={`${
-                  currentTab === 'new-ideas'
-                    ? styles.btnContainer
-                    : styles.buttonContainer
-                }`}
-                type='button'
-                value='new-ideas'
-                onClick={handleClick}
-              >
-                New Ideas 💡
-              </button>
-            </li>
-            <li className={styles.liContainer} role='presentation'>
-              <button
-                className={`${
-                  currentTab === 'newest'
-                    ? styles.btnContainer
-                    : styles.buttonContainer
-                }`}
-                type='button'
-                value='newest'
-                onClick={handleClick}
-              >
-                Newest 🆕
-              </button>
-            </li>
-            <li className={styles.liContainer} role='presentation'>
-              <button
-                className={`${
-                  currentTab === 'hot-topics'
-                    ? styles.btnContainer
-                    : styles.buttonContainer
-                }`}
-                type='button'
-                value='hot-topics'
-                onClick={handleClick}
-              >
-                Hot Topics 🔥
-              </button>
-            </li>
-          </ul>
+          <div className={styles.discussionsTags}>
+            <button
+              className={`${
+                currentTab === 'general-discussion'
+                  ? styles.btnContainer
+                  : styles.buttonContainer
+              }`}
+              type='button'
+              value='general-discussion'
+              onClick={handleClick}
+            >
+              General Discussions 📢
+            </button>
+            <button
+              className={`${
+                currentTab === 'new-ideas'
+                  ? styles.btnContainer
+                  : styles.buttonContainer
+              }`}
+              type='button'
+              value='new-ideas'
+              onClick={handleClick}
+            >
+              New Ideas 💡
+            </button>
+            <button
+              className={`${
+                currentTab === 'newest'
+                  ? styles.btnContainer
+                  : styles.buttonContainer
+              }`}
+              type='button'
+              value='newest'
+              onClick={handleClick}
+            >
+              Newest 🆕
+            </button>
+            <button
+              className={`${
+                currentTab === 'hot-topics'
+                  ? styles.btnContainer
+                  : styles.buttonContainer
+              }`}
+              type='button'
+              value='hot-topics'
+              onClick={handleClick}
+            >
+              Hot Topics 🔥
+            </button>
+          </div>
+          <div className={styles.addThreadContainer}>
+            <button
+              className={styles.addThreadBtn}
+              onClick={() => setShowModal(true)}
+            >
+              + Add Thread
+            </button>
+          </div>
         </div>
         {renderSwitch(currentTab)}
       </div>
-    </>
+    </div>
   );
 }

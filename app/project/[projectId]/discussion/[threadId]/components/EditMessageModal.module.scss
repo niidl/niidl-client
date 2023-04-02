@@ -53,6 +53,10 @@
           white-space: pre-wrap;
         }
 
+        .textArea:focus {
+          border: 2px solid $niidl-scarlet;
+        }
+
         .submitButton {
           align-self: flex-end;
           margin: 24px 24px 0 0;
