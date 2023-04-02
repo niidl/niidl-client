@@ -1,10 +1,15 @@
+@import '../../../../../variables.module';
+
 .editProjectModalBackground {
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(192, 192, 192, 0.4);
+
+  // background-color: rgba(192, 192, 192, 0.4);
+  background-color: blue;
+  filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;

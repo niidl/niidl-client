@@ -14,7 +14,7 @@
   overflow: hidden;
   box-shadow: $box-shadow;
   margin: 0 0 40px 0;
-  padding:48px 52px; 
+  padding: 48px 52px;
 
   .textInput {
     all: unset;
@@ -24,10 +24,27 @@
     resize: vertical;
     width: 100%;
     min-height: 200px;
+    white-space: pre-wrap;
   }
 
   .newMessageButton {
-    margin: 24px 0 0 0;
-    align-self: end;
+    align-self: flex-end;
+    margin: 24px 24px 0 0;
+    padding: 12px;
+    border: 2px solid transparent;
+    background: linear-gradient(to bottom, $background-rgba, $background-rgba)
+        padding-box,
+      $niidl-gradient-to-bottom border-box;
+    color: $foreground-rgba;
+    border-radius: $border-radius-s;
+    cursor: pointer;
+
+    &:hover {
+      background: $niidl-gradient-to-bottom padding-box,
+        $niidl-gradient-to-bottom border-box;
+      color: $white-100;
+      box-shadow: $box-shadow;
+      transition: box-shadow 0.15s ease-in-out;
+    }
   }
 }
