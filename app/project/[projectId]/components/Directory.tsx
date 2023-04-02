@@ -1,4 +1,5 @@
 'use client';
+import styles from './Repository.module.scss';
 import React, { useState, useMemo } from 'react';
 
 interface Props {
@@ -56,7 +57,12 @@ const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
     () =>
       files.type !== 'file' ? (
         <div>
-          <h2 onClick={() => setIsExpanded(!isExpanded)}>{files.name}</h2>
+          <div
+            className={styles.directoryFolderInstance}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {files.name}
+          </div>
           {isExpanded &&
             files.items &&
             files.items.map((file: any) => {
@@ -73,8 +79,13 @@ const Directory = ({ files, setCurrContent, newUrlFile, userRepo }: Props) => {
         </div>
       ) : (
         <>
-          <h3 onClick={() => handleFiles(files.download_url)}>{files.name}</h3>
-          <br />
+          <div 
+            className={styles.directoryFileInstance}
+            onClick={() => handleFiles(files.download_url)}
+          >
+            {files.name}
+          </div>
+          {/* <br /> */}
         </>
       ),
     [isExpanded]

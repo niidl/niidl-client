@@ -20,6 +20,7 @@ interface Props {
   allThreadsUpvotes: UpvotedThreads[];
 }
 
+
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';

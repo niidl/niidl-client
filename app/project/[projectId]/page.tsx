@@ -17,7 +17,10 @@ export interface SingleProj {
   project_image: string;
   project_type: string;
   tags: Array<{ tag_name: string; id: number }>;
-  contributors: Array<{ username: string; contributor_id: number }>;
+  contributors: Array<{
+    username: string;
+    contributor_id: number;
+    image: string }>;
   threads: Array<{
     id: number;
     content: string;
@@ -126,7 +129,6 @@ export default async function ProjectPage({ params }: any) {
           </div>
           <div>{project.description}</div>
           <div>
-            {/* <h2>Technologies</h2> */}
             <div className={styles.projectTechnologiesContainer}>
               {tagOnly.map((keyword) => (
                 <div
@@ -169,14 +171,34 @@ export default async function ProjectPage({ params }: any) {
         {project.contributors && (
           <>
             <h2>Contributors</h2>
-            <div>
-              <ul>
-                {project.contributors.map((contributor) => (
-                  <li key={contributor.contributor_id}>
-                    {contributor.username}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.projectContributorsContainer}>
+              {project.contributors.map((contributor) => (
+                <Link
+                  href={`https://github.com/${contributor.username}`}
+                  target='_blank'
+                >
+                  <div 
+                    className={styles.projectContributorInstanceContainer}
+                    key={contributor.contributor_id}
+                  >
+                    <div className={styles.projectContributorImageContainer}>
+                      <Image
+                        src={contributor.image}
+                        className={styles.projectContributorImage}
+                        alt={`Photo of ${contributor.username}`}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+
+                    <span
+                      className={styles.projectContributorUsername}
+                    >
+                      {contributor.username}
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </>
         )}

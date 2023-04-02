@@ -146,11 +146,12 @@ export default async function ThreadPage({ params }: any) {
       </div>
       {Array.isArray(messages) &&
         messages
-          .sort(
-            (a, b) =>
-              new Date(a.creation_time).getDate() -
-              new Date(b.creation_time).getDate()
-          )
+          .sort((a, b) => {
+            return (
+              new Date(a.creation_time).getTime() -
+              new Date(b.creation_time).getTime()
+            );
+          })
           .map((message, index) => {
             return (
               <div key={index}>
