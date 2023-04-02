@@ -17,7 +17,10 @@ export interface SingleProj {
   project_image: string;
   project_type: string;
   tags: Array<{ tag_name: string; id: number }>;
-  contributors: Array<{ username: string; contributor_id: number }>;
+  contributors: Array<{
+    username: string;
+    contributor_id: number;
+    image: string }>;
   threads: Array<{
     id: number;
     content: string;
@@ -170,21 +173,31 @@ export default async function ProjectPage({ params }: any) {
             <h2>Contributors</h2>
             <div className={styles.projectContributorsContainer}>
               {project.contributors.map((contributor) => (
-                <div 
-                  className={styles.projectContributorInstanceContainer}
-                  key={contributor.contributor_id}
+                <Link
+                  href={`https://github.com/${contributor.username}`}
+                  target='_blank'
                 >
-                  <div className={styles.projectContributorImageContainer}>
-                    <div className={styles.projectContributorImageMock}>
-                    </div>
-                  </div>
-
-                  <span
-                    className={styles.projectContributorUsername}
+                  <div 
+                    className={styles.projectContributorInstanceContainer}
+                    key={contributor.contributor_id}
                   >
-                    {contributor.username}
-                  </span>
-                </div>
+                    <div className={styles.projectContributorImageContainer}>
+                      <Image
+                        src={contributor.image}
+                        className={styles.projectContributorImage}
+                        alt={`Photo of ${contributor.username}`}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+
+                    <span
+                      className={styles.projectContributorUsername}
+                    >
+                      {contributor.username}
+                    </span>
+                  </div>
+                </Link>
               ))}
             </div>
           </>
