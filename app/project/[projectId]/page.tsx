@@ -117,26 +117,31 @@ export default async function ProjectPage({ params }: any) {
             alt={'Tokyo skyline on a clear day'}
           />
         </div>
-        <div>
-          <h1>{project.project_name}</h1>
+        <div className={styles.projectPageBasicInfoContentContainer}>
+          <Link href={project.github_url} target='_blank'>
+            <h1>{project.project_name}</h1>
+          </Link>
+          <div className={styles.projectBasicInfoProjectType}>
+            {project.project_type}
+          </div>
           <div>{project.description}</div>
+          <div>
+            {/* <h2>Technologies</h2> */}
+            <div className={styles.projectTechnologiesContainer}>
+              {tagOnly.map((keyword) => (
+                <div
+                  className={projectCategoryStyles.projectCategoryInstance}
+                  key={keyword}
+                >
+                  {keyword}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       {isOwner && <EditProjectButton projectInfo={project}></EditProjectButton>}
-      <div>
-        <h2>Technologies</h2>
-        <div className={styles.projectTechnologiesContainer}>
-          {tagOnly.map((keyword) => (
-            <div
-              className={projectCategoryStyles.projectCategoryInstance}
-              key={keyword}
-            >
-              {keyword}
-            </div>
-          ))}
-        </div>
-      </div>
 
       <div>
         {project.contributors && (
@@ -163,7 +168,7 @@ export default async function ProjectPage({ params }: any) {
       <div>
         {project.contributors && (
           <>
-            <h2>Contributor</h2>
+            <h2>Contributors</h2>
             <div>
               <ul>
                 {project.contributors.map((contributor) => (

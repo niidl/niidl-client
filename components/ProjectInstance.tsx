@@ -20,7 +20,10 @@ const ProjectInstance: React.FC<Props> = ({ project }) => {
           <div className={styles.projectInstanceInfoTagContainer}>
             {
               project.tags.map(tag => 
-                <div className={styles.projectInstanceInfoTag}>
+                <div
+                  className={styles.projectInstanceInfoTag}
+                  key={tag}
+                >
                   {tag}
                 </div>
               )
