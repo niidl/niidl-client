@@ -17,7 +17,6 @@
   }
 }
 
-
 .projectPageBasicInfoContainer {
   width: 100%;
   display: flex;
@@ -89,18 +88,16 @@
 
     &:hover {
       transform: scale(1.016) rotate(-0.5deg);
-      transition:
-        transform 0.25s ease-in-out;
+      transition: transform 0.25s ease-in-out;
     }
     
     .projectContributorImageContainer {
       width: 64px;
       height: 100%;
 
-      .projectContributorImageMock {
+      .projectContributorImage {
         width: 100%;
         height: 100%;
-        background-color: $niidl-indigo;
       }
     }
 
