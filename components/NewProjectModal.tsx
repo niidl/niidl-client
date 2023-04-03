@@ -27,6 +27,32 @@ export default function NewProjectModal({
   async function handleFormSubmit(event: any) {
     event.preventDefault();
 
+    const file = event.target.upload.files[0];
+    let projectName: string;
+
+    if (!file) {
+      projectName = 'niidlDefault'
+    } else {
+       projectName = event.target.elements.projectName.value
+        .split(' ')
+        .map((word: string, index: number) => {
+          if (index !== 0) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          } else {
+            return word.charAt(0).toLowerCase() + word.slice(1);
+          }
+        })
+        .join('');
+
+      const formData = new FormData();
+      formData.append('upload', file);
+
+      await fetch(`${isProduction}/projects/upload?newName=${projectName}`, {
+        method: 'POST',
+        body: formData,
+      });
+    }
+
     const formBody: any = {
       sessId: sessionId + 'test',
       project_name: event.target.elements.projectName.value,
@@ -34,7 +60,7 @@ export default function NewProjectModal({
       description: event.target.elements.projectDescription.value,
       github_url: event.target.elements.projectGithubRepo.value,
       owner: userName,
-      project_image: event.target.elements.projectImage.value,
+      project_image: `https://niidl.sgp1.digitaloceanspaces.com/%2F${projectName}%2F${projectName}_image.jpg`,
     };
 
     await fetch(isProduction + '/projects/newProject', {
@@ -70,12 +96,8 @@ export default function NewProjectModal({
       body: JSON.stringify(tagArray),
     });
 
-    onClose();
+    // onClose();
   }
-
-
-
-
 
   return showModal ? (
     <div className={styles.newProjectModalBackground} onClick={() => onClose()}>
@@ -92,13 +114,13 @@ export default function NewProjectModal({
         <h2>Create New Project</h2>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor="project_name">Project Title</label>
+            <label htmlFor='project_name'>Project Title</label>
             <input type={'text'} name={'project_name'} id={'projectName'} />
           </div>
 
           <div>
-            <label htmlFor="project_type">Project Type</label>
-            <select name="projectType" id="projectType">
+            <label htmlFor='project_type'>Project Type</label>
+            <select name='projectType' id='projectType'>
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
@@ -106,7 +128,7 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="description">Description</label>
+            <label htmlFor='description'>Description</label>
             <input
               type={'text'}
               name={'description'}
@@ -115,12 +137,12 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="github_url">Github Repository</label>
+            <label htmlFor='github_url'>Github Repository</label>
             <input type={'text'} name={'github_url'} id={'projectGithubRepo'} />
           </div>
 
           <div>
-            <label htmlFor="tags">Tags</label>
+            <label htmlFor='tags'>Tags</label>
             <select name={'tags'} id={'projectTags'} multiple>
               {tagsOnly.map((category) => {
                 return (
@@ -130,7 +152,7 @@ export default function NewProjectModal({
                 );
               })}
             </select>
-            <label htmlFor="tags">Langugages</label>
+            <label htmlFor='tags'>Languages</label>
             <select name={'tags'} id={'projectTags'} multiple>
               {langOnly.map((category) => {
                 return (
@@ -143,8 +165,8 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="project_image">Project Image</label>
-            <input type={'text'} name={'project_image'} id={'projectImage'} />
+            <label htmlFor='file'>Upload a file</label>
+            <input type='file' name='upload' />
           </div>
 
           <input type={'submit'}></input>
