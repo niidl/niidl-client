@@ -29,7 +29,11 @@ export default function Repository({ projectDirectory }: Props) {
         userRepo={userRepo}
       />
       <div>
-        <pre>{currContent}</pre>
+        <pre 
+          className={currContent ? styles.repositoryFileContent : ''}
+        >
+          {currContent}
+        </pre>
       </div>
     </div>
   );

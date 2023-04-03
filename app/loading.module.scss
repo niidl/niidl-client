@@ -1,0 +1,57 @@
+@import './variables.module';
+
+.loadingImage,
+.niidlLoadName {
+  position: absolute;
+  top: calc(50% + 24px);
+  left: calc(50% - 17px);
+}
+
+.loadingContainer {
+  width: 140px;
+  height: 68px;
+  position: absolute;
+  top: calc(50% - 34px);
+  left: calc(50% - 70px);
+}
+
+.loadingLoader {
+  width: 140px;
+  height: 140px;
+  border-style: solid;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotate 3s ease-in-out infinite;
+  transform: rotate(-200deg);
+}
+
+@keyframes rotate {
+  0% {
+    border-width: 10px;
+    border-top-color: $niidl-scarlet;
+  }
+
+  25% {
+    border-width: 10px;
+    border-top-color: $niidl-indigo;
+  }
+
+  50% {
+    transform: rotate(115deg);
+    border-width: 10px;
+    border-top-color: $niidl-scarlet;
+  }
+
+  75% {
+    border-width: 10px;
+    border-top-color: $niidl-indigo;
+  }
+
+  100% {
+    border-width: 10px;
+    border-top-color: $niidl-scarlet;
+  }
+}

@@ -6,6 +6,7 @@ import ThreadHead from './components/ThreadHead';
 import LoginToMessage from './components/LoginToMessage';
 import { cookies } from 'next/headers';
 import { UpvotedThreads } from '../components/GeneralDiscussions';
+import { HiOutlineArrowLongLeft } from 'react-icons/hi2';
 
 interface Message {
   id: number;
@@ -15,8 +16,9 @@ interface Message {
   creation_time: Date;
   user: {
     user_name: string;
+    github_profile_picture: string;
   };
-  upvotes: number;
+  upvotes_messages: number;
 }
 
 export interface ThreadInfo {
@@ -28,9 +30,10 @@ export interface ThreadInfo {
   title: string;
   user: {
     user_name: string;
+    github_profile_picture: string;
   };
   thread_tag: string;
-  upvotes: number;
+  upvotes_threads: number;
   isPinned: boolean;
 }
 
@@ -128,7 +131,10 @@ export default async function ThreadPage({ params }: any) {
       <div>
         <div className={styles.backContainer}>
           <Link href={`/project/${threadInfo.project_id}`}>
-            <h4 className={styles.backBtn}>Back to Project.</h4>
+            <h4>
+              <HiOutlineArrowLongLeft className={styles.arrowComponent} />
+              Back to Project.
+            </h4>
           </Link>
         </div>
 
@@ -140,11 +146,12 @@ export default async function ThreadPage({ params }: any) {
       </div>
       {Array.isArray(messages) &&
         messages
-          .sort(
-            (a, b) =>
-              new Date(a.creation_time).getDate() -
-              new Date(b.creation_time).getDate()
-          )
+          .sort((a, b) => {
+            return (
+              new Date(a.creation_time).getTime() -
+              new Date(b.creation_time).getTime()
+            );
+          })
           .map((message, index) => {
             return (
               <div key={index}>
@@ -156,9 +163,10 @@ export default async function ThreadPage({ params }: any) {
                   projectId={threadInfo.project_id}
                   threadId={threadInfo.id}
                   messageId={message.id}
-                  upvotes={message.upvotes}
+                  upvotes_messages={message.upvotes_messages}
                   allUpvotes={allMessagesUpvotes}
                   isOwner={isOwner}
+                  githubPhoto={message.user.github_profile_picture}
                 />
               </div>
             );

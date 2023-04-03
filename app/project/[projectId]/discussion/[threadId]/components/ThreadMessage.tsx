@@ -1,16 +1,17 @@
 'use client';
 import Cookies from 'js-cookie';
 import moment from 'moment';
-import styles from '../page.module.scss';
+import styles from './ThreadMessage.module.scss';
 import { BsTrash } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BiUpvote } from 'react-icons/bi';
 import { UpvotedMessages } from '../page';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'markdown-to-jsx';
 import EditMessageModal from './EditMessageModal';
+import { CodeBlock } from './ThreadMessageCode';
+import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 
 interface Props {
   content: string;
@@ -20,9 +21,10 @@ interface Props {
   projectId: number;
   threadId: number;
   messageId: number;
-  upvotes: number;
+  upvotes_messages: number;
   allUpvotes: UpvotedMessages[];
   isOwner: boolean;
+  githubPhoto: string;
 }
 
 const isProduction: string = process.env.PRODUCTION
@@ -33,13 +35,13 @@ export default function ThreadMessage({
   content,
   creation_time,
   username,
-  projectOwner,
   projectId,
   threadId,
   messageId,
-  upvotes,
+  upvotes_messages,
   allUpvotes,
   isOwner,
+  githubPhoto,
 }: Props) {
   const loggedUser = Cookies.get('userName');
   const router = useRouter();
@@ -49,7 +51,7 @@ export default function ThreadMessage({
   >(allUpvotes);
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const [canDelete, setCanDelete] = useState<boolean>(false);
-  const [countVotes, setCountVotes] = useState<number>(upvotes);
+  const [countVotes, setCountVotes] = useState<number>(upvotes_messages);
 
   useEffect(() => {
     checkUserRole();
@@ -71,7 +73,6 @@ export default function ThreadMessage({
     if (userUpvotedMessages) {
       for (const message of userUpvotedMessages) {
         if (message.message_id === idToString) {
-          setCountVotes(countVotes + 1);
           setIsUpvoted(true);
         }
       }
@@ -140,39 +141,54 @@ export default function ThreadMessage({
   }
 
   return (
-    <div className={styles.messageContainer}>
-      <div className={styles.messageContainerTop}>
-        <h3>{username}</h3>
-        <h4>{moment(creation_time).fromNow()}</h4>
-      </div>
-      <div className={styles.messageContainerBot}>
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
-
-      <div className={styles.lastContainer}>
-        <div className={styles.upvotesContainer}>
-          <button
-            className={`${
-              isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
-            }`}
-            onClick={handleClick}
-          >
-            {<BiUpvote />}
-          </button>
-          <h4>{countVotes}</h4>
+    <div className={styles.threadMessageBody}>
+      <div className={styles.threadMessageContainer}>
+        <div className={styles.threadMessageMid}>
+          {
+            <Markdown
+              options={{
+                overrides: {
+                  code: { component: CodeBlock },
+                },
+              }}
+            >
+              {content}
+            </Markdown>
+          }
         </div>
-        <div className={styles.editMessage}>
-          {canEdit && (
-            <div className={styles.messageIcons}>
-              <CiEdit className={styles.edit} onClick={handleEdit} />
-              <BsTrash className={styles.trash} onClick={handleDelete} />
+        <div className={styles.threadMessageBot}>
+          <div className={styles.threadMessageBotLeft}>
+            <img src={githubPhoto} alt=''></img>
+            <div className={styles.postInfoContainer}>
+              <h3>
+                {' '}
+                posted by <span>{username}</span>
+              </h3>
+              <p>{moment(creation_time).fromNow()}</p>
             </div>
-          )}
-          {canDelete && (
-            <div className={styles.messageIcons}>
-              <BsTrash className={styles.trash} onClick={handleDelete} />
-            </div>
-          )}
+          </div>
+          <div className={styles.threadMessageBotRight}>
+            {canEdit && (
+              <div className={styles.messageIcons}>
+                <CiEdit className={styles.edit} onClick={handleEdit} />
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            {canDelete && (
+              <div className={styles.messageIcons}>
+                <BsTrash className={styles.trash} onClick={handleDelete} />
+              </div>
+            )}
+            <button
+              className={`${
+                isUpvoted ? styles.upvoteButtonAfter : styles.upvoteButton
+              }`}
+              onClick={handleClick}
+            >
+              {<HiOutlineArrowCircleUp className={styles.icon} />}
+            </button>
+            <p>{countVotes}</p>
+          </div>
         </div>
       </div>
       {showModal && (

@@ -17,7 +17,11 @@ export interface SingleProj {
   project_image: string;
   project_type: string;
   tags: Array<{ tag_name: string; id: number }>;
-  contributors: Array<{ username: string; contributor_id: number }>;
+  contributors: Array<{
+    username: string;
+    contributor_id: number;
+    image: string;
+  }>;
   threads: Array<{
     id: number;
     content: string;
@@ -26,7 +30,7 @@ export interface SingleProj {
     creation_time: Date;
     title: string;
     thread_tag: string;
-    upvotes: number;
+    upvotes_threads: number;
     isPinned: boolean;
     user: {
       user_name: string;
@@ -117,26 +121,30 @@ export default async function ProjectPage({ params }: any) {
             alt={'Tokyo skyline on a clear day'}
           />
         </div>
-        <div>
-          <h1>{project.project_name}</h1>
+        <div className={styles.projectPageBasicInfoContentContainer}>
+          <Link href={project.github_url} target="_blank">
+            <h1>{project.project_name}</h1>
+          </Link>
+          <div className={styles.projectBasicInfoProjectType}>
+            {project.project_type}
+          </div>
           <div>{project.description}</div>
+          <div>
+            <div className={styles.projectTechnologiesContainer}>
+              {tagOnly.map((keyword) => (
+                <div
+                  className={projectCategoryStyles.projectCategoryInstance}
+                  key={keyword}
+                >
+                  {keyword}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       {isOwner && <EditProjectButton projectInfo={project}></EditProjectButton>}
-      <div>
-        <h2>Technologies</h2>
-        <div className={styles.projectTechnologiesContainer}>
-          {tagOnly.map((keyword) => (
-            <div
-              className={projectCategoryStyles.projectCategoryInstance}
-              key={keyword}
-            >
-              {keyword}
-            </div>
-          ))}
-        </div>
-      </div>
 
       <div>
         {project.contributors && (
@@ -163,15 +171,34 @@ export default async function ProjectPage({ params }: any) {
       <div>
         {project.contributors && (
           <>
-            <h2>Contributor</h2>
-            <div>
-              <ul>
-                {project.contributors.map((contributor) => (
-                  <li key={contributor.contributor_id}>
-                    {contributor.username}
-                  </li>
-                ))}
-              </ul>
+            <h2>Contributors</h2>
+            <div className={styles.projectContributorsContainer}>
+              {project.contributors.map((contributor) => (
+                <Link
+                  key={contributor.contributor_id}
+                  href={`https://github.com/${contributor.username}`}
+                  target="_blank"
+                >
+                  <div
+                    className={styles.projectContributorInstanceContainer}
+                    key={contributor.contributor_id}
+                  >
+                    <div className={styles.projectContributorImageContainer}>
+                      <Image
+                        src={contributor.image}
+                        className={styles.projectContributorImage}
+                        alt={`Photo of ${contributor.username}`}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+
+                    <span className={styles.projectContributorUsername}>
+                      {contributor.username}
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
           </>
         )}

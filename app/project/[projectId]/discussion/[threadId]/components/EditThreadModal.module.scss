@@ -1,3 +1,5 @@
+@import '../../../../../variables.module';
+
 .editProjectModalBackground {
   position: fixed;
   left: 0;
@@ -5,6 +7,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(192, 192, 192, 0.4);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,18 +16,21 @@
     width: 600px;
     height: auto;
     position: relative;
-    background-color: darkcyan;
+    background-color: #fff;
     padding: 24px;
     display: flex;
     flex-direction: column;
+    border-radius: $border-radius-s;
+    color: $niidl-indigo;
 
     .closeButton {
       font-size: 1.5rem;
       cursor: pointer;
+      align-self: flex-end;
     }
 
     .closeButton:hover {
-      color: white;
+      color: $niidl-scarlet;
     }
 
     .editContainer {
@@ -35,48 +41,68 @@
         display: flex;
         flex-direction: column;
 
+        p {
+          margin: 0 0 16px 0;
+          letter-spacing: 2px;
+          color: $foreground-rgba;
+          text-transform: uppercase;
+          align-self: start;
+        }
+
+        .threadTitle {
+          all:unset;
+          margin: 0 0 12px 0;
+          border-bottom: 1px solid $foreground-rgba;
+          color: $foreground-rgba;
+          width: 100%;
+        }
+
+        .threadTitle:focus {
+          border-bottom: 1px solid $niidl-scarlet;
+        }
 
         .textArea {
-          min-height: 200px;
+          all: unset;
+          margin: 0 0 12px 0;
+          color: $black-100;
+          border-radius: $border-radius-s;
+          padding: 20px;
+          border: 2px solid #d4d4d4;
           resize: vertical;
+          min-height: 200px;
+          height: auto;
+          white-space: pre-wrap;
         }
 
+        .textArea:focus {
+          border: 2px solid $niidl-scarlet;
+        }
 
         .submitButton {
-          margin: 10px 0px;
+          align-self: flex-end;
+          margin: 24px 24px 0 0;
+          padding: 12px;
+          border: 2px solid transparent;
+          background: linear-gradient(
+                to bottom,
+                $background-rgba,
+                $background-rgba
+              )
+              padding-box,
+            $niidl-gradient-to-bottom border-box;
+          color: $foreground-rgba;
+          border-radius: $border-radius-s;
+          cursor: pointer;
+
+          &:hover {
+            background: $niidl-gradient-to-bottom padding-box,
+              $niidl-gradient-to-bottom border-box;
+            color: $white-100;
+            box-shadow: $box-shadow;
+            transition: box-shadow 0.15s ease-in-out;
+          }
         }
       }
-    }
-
-    & > .editProjectModalCloseBtn {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      padding: 4px;
-    }
-
-    & > h2 {
-      margin: 0 0 6px 0;
-    }
-
-    & > form > div {
-      margin: 0 0 12px 0;
-
-      & > label {
-        display: block;
-        margin: 0 0 6px 0;
-      }
-
-      & > input {
-        width: 100%;
-        height: 32px;
-        padding: 8px;
-        display: block;
-      }
-    }
-
-    input[type='submit'] {
-      padding: 6px;
     }
   }
 }

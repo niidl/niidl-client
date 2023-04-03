@@ -1,17 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-$background-rgba: rgba(232, 232, 232, 1.0);
-$foreground-rgba: rgba(56, 56, 56, 1.0);
-
-$main-project-instance-color: rgb(22, 104, 104);
-$secondary-project-instance-color: rgb(38, 128, 128);
-
-$main-font: 'Rubik', sans-serif;
-
-:root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-}
+@import './variables.module';
 
 * {
   box-sizing: border-box;
@@ -43,20 +31,15 @@ a {
   align-items: center;
 
   .logo {
-    background: linear-gradient(
-      45deg,
-      $main-project-instance-color,
-      $secondary-project-instance-color
-    );
+    background:
+    linear-gradient(180deg, $niidl-scarlet, $niidl-indigo);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     font-size: 36px;
 
     &:hover {
-      background: linear-gradient(-30deg,
-            $main-project-instance-color,
-            $secondary-project-instance-color );
+      background: linear-gradient(150deg, $niidl-scarlet, $niidl-indigo);
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }

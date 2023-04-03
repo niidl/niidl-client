@@ -27,9 +27,10 @@ const userName: string | undefined = Cookies.get('userName');
 const sessionId: string | undefined = Cookies.get('sessionToken');
 
 export default function Home() {
+  const [basedOnGithub, setBasedOnGithub] = useState<boolean>(false);
   const [projectCategories, setProjectCategories] = useState<Array<string>>([]);
   const [projectTypes, setProjectTypes] = useState<Array<string>>([]);
-  const [acceptedCookies, setAcceptedCookies] = useState<boolean>(false)
+  const [acceptedCookies, setAcceptedCookies] = useState<boolean>(false);
   const [selectedProjectCategories, setSelectedProjectCategories] = useState<
     string[]
   >([]);
@@ -50,7 +51,7 @@ export default function Home() {
   ]);
 
   //////////////////////function//////////////////////////////////////////
-  const [showVim, setShowVim] = useState<Boolean>(false);
+  const [VIM, setVIM] = useState<boolean>(false);
   const [demoGHProjects, setdemoGHProjects] = useState<Project[]>([
     {
       id: 0,
@@ -62,12 +63,12 @@ export default function Home() {
 
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [tagsOnly, setTagsOnly] = useState<Array<string>>([]);
-  const [langOnly, setLangOnly] = useState<Array<string>>([])
+  const [langOnly, setLangOnly] = useState<Array<string>>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const searchInputRef = useRef<any>();
 
-  let acceptedAllCookies:string|undefined = 'base'
-  acceptedAllCookies = Cookies.get('AcceptedCookies')
+  let acceptedAllCookies: string | undefined = 'base';
+  acceptedAllCookies = Cookies.get('AcceptedCookies');
 
   useEffect(() => {
     fetchAllProjects();
@@ -81,7 +82,7 @@ export default function Home() {
 
   useEffect(() => {
     cookieAcceptCheck();
-  }, [acceptedCookies])
+  }, [acceptedCookies]);
 
   //////////////////////FetchingDemo//////////////////////////////////////////
   async function fetchDemoGitHubProjects(): Promise<any> {
@@ -104,9 +105,9 @@ export default function Home() {
   }
   /////////////////////////////^^^ FetchingDemo ^^^///////////////////////////////
 
-  async function cookieAcceptCheck(){
+  async function cookieAcceptCheck() {
     if (acceptedAllCookies === 'Accepted' || acceptedAllCookies === 'Declined')
-    return setAcceptedCookies(true)
+      return setAcceptedCookies(true);
   }
 
   async function fetchGitHubProjects(): Promise<any> {
@@ -158,22 +159,22 @@ export default function Home() {
     setProjectCategories(cleanedTags);
   }
 
-  async function fetchTags(): Promise<void>{
+  async function fetchTags(): Promise<void> {
     const response = await fetch(`${isProduction}/tagNames/tagOnly`);
-    const data: Array<{tag_name:''}> = await response.json();
-    const cleanedTags: Array<string> = data.map((single)=>{
-      return single.tag_name
-    })
-    setTagsOnly(cleanedTags)
+    const data: Array<{ tag_name: '' }> = await response.json();
+    const cleanedTags: Array<string> = data.map((single) => {
+      return single.tag_name;
+    });
+    setTagsOnly(cleanedTags);
   }
 
-  async function fetchLanguage(): Promise<void>{
+  async function fetchLanguage(): Promise<void> {
     const response = await fetch(`${isProduction}/tagNames/langOnly`);
-    const data: Array<{tag_name:''}> = await response.json();
-    const cleanedTags: Array<string> = data.map((single)=>{
-      return single.tag_name
-    })
-    setLangOnly(cleanedTags)
+    const data: Array<{ tag_name: '' }> = await response.json();
+    const cleanedTags: Array<string> = data.map((single) => {
+      return single.tag_name;
+    });
+    setLangOnly(cleanedTags);
   }
 
   async function fetchProjectTypes(): Promise<void> {
@@ -187,7 +188,7 @@ export default function Home() {
 
   useEffect(() => {
     setFilteredProjects(filterByTags());
-  }, [selectedProjectCategories]);
+  }, [selectedProjectCategories, basedOnGithub]);
 
   function handleProjectCategoryClick(event: any) {
     !selectedProjectCategories.includes(event.target.innerText)
@@ -206,11 +207,9 @@ export default function Home() {
     let projectsUnderTag: Project[] = [];
     let uniqueProjectsUnderTag: Project[] = [];
     let currentProjects: Project[] = [];
-    setShowVim(false); //DemoVar
 
-    if (selectedProjectCategories.includes('Based on Github')) {
+    if (basedOnGithub) {
       currentProjects = allGHProjects;
-      setShowVim(true); //DemoVar
     } else {
       currentProjects = allProjects;
     }
@@ -238,10 +237,8 @@ export default function Home() {
   function handleSubmit(event: any): void {
     event.preventDefault();
     ///Demo if
-    if (
-      searchInputRef.current.value.toLowerCase() === 'vim' &&
-      showVim === true
-    ) {
+    if (searchInputRef.current.value.toLowerCase() === 'vim' && basedOnGithub) {
+      setVIM(true);
       setFilteredProjects(demoGHProjects);
       //Demo if
     } else {
@@ -272,27 +269,13 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div>
-      <div> {!acceptedCookies  && (<CookieModal SetAcceptedCookies={setAcceptedCookies}/>)} </div>
-        <h1>Projects</h1>
-        <div className={styles.addOrSearchContainer}>
-          <button onClick={() => setShowModal(true)}>+ Add Project</button>
-
-          <form onSubmit={handleSubmit}>
-            <div className='relative'>
-              <input
-                type='search'
-                id='default-search'
-                ref={searchInputRef}
-                className='searchInput'
-                placeholder='Search for your project...'
-                required
-              />
-              <button type='submit' className='searchButton'>
-                Search
-              </button>
-            </div>
-          </form>
+        <div>
+          {' '}
+          {!acceptedCookies && (
+            <CookieModal SetAcceptedCookies={setAcceptedCookies} />
+          )}{' '}
         </div>
+        <h1>Your thread to open-source projects.</h1>
         <NewProjectModal
           showModal={showModal}
           onClose={() => setShowModal(false)}
@@ -304,7 +287,7 @@ export default function Home() {
           sessionId={sessionId}
         />
         <div>
-          <h2>Project Categories</h2>
+          {/* <h2>Project Categories</h2> */}
           <div className={styles.projectCategoriesContainer}>
             {projectCategories.map((projectCategory) => (
               <ProjectCategory
@@ -316,19 +299,76 @@ export default function Home() {
           </div>
         </div>
 
+        <div className={styles.addOrSearchContainer}>
+          <div className={styles.searchbarAndGithubBtnContainer}>
+            <form
+              className={styles.projectSearchbarContainer}
+              onSubmit={handleSubmit}
+            >
+              <input
+                type="search"
+                id="default-search"
+                ref={searchInputRef}
+                className={styles.projectSearchbarInput}
+                placeholder="Search for your project..."
+                required
+              />
+              <button
+                type="submit"
+                className={styles.projectSearchbarSearchBtn}
+              >
+                🔍
+              </button>
+            </form>
+
+            <button
+              className={styles.addProjectBtn}
+              onClick={() => {
+                setVIM(false);
+                if (basedOnGithub) {
+                  setBasedOnGithub(false);
+                } else {
+                  setBasedOnGithub(true);
+                }
+              }}
+            >
+              Projects Based on Github
+            </button>
+          </div>
+
+          <button
+            className={styles.addProjectBtn}
+            onClick={() => setShowModal(true)}
+          >
+            + Add Project
+          </button>
+        </div>
+
         <div>
-          <h2>Filtered Projects</h2>
+          {/* <h2>Filtered Projects</h2> */}
           <div className={styles.filteredProjectsContainer}>
-            {filteredProjects.length
-              ? filteredProjects.map((filteredProject) => (
+            {selectedProjectCategories.length || VIM ? ( //Categories or VIM?
+              filteredProjects.length ? (
+                filteredProjects.map((filteredProject) => (
                   <ProjectInstance
                     project={filteredProject}
                     key={filteredProject.id}
                   />
                 ))
-              : allProjects.map((project) => (
-                  <ProjectInstance project={project} key={project.id} />
-                ))}
+              ) : (
+                <div className="noResultsOnFilter">
+                  No projects found for these selected filters.
+                </div>
+              )
+            ) : basedOnGithub ? ( //Not filtered projects
+              allGHProjects.map((project) => (
+                <ProjectInstance project={project} key={project.id} />
+              ))
+            ) : (
+              allProjects.map((project) => (
+                <ProjectInstance project={project} key={project.id} />
+              ))
+            )}
           </div>
         </div>
       </div>

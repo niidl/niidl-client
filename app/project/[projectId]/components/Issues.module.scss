@@ -1,32 +1,52 @@
-$foreground-table-border-rgba: rgb(198, 198, 198);
-
-$main-issue-instance-title-color: rgb(22, 104, 104);
-$main-issue-instance-border-color: rgb(22, 104, 104);
+@import '../../../variables.module';
 
 .issuesContainer {
   width: 100%;
   max-height: 400px;
+  padding: 16px;
   overflow-y: scroll;
-  border: 2px solid $foreground-table-border-rgba;
-  border-radius: 16px;
-  display: flex;
-  flex-flow: column nowrap;
-
+  border-radius: $border-radius-s;
+  box-shadow: $box-shadow;
   
   .issueInstance {
     width: calc(100% - 24px);
     height: 64px;
-    border: 2px solid $main-issue-instance-border-color;
+    border: 2px solid transparent;
     border-radius: 16px;
-    margin: 12px auto 0 auto;
-    padding: 0 32px;
+    box-shadow: $box-shadow;
+    margin: 16px auto 0 auto;
+    padding: 36px 24px;
+    transition: 
+      transform 0.25s ease-in-out,
+      border 0.25s ease-in-out;
     display: flex;
+    flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+    
+    &:hover {
+      border: 2px solid $niidl-scarlet;
+      transform: scale(1.02);
+      transition: 
+        transform 0.25s ease-in-out,
+        border 0.25s ease-in-out;
+    }
 
-    &:first-child {
+    .issueInstanceTitle {
+      color: $niidl-indigo;
       font-weight: 600;
-      color: $main-issue-instance-title-color;
+      margin: 0 0 4px 0;
+    }
+
+    .issueInstanceAuthor {
+      font-size: 12px;
+    }
+
+    .issueInstanceTimestamp {
+      font-size: 12px;
+      display: flex;
+      justify-content: right;
+      align-items: flex-end;
     }
   }
 }
