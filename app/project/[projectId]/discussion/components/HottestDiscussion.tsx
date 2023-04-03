@@ -56,21 +56,3 @@ export const HottestDiscussion = ({ projectDiscussion, projectId }: Props) => {
     </div>
   );
 };
-/*
-
-  const username = Cookies.get('userName');
-  const [userUpvotedThreads, setUserUpvotedThreads] = useState<
-    UpvotedThreads | Promise<UpvotedThreads>
-  >();
-
-  useEffect(() => {
-    setUserUpvotedThreads(getUserUpvotedThreads());
-  }, []);
-
-  async function getUserUpvotedThreads(): Promise<UpvotedThreads> {
-    const res = await fetch(
-      `https://niidl.net/projects/${projectId}/upvotes/${username}`
-    );
-    return res.json();
-  }
-*/

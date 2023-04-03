@@ -38,10 +38,6 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
         },
       }
     );
-    // .then((res) => {
-    //   setShowModal(false);
-    //   router.refresh();
-    // });
   }
 
   return (
@@ -61,15 +57,16 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
             }}
           >
             <div>
-              <label htmlFor="project_name">Thread Title</label>
+              <p>thread title</p>
               <input
                 type={'text'}
                 name={'project_name'}
-                id={'projectName'}
+                className={styles.threadTitle}
                 ref={titleReference}
                 defaultValue={thread.title}
               />
             </div>
+            <p>Thread Content</p>
             <textarea
               name={'content'}
               id={'messageContent'}
