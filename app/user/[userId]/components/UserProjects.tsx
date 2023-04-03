@@ -5,27 +5,46 @@ interface Props {
   userProjects: Array<{
     id: number,
     project_name: string
-  }>
+  }>,
+  user_name: string
 }
 
-export default function UserProjects({ userProjects }: Props) {
+export default function UserProjects({ userProjects, user_name }: Props) {
   return (
-    <div className={styles.userProjectsContainer}>
-      {
-        userProjects.map(userProject => 
-          <div 
-            className={styles.userProjectInstance}
-            key={userProject.project_name}
-          >
-            <Link
-              href={`/project/${userProject.id}`}
-            >
-              <div className={styles.userProjectInstanceImageTemp}></div>
-              <h3>{userProject.project_name}</h3>
-            </Link>
-          </div>
-        )
-      }
-    </div>
-  )
+    <>
+    {
+      userProjects.length > 0 ?
+      (
+        <div className={styles.userProjectsContainer}>
+          {
+            userProjects.map(userProject => 
+              <Link
+                href={`/project/${userProject.id}`}
+                key={userProject.id}
+              >
+                <div 
+                  className={styles.userProjectInstance}
+                  key={userProject.project_name}
+                >
+                  <div className={styles.userProjectInstanceImageContainer}>
+                    <div className={styles.userProjectInstanceImageTemp}></div>
+                  </div>
+                  
+                  <div className={styles.userProjectInstanceInfoContainer}>
+                    <h3>{userProject.project_name}</h3>
+                  </div>
+                </div>
+              </Link>
+            )
+          }
+        </div>
+      ) :
+      (
+        <div className={styles.emptyUserContributionContainer}>
+          {`${user_name} has not created any projects on niidl yet.`}
+        </div>
+      )
+    }
+  </>
+  );
 }

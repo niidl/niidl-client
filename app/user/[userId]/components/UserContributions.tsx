@@ -12,10 +12,11 @@ interface Props {
     thread: {
       title: string
     }
-  }>
+  }>,
+  user_name: string
 }
 
-export default function UserContributions({ userMessages }: Props) {
+export default function UserContributions({ userMessages, user_name }: Props) {
   const [selectedContributionView, setSelectedContributionView] =
     useState<string>('Code');
 
@@ -32,7 +33,7 @@ export default function UserContributions({ userMessages }: Props) {
         >
           Code
         </span> */}
-        <span
+        {/* <span
           onClick={() => setSelectedContributionView(() => 'Discussion')}
           className={
             selectedContributionView === 'Discussion'
@@ -41,10 +42,19 @@ export default function UserContributions({ userMessages }: Props) {
           }
         > 
           Discussion
-        </span>
-        <UserDiscussionContributions 
+        </span> */}
+        
+        {
+          userMessages.length > 0 ?
+          <UserDiscussionContributions 
             userMessages={userMessages}
-          />
+            user_name={user_name}
+          /> :
+          <div className={styles.emptyUserContributionContainer}>
+            {`${user_name} has not contributed to any discussions on niidl yet.`}
+          </div>
+        }
+
         {/* {
           selectedContributionView === 'Code' ?
           <UserCodeContributions /> :
