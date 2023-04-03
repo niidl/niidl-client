@@ -64,7 +64,6 @@ export default function NewProjectModal({
     }
 
     const formBody: any = {
-      sessId: sessionId + 'test',
       project_name: event.target.elements.projectName.value,
       project_type: event.target.elements.projectType.value,
       description: event.target.elements.projectDescription.value,
