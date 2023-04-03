@@ -1,63 +1,61 @@
-$foreground-table-border-rgba: rgb(192, 192, 192);
-
-$main-contribution-instance-color: rgb(22, 104, 104);
+@import '../../../variables.module';
 
 .userContributionsContainer {
   width: 100%;
-  padding: 24px;
-  border: 2px solid $foreground-table-border-rgba;
-  border-radius: 16px;
+  padding: 36px;
+  overflow-y: scroll;
+  border-radius: $border-radius-s;
+  box-shadow: $box-shadow;
 
   & > span {
     margin: 0 6px 0 0;
   }
 }
 
-.userCodeContributionsContainer {
-  max-height: 368px;
-  overflow-y: scroll;
-  margin: 12px 0 0 0;
-  padding: 0 18px 0 0;
-}
-
-.userCodeContributionInstanceContainer {
-  width: 100%;
-  height: 72px;
-  background-color: darkslategrey;
-  border-radius: 4px;
-  margin: 12px 0;
-  padding: 12px 24px;
-
-  & > code {
-    color: #FFFFFF;
-  }
-}
-
 .userDiscussionContributionsContainer {
-  max-height: 368px;
-  overflow-y: scroll;
-  margin: 18px 0 0 0;
-  padding: 0 18px 0 0;
+  width: 100%;
+  max-height: 400px;
   
   .userDiscussionContributionInstance {
     width: 100%;
-    border: 2px solid $main-contribution-instance-color;
-    border-radius: 16px;
-    margin: 0 0 12px 0;
-    padding: 16px 32px;
+    height: 72px;
+    border: 2px solid transparent;
+    border-radius: $border-radius-s;
+    box-shadow: $box-shadow;
+    margin: 16px auto 0 auto;
+    padding: 36px 24px;
+    transition:
+      transform 0.25s ease-in-out,
+      border 0.25s ease-in-out;
     display: flex;
+    flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
 
+    &:hover {
+      border: 2px solid $niidl-scarlet;
+      transform: scale(1.02);
+      transition:
+        transform 0.25s ease-in-out,
+        border 0.25s ease-in-out;
+    }
+
+    &:first-child {
+      margin: 0 auto 16px auto;
+    }
+
     .userDiscussionContributionInstanceContent {
       width: inherit;
+      color: $niidl-indigo;
+      font-weight: 600;
+      margin: 0 0 4px 0;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; 
+      text-overflow: ellipsis;
     }
 
     .userDiscussionContributionInstanceThreadTitle {
-      font-size: 14px;
+      font-size: 12px;
 
       span {
         font-style: italic;
@@ -69,6 +67,13 @@ $main-contribution-instance-color: rgb(22, 104, 104);
       margin: 8px 0 0 0;
     }
   }
+}
+
+.emptyUserContributionContainer {
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.4px;
 }
 
 .selectedView {

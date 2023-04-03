@@ -3,45 +3,7 @@ import Link from 'next/link';
 import styles from './page.module.scss';
 import UserProjects from './components/UserProjects';
 import UserContributions from './components/UserContributions';
-import Cookies from 'js-cookie';
-
-const userMockData = [
-  {
-    id: -1,
-    first_name: 'Bryan',
-    last_name: 'Cendales',
-    github_url: 'https://github.com/MrBCendales',
-    user_name: 'MrBCendales',
-    email: 'bryan@bryancendales.com',
-    github_profile_picture:
-      'https://avatars.githubusercontent.com/u/114232631?v=4',
-    links: [
-      {
-        name: 'Twitter',
-        url: 'https://twitter.com/mcdonalds',
-      },
-      {
-        name: 'LinkedIn',
-        url: 'https://linkedin.com',
-      },
-      {
-        name: 'Website',
-        url: 'https://codechrysalis.io',
-      },
-    ],
-    user_projects: [
-      {
-        id: -2,
-        project_name: 'Pokedex',
-      },
-      {
-        id: -3,
-        project_name: 'The super noodle recipe',
-      },
-    ],
-  },
-];
-
+import { FaGithub, FaTwitter, FaLinkedin, FaMedium } from 'react-icons/fa';
 
 interface User {
   id: number;
@@ -62,10 +24,6 @@ interface UserProject {
   project_name: string;
   project_image: string;
 }
-interface BioLink {
-  name: string;
-  url: string;
-}
 
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
@@ -81,7 +39,7 @@ async function getUserData(userName: string): Promise<User> {
     },
   });
   const allUserInfo: any = await response.json();
-  console.log('allUser', allUserInfo)
+
   return allUserInfo;
 }
 
@@ -108,7 +66,6 @@ async function getUserMessages(userName: string): Promise<any> {
       'Content-Type': 'application/json',
     },
   });
-
   const userMessages = await response.json();
 
   return userMessages;
@@ -120,8 +77,6 @@ export default async function UserDashboard({ params }: any) {
   const userMessages = await getUserMessages(userName);
   const userProjects = await getUserProjects(userName);
 
-  console.log(user)
-
   return (
     <main className={styles.userDashboardMainContainer}>
       <div className={styles.userDashboardBasicInfoContainer}>
@@ -131,60 +86,93 @@ export default async function UserDashboard({ params }: any) {
             width={1000}
             height={1000}
             className={styles.userDashboardImage}
-            alt={'Profile photo'}
+            alt={`Profile photo for ${user.user_name}`}
+            priority={true}
           ></Image>
         </div>
 
-        <div>
-          <h2>{user.user_name}</h2>
-          <h3>{`${user.first_name ? user.first_name : ''} ${
-            user.last_name ? user.last_name : ''
-          }`}</h3>
-          <h3>{user.email}</h3>
-
-          {/* <div className={styles.userDashboardUserLinksContainer}>
-            <h3>Links</h3>
+        <div className={styles.userDashboardBasicInfoContentContainer}>
+          <h1>{user.user_name}</h1>
+          <div className={styles.userDashboardBasicInfoDisplayName}>
+            {
+              `${user.first_name ? user.first_name : ''}
+              ${user.last_name ? user.last_name : ''}`
+            }
+          </div>
+          <div className={styles.userDashboardBasicInfoEmail}>{user.email}</div>
+          
+          <div className={styles.userDashboardUserLinksContainer}>
             <div>
-              <Link 
-                href={user.github_url}
-                target='_blank'  
-              >
-                <p>Github</p>
-              </Link>
+              {
+                user.github_url ?
+                <Link
+                  href={user.github_url}
+                  target='_blank'
+                >
+                  <FaGithub 
+                    className={styles.userDashboardUserLinkIcon}
+                  />
+                </Link> :
+                ''
+              }
 
-              <Link
-                href={user.links.filter((link:BioLink) => link.name === 'Twitter')[0].url}
-                target='_blank'
-              >
-                <p>Twitter</p>
-              </Link>
-
-              <Link
-                href={user.links.filter((link:BioLink) => link.name === 'LinkedIn')[0].url}
-                target='_blank'
-              >
-                <p>LinkedIn</p>
-              </Link>
-
-              <Link
-                href={user.links.filter((link:BioLink) => link.name === 'Website')[0].url}
-                target='_blank'
-              >
-                <p>Website</p>
-              </Link>
+              {
+                user.links.filter(link => link.name === 'Twitter').length === 1 ?
+                <Link
+                  href={user.links.filter(link => link.name === 'Twitter')[0].url}
+                  target='_blank'
+                >
+                  <FaTwitter
+                    className={styles.userDashboardUserLinkIcon}
+                  />
+                </Link> :
+                ''
+              }
+              
+              {
+                user.links.filter(link => link.name === 'LinkedIn').length === 1 ?
+                  <Link
+                    href={user.links.filter(link => link.name === 'LinkedIn')[0].url}
+                    target='_blank'
+                  >
+                    <FaLinkedin
+                      className={styles.userDashboardUserLinkIcon}
+                    />
+                  </Link> :
+                  ''
+              }
+              
+              {
+                user.links.filter(link => link.name === 'Medium').length === 1 ?
+                  <Link
+                    href={user.links.filter(link => link.name === 'Medium')[0].url}
+                    target='_blank'
+                  >
+                    <FaMedium
+                      className={styles.userDashboardUserLinkIcon}
+                    />
+                  </Link> :
+                  ''
+              }
             </div>
-          </div>  */}
+          </div> 
         </div>
       </div>
 
       <div>
         <h2>My Projects</h2>
-        <UserProjects userProjects={userProjects} />
+        <UserProjects 
+          userProjects={userProjects}
+          user_name={user.user_name}
+        />
       </div>
 
       <div>
-        <h2>My Contributions</h2>
-        <UserContributions userMessages={userMessages} />
+        <h2>My Discussions</h2>
+        <UserContributions 
+          userMessages={userMessages}
+          user_name={user.user_name}
+        />
       </div>
     </main>
   );
