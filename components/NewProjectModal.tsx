@@ -1,4 +1,5 @@
 import styles from './NewProjectModal.module.scss';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   showModal: boolean;
@@ -24,11 +25,12 @@ export default function NewProjectModal({
     ? 'https://niidl.net'
     : 'http://localhost:8080';
 
+  const router = useRouter();
+
   async function handleFormSubmit(event: any) {
     event.preventDefault();
 
     const formBody: any = {
-      sessId: sessionId + 'test',
       project_name: event.target.elements.projectName.value,
       project_type: event.target.elements.projectType.value,
       description: event.target.elements.projectDescription.value,
@@ -60,7 +62,6 @@ export default function NewProjectModal({
         github_url: formBody.github_url,
       };
     });
-
     await fetch(isProduction + '/projects/projectId/newTag', {
       method: 'POST',
       credentials: 'include',
@@ -68,10 +69,56 @@ export default function NewProjectModal({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(tagArray),
-    });
+    })
 
-    onClose();
+    const response = await fetch(`${isProduction}/projects/followUp?projectGithubRepo=${encodeURIComponent(event.target.elements.projectGithubRepo.value)}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      console.error(`Error creating project: ${response.status}`);
+      return;
+    }
+    
+    try {
+      const  {projectNum}  = await response.json();
+      console.log(projectNum)
+      const projectRoute = projectNum;
+      router.push(`/project/${projectRoute}`);
+      onClose();
+    } catch (error: any) {
+      console.error(`Failing here Unique Message Error parsing response: ${error.message}`);
+    }
   }
+  //   const response = await fetch(isProduction + '/projects/projectId/newTag', {
+  //     method: 'POST',
+  //     credentials: 'include',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(tagArray),
+  //   })
+    
+  //   if (!response.ok) {
+  //     throw new Error('Error creating project'); // handle errors if needed
+  //   }
+
+  //   const { projectNum } = await response.json();
+  //   console.log(projectNum)
+  //   const projectRoute = projectNum.id
+
+  //   router.push(`/project/${projectRoute}`);
+  //   onClose();
+  // }
+
+    
+    // .then((res) => res.json()).then((projectNum) => router.push(`project/${projectNum}`));
+    // onClose();
+  
 
 
 
