@@ -29,11 +29,13 @@ export default function NewProjectModal({
 
     const file = event.target.upload.files[0];
     let projectName: string;
+    let fileType;
 
     if (!file) {
-      projectName = 'niidlDefault'
+      projectName = 'niidlDefault';
+      fileType = '.jpg'
     } else {
-       projectName = event.target.elements.projectName.value
+      projectName = event.target.elements.projectName.value
         .split(' ')
         .map((word: string, index: number) => {
           if (index !== 0) {
@@ -43,6 +45,14 @@ export default function NewProjectModal({
           }
         })
         .join('');
+
+      if (file.type !== 'image/jpeg') {
+        fileType = '.jpeg';
+      } else if (file.type !== 'image/png') {
+        fileType = '.png';
+      } else if (file.type !== 'image/jpg') {
+        fileType = '.jpg';
+      }
 
       const formData = new FormData();
       formData.append('upload', file);
@@ -60,7 +70,7 @@ export default function NewProjectModal({
       description: event.target.elements.projectDescription.value,
       github_url: event.target.elements.projectGithubRepo.value,
       owner: userName,
-      project_image: `https://niidl.sgp1.digitaloceanspaces.com/%2F${projectName}%2F${projectName}_image.jpg`,
+      project_image: `https://niidl.sgp1.digitaloceanspaces.com/%2F${projectName}%2F${projectName}_image${fileType}`,
     };
 
     await fetch(isProduction + '/projects/newProject', {
