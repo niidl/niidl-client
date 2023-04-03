@@ -123,13 +123,13 @@ export default function NewProjectModal({
         <h2>Create New Project</h2>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor="project_name">Project Title</label>
+            <label htmlFor='project_name'>Project Title</label>
             <input type={'text'} name={'project_name'} id={'projectName'} />
           </div>
 
           <div>
-            <label htmlFor="project_type">Project Type</label>
-            <select name="projectType" id="projectType">
+            <label htmlFor='project_type'>Project Type</label>
+            <select name='projectType' id='projectType'>
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
@@ -137,7 +137,7 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="description">Description</label>
+            <label htmlFor='description'>Description</label>
             <input
               type={'text'}
               name={'description'}
@@ -146,12 +146,12 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="github_url">Github Repository</label>
+            <label htmlFor='github_url'>Github Repository</label>
             <input type={'text'} name={'github_url'} id={'projectGithubRepo'} />
           </div>
 
           <div>
-            <label htmlFor="tags">Tags</label>
+            <label htmlFor='tags'>Tags</label>
             <select name={'tags'} id={'projectTags'} multiple>
               {tagsOnly.map((category) => {
                 return (
