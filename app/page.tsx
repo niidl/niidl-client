@@ -109,6 +109,7 @@ export default function Home() {
       singleProj.id = gitHubData[i].id;
       singleProj.project_name = gitHubData[i].project_name;
       singleProj.tags = cleanedTags;
+      singleProj.project_image = gitHubData[i].project_image;
       gitHubProjectsArray.push(singleProj);
     }
     setdemoGHProjects(gitHubProjectsArray);
@@ -139,6 +140,7 @@ export default function Home() {
       singleProj.id = gitHubData[i].id;
       singleProj.project_name = gitHubData[i].project_name;
       singleProj.tags = cleanedTags;
+      singleProj.project_image = gitHubData[i].project_image;
       gitHubProjectsArray.push(singleProj);
     }
     setAllGHProjects(gitHubProjectsArray);
