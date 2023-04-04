@@ -273,7 +273,6 @@ export default function Home() {
         });
         if (newFilter.length) {
           setFilteredProjects(newFilter);
-          console.log(filteredProjects);
         } else {
           window.alert('There is no projects under these filters.');
         }
