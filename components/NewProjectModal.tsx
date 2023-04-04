@@ -1,5 +1,7 @@
+'use client'
 import styles from './NewProjectModal.module.scss';
 import { useRouter } from 'next/navigation';
+import axios from 'axios'
 
 type Props = {
   showModal: boolean;
@@ -71,49 +73,63 @@ export default function NewProjectModal({
       body: JSON.stringify(tagArray),
     })
 
-    const response = await fetch(`${isProduction}/projects/followUp?projectGithubRepo=${encodeURIComponent(event.target.elements.projectGithubRepo.value)}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      console.error(`Error creating project: ${response.status}`);
-      return;
-    }
-    
-    try {
-      const  {projectNum}  = await response.json();
-      console.log(projectNum)
-      const projectRoute = projectNum;
-      router.push(`/project/${projectRoute}`);
-      onClose();
-    } catch (error: any) {
-      console.error(`Failing here Unique Message Error parsing response: ${error.message}`);
-    }
-  }
-  //   const response = await fetch(isProduction + '/projects/projectId/newTag', {
-  //     method: 'POST',
+  //   const response = await fetch(`${isProduction}/projects/followUp?projectGithubRepo=${encodeURIComponent(event.target.elements.projectGithubRepo.value)}`, {
+  //     method: 'GET',
   //     credentials: 'include',
   //     headers: {
   //       'Content-Type': 'application/json',
   //     },
-  //     body: JSON.stringify(tagArray),
   //   })
-    
+
   //   if (!response.ok) {
-  //     throw new Error('Error creating project'); // handle errors if needed
+  //     console.error(`Error creating project: ${response.status}`);
+  //     return;
   //   }
-
-  //   const { projectNum } = await response.json();
-  //   console.log(projectNum)
-  //   const projectRoute = projectNum.id
-
-  //   router.push(`/project/${projectRoute}`);
-  //   onClose();
+    
+  //   try {
+  //     const  {projectNum}  = await response.json();
+  //     console.log(projectNum)
+  //     const projectRoute = projectNum;
+  //     router.push(`/project/${projectRoute}`);
+  //     onClose();
+  //   } catch (error: any) {
+  //     console.error(`Failing here Unique Message Error parsing response: ${error.message}`);
+  //   }
   // }
+  const response = await axios
+  .post(isProduction + '/projects/projectId/newTag', tagArray, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((response) => {
+    console.log('response data:', response.data);
+    return response.data;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+console.log('response:', response);
+// const response: any = await fetch(
+//   isProduction + '/projects/projectId/newTag',
+//   {
+//     method: 'POST',
+//     credentials: 'include',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(tagArray),
+//   }
+// )
+//   .then((response) => response.text())
+//   .then((data) => {
+//     console.log('response data:', data);
+//     return data;
+//   });
+// console.log('response:', response);
+onClose();
+  }
 
     
     // .then((res) => res.json()).then((projectNum) => router.push(`project/${projectNum}`));
