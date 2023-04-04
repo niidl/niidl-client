@@ -266,6 +266,7 @@ export default function Home() {
     }
   }
 
+
   return (
     <main className={styles.main}>
       <div>
@@ -306,15 +307,15 @@ export default function Home() {
               onSubmit={handleSubmit}
             >
               <input
-                type="search"
-                id="default-search"
+                type='search'
+                id='default-search'
                 ref={searchInputRef}
                 className={styles.projectSearchbarInput}
-                placeholder="Search for your project..."
+                placeholder='Search for your project...'
                 required
               />
               <button
-                type="submit"
+                type='submit'
                 className={styles.projectSearchbarSearchBtn}
               >
                 🔍
@@ -356,7 +357,7 @@ export default function Home() {
                   />
                 ))
               ) : (
-                <div className="noResultsOnFilter">
+                <div className='noResultsOnFilter'>
                   No projects found for these selected filters.
                 </div>
               )
@@ -372,6 +373,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+
     </main>
   );
 }

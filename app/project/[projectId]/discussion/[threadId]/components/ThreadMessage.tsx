@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { UpvotedMessages } from '../page';
 import Markdown from 'markdown-to-jsx';
 import EditMessageModal from './EditMessageModal';
-import { CodeBlock } from './ThreadMessageCode';
+import { CodeBlock, CodeSpaces } from './ThreadMessageCode';
 import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 
 interface Props {
@@ -99,21 +99,20 @@ export default function ThreadMessage({
   }
 
   async function downvote() {
-    await axios
-      .delete(
-        `${isProduction}/projects/${threadId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        setIsUpvoted(false);
-        setCountVotes(countVotes - 1);
-        router.refresh();
-      });
+    await fetch(
+      `${isProduction}/projects/${threadId}/threads/${threadId}/messages/${messageId}/upvotes/${loggedUser}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((res) => {
+      setIsUpvoted(false);
+      setCountVotes(countVotes - 1);
+      router.refresh();
+    });
   }
 
   function handleClick() {
@@ -150,6 +149,7 @@ export default function ThreadMessage({
                 disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
+                  span: { component: CodeSpaces },
                 },
               }}
             >
