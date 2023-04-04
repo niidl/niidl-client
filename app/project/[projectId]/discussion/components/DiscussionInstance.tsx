@@ -16,13 +16,17 @@ interface Props {
   hasPin: boolean;
   userUpvotedThreads?: UpvotedThreads[] | null;
   setUserUpvotedThreads: any;
+  upvotes: number;
+  setReset: any;
 }
 
 export default function DiscussionInstance({
   thread,
+  upvotes,
   hasPin,
   userUpvotedThreads,
   setUserUpvotedThreads,
+  setReset,
 }: Props) {
   const isProduction: string = process.env.PRODUCTION
     ? 'https://niidl.net'
@@ -30,12 +34,17 @@ export default function DiscussionInstance({
 
   const username = Cookies.get('userName');
   const [isUpvoted, setIsUpvoted] = useState<boolean>(false);
+  const [countVotes, setCountVotes] = useState<number>(upvotes);
 
   const router = useRouter();
 
   useEffect(() => {
     checkUpvote();
   }, [userUpvotedThreads]);
+
+  useEffect(() => {
+    setCountVotes(upvotes);
+  }, [upvotes]);
 
   function checkUpvote() {
     if (userUpvotedThreads) {
@@ -67,6 +76,14 @@ export default function DiscussionInstance({
           thread_id: thread.id,
         });
         setUserUpvotedThreads(newUpvotes);
+        setCountVotes(countVotes + 1);
+        setReset((bool: any) => {
+          if (bool) {
+            return false;
+          } else {
+            return true;
+          }
+        });
         router.refresh();
       });
   }
@@ -89,7 +106,15 @@ export default function DiscussionInstance({
             (thr) => thr.thread_id !== thread.id
           );
           setUserUpvotedThreads(newUpvotes);
+          setCountVotes(countVotes - 1);
         }
+        setReset((bool: any) => {
+          if (bool) {
+            return false;
+          } else {
+            return true;
+          }
+        });
         router.refresh();
       });
   }
@@ -109,7 +134,7 @@ export default function DiscussionInstance({
         >
           {<HiOutlineArrowCircleUp />}
         </button>
-        <p>{thread.upvotes}</p>
+        <p>{countVotes}</p>
       </div>
       <Link
         href={`project/${thread.project_id}/discussion/${thread.id}`}

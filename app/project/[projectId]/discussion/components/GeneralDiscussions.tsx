@@ -9,6 +9,7 @@ interface Props {
   projectDiscussion: Thread[] | any;
   projectId?: number;
   projectName?: string;
+  setReset: any;
 }
 
 export interface UpvotedThreads {
@@ -20,11 +21,26 @@ const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
+export const GeneralDiscussions = ({
+  projectDiscussion,
+  projectId,
+  setReset,
+}: Props) => {
   const username = Cookies.get('userName');
   const [userUpvotedThreads, setUserUpvotedThreads] = useState<
     UpvotedThreads[] | null
   >();
+  const [filteredArray, setFilteredArray] = useState<any>(
+    filterGeneral().sort((a: Thread, b: Thread) => {
+      if (a.isPinned && !b.isPinned) {
+        return -1;
+      }
+      if (!a.isPinned && b.isPinned) {
+        return 1;
+      }
+      return 0;
+    })
+  );
 
   useEffect(() => {
     getUserUpvotedThreads();
@@ -46,27 +62,19 @@ export const GeneralDiscussions = ({ projectDiscussion, projectId }: Props) => {
 
   return (
     <div className={styles.instancesContainer}>
-      {filterGeneral()
-        .sort((a: Thread, b: Thread) => {
-          if (a.isPinned && !b.isPinned) {
-            return -1;
-          }
-          if (!a.isPinned && b.isPinned) {
-            return 1;
-          }
-          return 0;
-        })
-        .map((thread: Thread, index: Key | null | undefined) => {
-          return (
-            <DiscussionInstance
-              key={index}
-              thread={thread}
-              hasPin={true}
-              userUpvotedThreads={userUpvotedThreads}
-              setUserUpvotedThreads={setUserUpvotedThreads}
-            />
-          );
-        })}
+      {filteredArray.map((thread: Thread, index: Key | null | undefined) => {
+        return (
+          <DiscussionInstance
+            key={index}
+            thread={thread}
+            upvotes={thread.upvotes_threads}
+            hasPin={true}
+            userUpvotedThreads={userUpvotedThreads}
+            setUserUpvotedThreads={setUserUpvotedThreads}
+            setReset={setReset}
+          />
+        );
+      })}
     </div>
   );
 };
