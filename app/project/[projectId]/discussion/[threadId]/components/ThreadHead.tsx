@@ -20,7 +20,6 @@ interface Props {
   allThreadsUpvotes: UpvotedThreads[];
 }
 
-
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
@@ -142,9 +141,11 @@ export default function ThreadHead({
           {
             <Markdown
               options={{
+                disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
                 },
+                forceInline: true,
               }}
             >
               {threadInfo.content}
