@@ -99,6 +99,9 @@ a {
       background-color 0.25s ease-in-out,
       color 0.25s ease-in-out;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: $niidl-indigo;
