@@ -8,6 +8,7 @@ import { NewestDiscussion } from './NewestDiscussion';
 import { HottestDiscussion } from './HottestDiscussion';
 
 export interface Thread {
+  upvotes: number;
   id: number;
   content: string;
   project_id: number;

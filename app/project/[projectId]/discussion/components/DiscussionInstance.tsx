@@ -7,8 +7,8 @@ import { Thread } from './Discussions';
 import { UpvotedThreads } from './GeneralDiscussions';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { BiUpvote } from 'react-icons/bi';
-import { BsPinAngle } from 'react-icons/bs';
+import { HiOutlineArrowCircleUp } from 'react-icons/hi';
+import { AiOutlinePushpin } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -107,16 +107,28 @@ export default function DiscussionInstance({
           }`}
           onClick={handleClick}
         >
-          {<BiUpvote />}
+          {<HiOutlineArrowCircleUp />}
         </button>
+        <p>{thread.upvotes}</p>
       </div>
-      <Link href={`project/${thread.project_id}/discussion/${thread.id}`}>
-        <div className={styles.instanceMessageContainer}>
-          <div className={styles.discussionMessageInstanceTitle}>
-            <div>{thread.title}</div>
-            {hasPin && <div>{thread.isPinned && <BsPinAngle />}</div>}
+      <Link
+        href={`project/${thread.project_id}/discussion/${thread.id}`}
+        className={styles.instanceMessageContainer}
+      >
+        <div className={styles.discussionInstanceContent}>
+          <div className={styles.discussionInstanceTitle}>{thread.title}</div>
+          <div className={styles.discussionInstanceUser}>
+            by {thread.user?.user_name}
           </div>
-          <div className={styles.discussionMessageInstanceBottom}>
+        </div>
+
+        <div className={styles.discussionMessageInstanceRight}>
+          {hasPin && (
+            <div className={styles.pinContainer}>
+              {thread.isPinned && <AiOutlinePushpin />}
+            </div>
+          )}
+          <div className={styles.timeContainer}>
             {moment(thread.creation_time).fromNow()}
           </div>
         </div>
