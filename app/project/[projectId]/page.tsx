@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.scss';
 import projectCategoryStyles from '../../../components/ProjectCategory.module.scss';
@@ -111,10 +110,8 @@ export default async function ProjectPage({ params }: any) {
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>
         <div className={styles.projectPageBasicInfoImageContainer}>
-          <Image
+          <img
             src={project.project_image}
-            width={500}
-            height={500}
             className={styles.projectPageBasicInfoImage}
             alt={'Tokyo skyline on a clear day'}
           />
@@ -182,12 +179,10 @@ export default async function ProjectPage({ params }: any) {
                     key={contributor.contributor_id}
                   >
                     <div className={styles.projectContributorImageContainer}>
-                      <Image
+                      <img
                         src={contributor.image}
                         className={styles.projectContributorImage}
                         alt={`Photo of ${contributor.username}`}
-                        width={200}
-                        height={200}
                       />
                     </div>
 

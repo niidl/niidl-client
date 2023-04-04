@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
 import { signInWithPopup, GithubAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
 import { useState, useEffect } from 'react';
@@ -123,12 +122,10 @@ function Navbar() {
             <Link href={`${isProductionServer}/user/${userName}`}>
               <div className={'navbarRightBtnUserDetails'}>
                 <div className={'navbarUsername'}>{githubUser}</div>
-                <Image 
+                <img 
                   src={githubProfilePicture}
-                  width={36}
-                  height={36}
-                  alt={`Profile picture for ${githubUser}`}
                   className={'navbarProfilePicture'}
+                  alt={`Profile picture for ${githubUser}`}
                 />
               </div>
             </Link>
