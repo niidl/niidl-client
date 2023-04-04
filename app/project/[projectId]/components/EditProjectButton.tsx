@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import EditProjectModal from './EditProjectModal';
+import styles from './EditProjectButton.module.scss';
 
 export interface SingleProj {
   id: number;
@@ -75,7 +76,7 @@ export default function EditProjectButton({ projectInfo }: Props) {
 
   return (
     <div>
-      <button onClick={() => setShowModal(true)}>Edit Project</button>
+      <button onClick={() => setShowModal(true)} className={styles.editProjectButton} >Edit Project</button>
       <EditProjectModal
         showModal={showModal}
         projectCategories={projectCategories}

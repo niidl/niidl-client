@@ -48,10 +48,6 @@ export default function NewDiscussionModal({
     );
 
     router.push(`/project/${projectId}/discussion/${id.data.id}`);
-    // .then((res) => {
-    //   console.log(res);
-    //   setShowModal(false);
-    // });
   }
 
   return showModal ? (
@@ -77,20 +73,20 @@ export default function NewDiscussionModal({
           }}
         >
           <div>
-            <label htmlFor="title">Title</label>
+            <label htmlFor='title'>Title</label>
             <input type={'text'} name={'title'} id={'discussionTitle'} />
           </div>
 
           <div>
-            <label htmlFor="content">Description</label>
+            <label htmlFor='content'>Description</label>
             <textarea name={'content'} id={'discussionContent'} />
           </div>
 
           <div>
-            <label htmlFor="project_type">Project Type</label>
+            <label htmlFor='project_type'>Project Type</label>
             <select
-              name="projectType"
-              id="projectType"
+              name='projectType'
+              id='projectType'
               defaultValue={'General Discussion'}
             >
               {projectTypes.map((type) => (
