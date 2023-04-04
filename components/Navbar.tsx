@@ -65,7 +65,7 @@ function Navbar() {
     : 'http://localhost:8080';
 
   const isProductionServer: string = process.env.PRODUCTION
-    ? 'https://niidl.vercel.app'
+    ? 'https://niidl.co'
     : 'http://localhost:3000';
 
   useEffect(() => {
