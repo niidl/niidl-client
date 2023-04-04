@@ -122,8 +122,6 @@ export default function NewProjectModal({
 
     router.push(`/project/${id.id}`);
 
-    router.push(`/project/${id.id}`);
-
     // onClose();
   }
 
