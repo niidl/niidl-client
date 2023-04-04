@@ -10,6 +10,8 @@ interface Props {
     content: string,
     creation_time: string,
     thread: {
+      id: number,
+      project_id: number,
       title: string
     }
   }>,
