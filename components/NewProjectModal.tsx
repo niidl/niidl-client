@@ -1,4 +1,7 @@
+'use client';
 import styles from './NewProjectModal.module.scss';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 type Props = {
   showModal: boolean;
@@ -23,6 +26,8 @@ export default function NewProjectModal({
   const isProduction: string = process.env.PRODUCTION
     ? 'https://niidl.net'
     : 'http://localhost:8080';
+
+  const router = useRouter();
 
   async function handleFormSubmit(event: any) {
     event.preventDefault();
@@ -72,7 +77,7 @@ export default function NewProjectModal({
       project_image: `https://niidl.sgp1.digitaloceanspaces.com/%2F${projectName}%2F${projectName}_image${fileType}`,
     };
 
-    await fetch(isProduction + '/projects/newProject', {
+    const response = await fetch(isProduction + '/projects/newProject', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -81,9 +86,19 @@ export default function NewProjectModal({
       body: JSON.stringify(formBody),
     });
 
+    const id = await response.json();
+
     const allOptions = event.target.elements.projectTags;
+
     const tags = [];
-    for (const option of allOptions) {
+
+    for (const option of allOptions[0]) {
+      if (option.selected) {
+        tags.push(option.value);
+      }
+    }
+
+    for (const option of allOptions[1]) {
       if (option.selected) {
         tags.push(option.value);
       }
@@ -105,6 +120,8 @@ export default function NewProjectModal({
       body: JSON.stringify(tagArray),
     });
 
+    router.push(`/project/${id.id}`);
+
     // onClose();
   }
 
@@ -123,13 +140,13 @@ export default function NewProjectModal({
         <h2>Create New Project</h2>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor='project_name'>Project Title</label>
+            <label htmlFor="project_name">Project Title</label>
             <input type={'text'} name={'project_name'} id={'projectName'} />
           </div>
 
           <div>
-            <label htmlFor='project_type'>Project Type</label>
-            <select name='projectType' id='projectType'>
+            <label htmlFor="project_type">Project Type</label>
+            <select name="projectType" id="projectType">
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
@@ -137,7 +154,7 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor='description'>Description</label>
+            <label htmlFor="description">Description</label>
             <input
               type={'text'}
               name={'description'}
@@ -146,12 +163,12 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor='github_url'>Github Repository</label>
+            <label htmlFor="github_url">Github Repository</label>
             <input type={'text'} name={'github_url'} id={'projectGithubRepo'} />
           </div>
 
           <div>
-            <label htmlFor='tags'>Tags</label>
+            <label htmlFor="tags">Tags</label>
             <select name={'tags'} id={'projectTags'} multiple>
               {tagsOnly.map((category) => {
                 return (

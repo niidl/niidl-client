@@ -251,7 +251,7 @@ export default function Home() {
         if (newFilter.length) {
           setFilteredProjects(newFilter);
         } else {
-          window.alert('There is no projects under this filters.');
+          window.alert('There is no projects under these filters.');
         }
       } else {
         setFilteredProjects(() => {
@@ -262,7 +262,7 @@ export default function Home() {
           });
         });
       }
-      searchInputRef.current.value = '';
+      //searchInputRef.current.value = '';
     }
   }
 

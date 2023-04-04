@@ -37,6 +37,7 @@
       .projectSearchbarSearchBtn {
         background-color: transparent;
         border: none;
+        cursor: pointer;
         font-size: 16px;
         position: absolute;
         top: 12px;
@@ -52,6 +53,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
   }
 }
