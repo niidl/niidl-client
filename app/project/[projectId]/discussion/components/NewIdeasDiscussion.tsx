@@ -10,13 +10,18 @@ interface Props {
   projectDiscussion: Thread[] | any;
   projectId?: number;
   projectName?: string;
+  setReset: any;
 }
 
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-export const NewIdeasDiscussion = ({ projectDiscussion, projectId }: Props) => {
+export const NewIdeasDiscussion = ({
+  projectDiscussion,
+  projectId,
+  setReset,
+}: Props) => {
   const username = Cookies.get('userName');
   const [userUpvotedThreads, setUserUpvotedThreads] = useState<
     UpvotedThreads[] | null
@@ -56,9 +61,11 @@ export const NewIdeasDiscussion = ({ projectDiscussion, projectId }: Props) => {
           <DiscussionInstance
             key={index}
             thread={thread}
+            upvotes={thread.upvotes_threads}
             hasPin={true}
             userUpvotedThreads={userUpvotedThreads}
             setUserUpvotedThreads={setUserUpvotedThreads}
+            setReset={setReset}
           />
         ))}
     </div>

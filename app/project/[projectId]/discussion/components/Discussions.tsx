@@ -42,10 +42,11 @@ export default function Discussions({
     useState<Thread[]>(projectDiscussion);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('general-discussion');
+  const [reset, setReset] = useState<boolean>(false);
 
   useEffect(() => {
     fetchThreads();
-  }, []);
+  }, [reset]);
 
   async function fetchThreads(): Promise<void> {
     const response = await fetch(
@@ -62,6 +63,7 @@ export default function Discussions({
           <GeneralDiscussions
             projectDiscussion={projectThreads}
             projectId={projectId}
+            setReset={setReset}
           />
         );
       case 'new-ideas':
@@ -69,6 +71,7 @@ export default function Discussions({
           <NewIdeasDiscussion
             projectDiscussion={projectThreads}
             projectId={projectId}
+            setReset={setReset}
           />
         );
       case 'newest':
@@ -76,6 +79,7 @@ export default function Discussions({
           <NewestDiscussion
             projectDiscussion={projectThreads}
             projectId={projectId}
+            setReset={setReset}
           />
         );
       case 'hot-topics':
@@ -83,6 +87,7 @@ export default function Discussions({
           <HottestDiscussion
             projectDiscussion={projectThreads}
             projectId={projectId}
+            setReset={setReset}
           />
         );
     }
@@ -119,8 +124,8 @@ export default function Discussions({
                   ? styles.currentTab
                   : styles.defaultButton
               }`}
-              type='button'
-              value='general-discussion'
+              type="button"
+              value="general-discussion"
               onClick={handleClick}
             >
               General
@@ -131,8 +136,8 @@ export default function Discussions({
                   ? styles.currentTab
                   : styles.defaultButton
               }`}
-              type='button'
-              value='new-ideas'
+              type="button"
+              value="new-ideas"
               onClick={handleClick}
             >
               New Ideas
@@ -143,8 +148,8 @@ export default function Discussions({
                   ? styles.currentTab
                   : styles.defaultButton
               }`}
-              type='button'
-              value='newest'
+              type="button"
+              value="newest"
               onClick={handleClick}
             >
               Newest
@@ -155,8 +160,8 @@ export default function Discussions({
                   ? styles.currentTab
                   : styles.defaultButton
               }`}
-              type='button'
-              value='hot-topics'
+              type="button"
+              value="hot-topics"
               onClick={handleClick}
             >
               Hot Topics

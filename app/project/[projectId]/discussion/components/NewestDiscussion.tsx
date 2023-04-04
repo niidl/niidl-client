@@ -10,17 +10,23 @@ interface Props {
   projectDiscussion: Thread[] | any;
   projectId?: number;
   projectName?: string;
+  setReset: any;
 }
 
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-export const NewestDiscussion = ({ projectDiscussion, projectId }: Props) => {
+export const NewestDiscussion = ({
+  projectDiscussion,
+  projectId,
+  setReset,
+}: Props) => {
   const username = Cookies.get('userName');
   const [userUpvotedThreads, setUserUpvotedThreads] = useState<
     UpvotedThreads[] | null
   >();
+  const [newestArray, setNewestArray] = useState(filterNewest());
 
   useEffect(() => {
     getUserUpvotedThreads();
@@ -36,23 +42,26 @@ export const NewestDiscussion = ({ projectDiscussion, projectId }: Props) => {
 
   function filterNewest(): Thread[] {
     const newest: Thread[] = projectDiscussion;
-    newest.sort(
-      (a, b) =>
-        new Date(b.creation_time).getDate() -
-        new Date(a.creation_time).getDate()
-    );
+    newest.sort((a, b) => {
+      return (
+        new Date(b.creation_time).getTime() -
+        new Date(a.creation_time).getTime()
+      );
+    });
     return newest;
   }
 
   return (
     <div className={styles.instancesContainer}>
-      {filterNewest().map((thread: Thread, index: Key | null | undefined) => (
+      {newestArray.map((thread: Thread, index: Key | null | undefined) => (
         <DiscussionInstance
           key={index}
           thread={thread}
+          upvotes={thread.upvotes_threads}
           hasPin={false}
           userUpvotedThreads={userUpvotedThreads}
-            setUserUpvotedThreads={setUserUpvotedThreads}
+          setUserUpvotedThreads={setUserUpvotedThreads}
+          setReset={setReset}
         />
       ))}
     </div>
