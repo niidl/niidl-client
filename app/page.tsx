@@ -346,14 +346,15 @@ export default function Home() {
             </form>
 
             <button
-              className={styles.addProjectBtn}
+              className={
+                basedOnGithub
+                  ? `${styles.basedOnGithubButton} ${styles.githubProjectsSelected}`
+                  : styles.basedOnGithubButton
+              }
               onClick={() => {
                 setVIM(false);
-                if (basedOnGithub) {
-                  setBasedOnGithub(false);
-                } else {
-                  setBasedOnGithub(true);
-                }
+                if (basedOnGithub) setBasedOnGithub(false);
+                else setBasedOnGithub(true);
               }}
             >
               Projects Based on Github
