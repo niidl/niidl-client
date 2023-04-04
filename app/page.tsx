@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 export interface Project {
   id: number;
   project_name: string;
+  project_image: string;
   tags: string[];
 }
 
@@ -17,6 +18,7 @@ export interface ProjectData {
   id: number;
   project_name: string;
   tags: Array<{ id: number; tag_name: string; project_id: number }>;
+  project_image: string;
 }
 
 const isProduction: string = process.env.PRODUCTION
@@ -40,6 +42,7 @@ export default function Home() {
       id: 0,
       project_name: '',
       tags: [],
+      project_image: '',
     },
   ]);
   const [allGHProjects, setAllGHProjects] = useState<Project[]>([
@@ -47,6 +50,7 @@ export default function Home() {
       id: 0,
       project_name: '',
       tags: [],
+      project_image: '',
     },
   ]);
 
@@ -57,6 +61,7 @@ export default function Home() {
       id: 0,
       project_name: '',
       tags: [],
+      project_image: '',
     },
   ]);
   //////////////////////function//////////////////////////////////////////
@@ -90,7 +95,12 @@ export default function Home() {
     const gitHubResponse = await fetch(`${isProduction}/githubProjectsDemo`);
     const gitHubData: ProjectData[] = await gitHubResponse.json();
     for (let i = 0; i < gitHubData.length; i++) {
-      const singleProj: Project = { id: 0, project_name: '', tags: [] };
+      const singleProj: Project = {
+        id: 0,
+        project_name: '',
+        tags: [],
+        project_image: '',
+      };
       const cleanedTags: Array<string> = [];
 
       gitHubData[i].tags.forEach((tag) => {
@@ -115,7 +125,12 @@ export default function Home() {
     const gitHubResponse = await fetch(`${isProduction}/githubProjects`);
     const gitHubData: ProjectData[] = await gitHubResponse.json();
     for (let i = 0; i < gitHubData.length; i++) {
-      const singleProj: Project = { id: 0, project_name: '', tags: [] };
+      const singleProj: Project = {
+        id: 0,
+        project_name: '',
+        tags: [],
+        project_image: '',
+      };
       const cleanedTags: Array<string> = [];
 
       gitHubData[i].tags.forEach((tag) => {
@@ -134,7 +149,12 @@ export default function Home() {
     const res = await fetch(`${isProduction}/projects`);
     const data: ProjectData[] = await res.json();
     for (let i = 0; i < data.length; i++) {
-      const singleProj: Project = { id: 0, project_name: '', tags: [] };
+      const singleProj: Project = {
+        id: 0,
+        project_name: '',
+        tags: [],
+        project_image: '',
+      };
       const cleanedTags: Array<string> = [];
 
       data[i].tags.forEach((tag) => {
@@ -144,6 +164,7 @@ export default function Home() {
       singleProj.id = data[i].id;
       singleProj.project_name = data[i].project_name;
       singleProj.tags = cleanedTags;
+      singleProj.project_image = data[i].project_image;
       allProjectsArray.push(singleProj);
     }
 
@@ -250,6 +271,7 @@ export default function Home() {
         });
         if (newFilter.length) {
           setFilteredProjects(newFilter);
+          console.log(filteredProjects);
         } else {
           window.alert('There is no projects under these filters.');
         }
@@ -265,7 +287,6 @@ export default function Home() {
       //searchInputRef.current.value = '';
     }
   }
-
 
   return (
     <main className={styles.main}>
@@ -307,15 +328,15 @@ export default function Home() {
               onSubmit={handleSubmit}
             >
               <input
-                type='search'
-                id='default-search'
+                type="search"
+                id="default-search"
                 ref={searchInputRef}
                 className={styles.projectSearchbarInput}
-                placeholder='Search for your project...'
+                placeholder="Search for your project..."
                 required
               />
               <button
-                type='submit'
+                type="submit"
                 className={styles.projectSearchbarSearchBtn}
               >
                 🔍
@@ -357,7 +378,7 @@ export default function Home() {
                   />
                 ))
               ) : (
-                <div className='noResultsOnFilter'>
+                <div className="noResultsOnFilter">
                   No projects found for these selected filters.
                 </div>
               )
@@ -373,7 +394,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
     </main>
   );
 }

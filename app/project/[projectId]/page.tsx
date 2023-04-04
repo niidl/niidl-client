@@ -70,7 +70,6 @@ async function getProjectInfo(projectId: number): Promise<SingleProj> {
     '-331603',
   ];
   if (demoArray.includes(String(projectId))) {
-    console.log('it includes');
     const client = `${isProduction}/githubProjectsDemo/${projectId}`;
     const response = await fetch(client, { cache: 'no-store' });
     const demoInfo = await response.json();
@@ -112,9 +111,7 @@ export default async function ProjectPage({ params }: any) {
       <div className={styles.projectPageBasicInfoContainer}>
         <div className={styles.projectPageBasicInfoImageContainer}>
           <Image
-            src={
-              'https://images.unsplash.com/photo-1531219572328-a0171b4448a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
-            }
+            src={project.project_image}
             width={500}
             height={500}
             className={styles.projectPageBasicInfoImage}
