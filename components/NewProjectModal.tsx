@@ -33,7 +33,7 @@ export default function NewProjectModal({
 
     if (!file) {
       projectName = 'niidlDefault';
-      fileType = '.jpg'
+      fileType = '.jpg';
     } else {
       projectName = event.target.elements.projectName.value
         .split(' ')
@@ -46,11 +46,11 @@ export default function NewProjectModal({
         })
         .join('');
 
-      if (file.type !== 'image/jpeg') {
+      if (file.type === 'image/jpeg') {
         fileType = '.jpeg';
-      } else if (file.type !== 'image/png') {
+      } else if (file.type === 'image/png') {
         fileType = '.png';
-      } else if (file.type !== 'image/jpg') {
+      } else if (file.type === 'image/jpg') {
         fileType = '.jpg';
       }
 
@@ -161,7 +161,7 @@ export default function NewProjectModal({
                 );
               })}
             </select>
-            <label htmlFor='tags'>Languages</label>
+            <label htmlFor="tags">Languages</label>
             <select name={'tags'} id={'projectTags'} multiple>
               {langOnly.map((category) => {
                 return (
@@ -174,8 +174,8 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor='file'>Upload a file</label>
-            <input type='file' name='upload' />
+            <label htmlFor="file">Upload a file</label>
+            <input type="file" name="upload" />
           </div>
 
           <input type={'submit'}></input>

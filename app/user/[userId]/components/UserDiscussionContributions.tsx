@@ -11,10 +11,11 @@ interface UserMessage {
 }
 
 interface Props {
-  userMessages: Array<UserMessage>
+  userMessages: Array<UserMessage>,
+  user_name: string
 }
 
-export default function UserDiscussionContributions({ userMessages }: Props) {
+export default function UserDiscussionContributions({ userMessages, user_name }: Props) {
   return (
     <div className={styles.userDiscussionContributionsContainer}>
       {

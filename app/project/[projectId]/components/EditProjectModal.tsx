@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import styles from '../../../../components/NewProjectModal.module.scss';
 
 type Props = {
@@ -59,12 +61,50 @@ export default function EditProjectModal({
 
     event.preventDefault();
 
+    const file = event.target.upload.files[0];
+    let projectName: string;
+    let fileType;
+
     const formBody: any = {
       project_name: event.target.elements.projectName.value,
       project_type: event.target.elements.projectType.value,
       description: event.target.elements.projectDescription.value,
-      project_image: event.target.elements.projectImage.value,
     };
+
+    if (file) {
+      projectName = event.target.elements.projectName.value
+        .split(' ')
+        .map((word: string, index: number) => {
+          if (index !== 0) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          } else {
+            return word.charAt(0).toLowerCase() + word.slice(1);
+          }
+        })
+        .join('');
+
+      if (file.type === 'image/jpeg') {
+        fileType = '.jpeg';
+      } else if (file.type === 'image/png') {
+        fileType = '.png';
+      } else if (file.type === 'image/jpg') {
+        fileType = '.jpg';
+      }
+
+      const formData = new FormData();
+      formData.append('upload', file);
+
+      await fetch(`${isProduction}/projects/upload?newName=${projectName}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      formBody.project_image = `https://niidl.sgp1.digitaloceanspaces.com/%2F${projectName}%2F${projectName}_image${fileType}`;
+    } else {
+      formBody.project_image = projectInfo.project_image;
+    }
+
+    console.log(formBody);
 
     await fetch(`${isProduction}/projects/${projectInfo.id}`, {
       method: 'PATCH',
@@ -195,13 +235,8 @@ export default function EditProjectModal({
           </div>
 
           <div>
-            <label htmlFor="project_image">Project Image</label>
-            <input
-              type={'text'}
-              name={'project_image'}
-              id={'projectImage'}
-              defaultValue={projectInfo.project_image}
-            />
+            <label htmlFor="file">Upload a file</label>
+            <input type="file" name="upload" />
           </div>
 
           <input type={'submit'}></input>

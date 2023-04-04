@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { UpvotedMessages } from '../page';
 import Markdown from 'markdown-to-jsx';
 import EditMessageModal from './EditMessageModal';
-import { CodeBlock } from './ThreadMessageCode';
+import { CodeBlock, CodeSpaces } from './ThreadMessageCode';
 import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 
 interface Props {
@@ -147,8 +147,10 @@ export default function ThreadMessage({
           {
             <Markdown
               options={{
+                disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
+                  span: { component: CodeSpaces },
                 },
               }}
             >
@@ -158,7 +160,7 @@ export default function ThreadMessage({
         </div>
         <div className={styles.threadMessageBot}>
           <div className={styles.threadMessageBotLeft}>
-            <img src={githubPhoto} alt=''></img>
+            <img src={githubPhoto} alt=""></img>
             <div className={styles.postInfoContainer}>
               <h3>
                 {' '}
