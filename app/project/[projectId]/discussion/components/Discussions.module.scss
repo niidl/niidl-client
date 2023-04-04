@@ -3,8 +3,6 @@
 .discussionsContainer {
   width: 100%;
   max-height: 400px;
-  padding: 16px;
-  overflow-y: scroll;
   border-radius: $border-radius-s;
   box-shadow: $box-shadow;
 
@@ -13,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    margin: 4px 16px;
+    padding: 24px 28px 4px;
 
     .discussionsTags {
       display: flex;
@@ -80,6 +78,14 @@
     }
   }
 
+  .instancesContainer {
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 300px;
+    padding: 0 12px;
+  }
+
   .discussionsMessageInstance {
     width: calc(100% - 24px);
     height: 64px;
@@ -99,22 +105,84 @@
       transform: scale(1.02);
       transition: transform 0.25s ease-in-out, border 0.25s ease-in-out;
     }
+  }
+}
 
-    .discussionMessageInstanceTitle {
-      color: $niidl-indigo;
-      font-weight: 600;
-      margin: 0 0 4px 0;
+.discussionsMessageInstance {
+  .upvoteContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 5%;
+
+    .upvoteButton {
+      all: unset;
+      font-size: 1.5rem;
+      cursor: pointer;
+
+      &:hover {
+        color: $niidl-scarlet;
+      }
     }
 
-    .issueInstanceAuthor {
-      font-size: 12px;
+    .upvoteButtonAfter {
+      all: unset;
+      font-size: 1.5rem;
+      color: $niidl-scarlet;
+      cursor: pointer;
+
+      &:hover {
+        color: $foreground-rgba;
+      }
     }
 
-    .issueInstanceTimestamp {
+    p {
       font-size: 12px;
+    }
+  }
+
+  .instanceMessageContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 95%;
+
+    .discussionInstanceContent {
       display: flex;
-      justify-content: right;
-      align-items: flex-end;
+      flex-direction: column;
+      justify-content: space-evenly;
+      height: 100%;
+      margin: 0 0 0 12px;
+
+      .discussionInstanceTitle {
+        font-weight: 600;
+        color: $niidl-indigo;
+      }
+      .discussionInstanceUser {
+        font-weight: 300;
+        font-size: 0.8rem;
+      }
+    }
+
+    .discussionMessageInstanceRight {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: end;
+
+      .pinContainer {
+        font-size: 1.4rem;
+        color: $niidl-scarlet;
+      }
+
+      .timeContainer {
+        font-size: 0.8rem;
+        font-weight: 300;
+      }
     }
   }
 }
