@@ -7,6 +7,8 @@ interface Props {
     content: string,
     creation_time: string,
     thread: {
+      id: number,
+      project_id: number,
       title: string
     }
   }
@@ -14,7 +16,9 @@ interface Props {
 
 export default function UserDiscussionContributionInstance({ message }: Props) {
   return (
-    <Link href={`#`}>
+    <Link 
+      href={`/project/${message.thread.project_id}/discussion/${message.thread.id}`}
+    >
       <div className={styles.userDiscussionContributionInstance}>
         <div>
           <div className={styles.userDiscussionContributionInstanceContent}>

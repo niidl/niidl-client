@@ -117,6 +117,7 @@ export default async function ProjectPage({ params }: any) {
             height={500}
             className={styles.projectPageBasicInfoImage}
             alt={'Tokyo skyline on a clear day'}
+            loader={(src: any) => src}
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
@@ -131,7 +132,7 @@ export default async function ProjectPage({ params }: any) {
             <div className={styles.projectTechnologiesContainer}>
               {tagOnly.map((keyword) => (
                 <div
-                  className={projectCategoryStyles.projectCategoryInstance}
+                  className={styles.projectTags}
                   key={keyword}
                 >
                   {keyword}
