@@ -10,17 +10,23 @@ interface Props {
   projectDiscussion: Thread[] | any;
   projectId?: number;
   projectName?: string;
+  setReset: any;
 }
 
 const isProduction: string = process.env.PRODUCTION
   ? 'https://niidl.net'
   : 'http://localhost:8080';
 
-export const HottestDiscussion = ({ projectDiscussion, projectId }: Props) => {
+export const HottestDiscussion = ({
+  projectDiscussion,
+  projectId,
+  setReset,
+}: Props) => {
   const username = Cookies.get('userName');
   const [userUpvotedThreads, setUserUpvotedThreads] = useState<
     UpvotedThreads[] | null
   >();
+  const [filterHottestArray, setFilterHottestArray] = useState(filterHottest());
 
   useEffect(() => {
     getUserUpvotedThreads();
@@ -44,15 +50,19 @@ export const HottestDiscussion = ({ projectDiscussion, projectId }: Props) => {
 
   return (
     <div className={styles.instancesContainer}>
-      {filterHottest().map((thread: Thread, index: Key | null | undefined) => (
-        <DiscussionInstance
-          key={index}
-          thread={thread}
-          hasPin={false}
-          userUpvotedThreads={userUpvotedThreads}
-          setUserUpvotedThreads={setUserUpvotedThreads}
-        />
-      ))}
+      {filterHottestArray.map(
+        (thread: Thread, index: Key | null | undefined) => (
+          <DiscussionInstance
+            key={index}
+            thread={thread}
+            upvotes={thread.upvotes_threads}
+            setReset={setReset}
+            hasPin={false}
+            userUpvotedThreads={userUpvotedThreads}
+            setUserUpvotedThreads={setUserUpvotedThreads}
+          />
+        )
+      )}
     </div>
   );
 };
