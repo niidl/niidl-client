@@ -115,50 +115,50 @@ export default function Discussions({
             <button
               className={`${
                 currentTab === 'general-discussion'
-                  ? styles.btnContainer
-                  : styles.buttonContainer
+                  ? styles.currentTab
+                  : styles.defaultButton
               }`}
               type='button'
               value='general-discussion'
               onClick={handleClick}
             >
-              General Discussions 📢
+              General
             </button>
             <button
               className={`${
                 currentTab === 'new-ideas'
-                  ? styles.btnContainer
-                  : styles.buttonContainer
+                  ? styles.currentTab
+                  : styles.defaultButton
               }`}
               type='button'
               value='new-ideas'
               onClick={handleClick}
             >
-              New Ideas 💡
+              New Ideas
             </button>
             <button
               className={`${
                 currentTab === 'newest'
-                  ? styles.btnContainer
-                  : styles.buttonContainer
+                  ? styles.currentTab
+                  : styles.defaultButton
               }`}
               type='button'
               value='newest'
               onClick={handleClick}
             >
-              Newest 🆕
+              Newest
             </button>
             <button
               className={`${
                 currentTab === 'hot-topics'
-                  ? styles.btnContainer
-                  : styles.buttonContainer
+                  ? styles.currentTab
+                  : styles.defaultButton
               }`}
               type='button'
               value='hot-topics'
               onClick={handleClick}
             >
-              Hot Topics 🔥
+              Hot Topics
             </button>
           </div>
           <div className={styles.addThreadContainer}>
