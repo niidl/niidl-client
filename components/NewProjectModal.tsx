@@ -1,7 +1,7 @@
-'use client'
+'use client';
 import styles from './NewProjectModal.module.scss';
 import { useRouter } from 'next/navigation';
-import axios from 'axios'
+import axios from 'axios';
 
 type Props = {
   showModal: boolean;
@@ -41,7 +41,7 @@ export default function NewProjectModal({
       project_image: event.target.elements.projectImage.value,
     };
 
-    await fetch(isProduction + '/projects/newProject', {
+    const response = await fetch(isProduction + '/projects/newProject', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -50,9 +50,19 @@ export default function NewProjectModal({
       body: JSON.stringify(formBody),
     });
 
+    const id = await response.json();
+
     const allOptions = event.target.elements.projectTags;
+
     const tags = [];
-    for (const option of allOptions) {
+
+    for (const option of allOptions[0]) {
+      if (option.selected) {
+        tags.push(option.value);
+      }
+    }
+
+    for (const option of allOptions[1]) {
       if (option.selected) {
         tags.push(option.value);
       }
@@ -64,6 +74,7 @@ export default function NewProjectModal({
         github_url: formBody.github_url,
       };
     });
+
     await fetch(isProduction + '/projects/projectId/newTag', {
       method: 'POST',
       credentials: 'include',
@@ -71,74 +82,12 @@ export default function NewProjectModal({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(tagArray),
-    })
+    });
 
-  //   const response = await fetch(`${isProduction}/projects/followUp?projectGithubRepo=${encodeURIComponent(event.target.elements.projectGithubRepo.value)}`, {
-  //     method: 'GET',
-  //     credentials: 'include',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
+    router.push(`/project/${id.id}`);
 
-  //   if (!response.ok) {
-  //     console.error(`Error creating project: ${response.status}`);
-  //     return;
-  //   }
-    
-  //   try {
-  //     const  {projectNum}  = await response.json();
-  //     console.log(projectNum)
-  //     const projectRoute = projectNum;
-  //     router.push(`/project/${projectRoute}`);
-  //     onClose();
-  //   } catch (error: any) {
-  //     console.error(`Failing here Unique Message Error parsing response: ${error.message}`);
-  //   }
-  // }
-  const response = await axios
-  .post(isProduction + '/projects/projectId/newTag', tagArray, {
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .then((response) => {
-    console.log('response data:', response.data);
-    return response.data;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-console.log('response:', response);
-// const response: any = await fetch(
-//   isProduction + '/projects/projectId/newTag',
-//   {
-//     method: 'POST',
-//     credentials: 'include',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(tagArray),
-//   }
-// )
-//   .then((response) => response.text())
-//   .then((data) => {
-//     console.log('response data:', data);
-//     return data;
-//   });
-// console.log('response:', response);
-onClose();
+    onClose();
   }
-
-    
-    // .then((res) => res.json()).then((projectNum) => router.push(`project/${projectNum}`));
-    // onClose();
-  
-
-
-
-
 
   return showModal ? (
     <div className={styles.newProjectModalBackground} onClick={() => onClose()}>

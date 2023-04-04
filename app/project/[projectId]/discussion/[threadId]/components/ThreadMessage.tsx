@@ -147,6 +147,7 @@ export default function ThreadMessage({
           {
             <Markdown
               options={{
+                disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
                 },
@@ -158,7 +159,7 @@ export default function ThreadMessage({
         </div>
         <div className={styles.threadMessageBot}>
           <div className={styles.threadMessageBotLeft}>
-            <img src={githubPhoto} alt=''></img>
+            <img src={githubPhoto} alt=""></img>
             <div className={styles.postInfoContainer}>
               <h3>
                 {' '}
