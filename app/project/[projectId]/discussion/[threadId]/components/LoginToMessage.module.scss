@@ -1,0 +1,47 @@
+@import '../../../../../variables.module';
+
+.LoginMessageBody {
+  font-family: $main-font;
+  font-size: small;
+  color: $black-100;
+  border-radius: $border-radius-s;
+  background: linear-gradient(to bottom, $background-rgba, $background-rgba)
+      padding-box,
+    $niidl-gradient-to-bottom border-box;
+  border: 1 px solid transparent;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: $box-shadow;
+  margin: 0 0 40px 0;
+
+  .LoginMessageContainer {
+    padding: 48px 52px;
+    width: 100%;
+
+    .LoginMessageTop {
+      font-size: 1.2rem;
+      padding: 8px 0;
+    }
+
+    .LoginMessageMid {
+      font-size: 1.1rem;
+      padding: 30px 0;
+      font-weight: 300;
+    }
+
+    .threadHeadBot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+    }
+  }
+}
+.LoginMessageButtons {
+  margin: 12px 5%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
