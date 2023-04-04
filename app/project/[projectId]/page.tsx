@@ -35,6 +35,7 @@ export interface SingleProj {
     user: {
       user_name: string;
     };
+    upvotes: number;
   }>;
   issues: Array<{
     issue_id: number;
