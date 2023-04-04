@@ -8,6 +8,7 @@ const nextConfig = {
       'images.unsplash.com',
       'avatars.githubusercontent.com',
       'niidl.sgp1.digitaloceanspaces.com',
+      'raw.githubusercontent.com',
     ],
   },
   env: {
