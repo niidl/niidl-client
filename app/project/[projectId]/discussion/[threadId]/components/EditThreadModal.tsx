@@ -2,7 +2,6 @@
 import styles from './EditThreadModal.module.scss';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRef } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Thread } from '../../components/Discussions';
 
@@ -28,14 +27,15 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
       content: textReference.current.value,
     };
     setShowModal(false);
-    await axios.put(
+    await fetch(
       `${isProduction}/projects/${thread.project_id}/threads/${thread.id}`,
-      editedMessage,
       {
-        withCredentials: true,
+        method: 'PUT',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(editedMessage),
       }
     );
   }

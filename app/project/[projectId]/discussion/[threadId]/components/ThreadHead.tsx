@@ -116,19 +116,18 @@ export default function ThreadHead({
   }
 
   async function handleDelete(): Promise<void> {
-    await axios
-      .delete(
-        `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}`,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        router.push(`/project/${threadInfo.project_id}`);
-      });
+    await fetch(
+      `${isProduction}/projects/${threadInfo.project_id}/threads/${threadInfo.id}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((res) => {
+      router.push(`/project/${threadInfo.project_id}`);
+    });
   }
 
   return (
