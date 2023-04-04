@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.scss';
 import UserProjects from './components/UserProjects';
@@ -81,14 +80,11 @@ export default async function UserDashboard({ params }: any) {
     <main className={styles.userDashboardMainContainer}>
       <div className={styles.userDashboardBasicInfoContainer}>
         <div className={styles.userDashboardBasicInfoImageContainer}>
-          <Image
+          <img
             src={user.github_profile_picture}
-            width={1000}
-            height={1000}
             className={styles.userDashboardImage}
             alt={`Profile photo for ${user.user_name}`}
-            priority={true}
-          ></Image>
+          />
         </div>
 
         <div className={styles.userDashboardBasicInfoContentContainer}>
