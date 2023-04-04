@@ -2,7 +2,6 @@
 import styles from './EditMessageModal.module.scss';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRef } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -33,22 +32,20 @@ export default function EditMessageModal({
     const editedMessage: any = {
       content: reference.current.value,
     };
-
-    await axios
-      .put(
-        `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}`,
-        editedMessage,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        setShowModal(false);
-        router.refresh();
-      });
+    await fetch(
+      `${isProduction}/projects/${projectId}/threads/${threadId}/messages/${messageId}`,
+      {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedMessage),
+      }
+    ).then((res) => {
+      setShowModal(false);
+      router.refresh();
+    });
   }
 
   return (
