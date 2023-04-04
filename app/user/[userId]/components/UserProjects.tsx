@@ -4,7 +4,8 @@ import styles from './UserProjects.module.scss';
 interface Props {
   userProjects: Array<{
     id: number,
-    project_name: string
+    project_name: string,
+    project_image: string
   }>,
   user_name: string
 }
@@ -27,7 +28,11 @@ export default function UserProjects({ userProjects, user_name }: Props) {
                   key={userProject.project_name}
                 >
                   <div className={styles.userProjectInstanceImageContainer}>
-                    <div className={styles.userProjectInstanceImageTemp}></div>
+                    <img 
+                      src={userProject.project_image}
+                      className={styles.userProjectInstanceImage}
+                      alt={`Picture for ${userProject.project_name}`}
+                    />
                   </div>
                   
                   <div className={styles.userProjectInstanceInfoContainer}>
