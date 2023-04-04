@@ -141,9 +141,11 @@ export default function ThreadHead({
           {
             <Markdown
               options={{
+                disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
                 },
+                forceInline: true,
               }}
             >
               {threadInfo.content}

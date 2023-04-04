@@ -13,4 +13,11 @@ const CodeBlock = ({ className, children }: any) => {
   );
 };
 
-export { CodeBlock };
+const CodeSpaces = ({ children }: any) => {
+  console.log(children);
+  const text = children.replace(/ /g, '\u00A0');
+  // Replace all space characters with a literal space (\u00A0)
+  return <>{text}</>;
+};
+
+export { CodeBlock, CodeSpaces };
