@@ -35,6 +35,7 @@ export interface ThreadInfo {
   thread_tag: string;
   upvotes_threads: number;
   isPinned: boolean;
+  upvotes: number
 }
 
 export interface UpvotedMessages {
