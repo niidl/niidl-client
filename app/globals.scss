@@ -32,7 +32,7 @@ a {
 
   .logo {
     background:
-    linear-gradient(180deg, $niidl-scarlet, $niidl-indigo);
+      linear-gradient(180deg, $niidl-scarlet, $niidl-indigo);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
@@ -44,10 +44,67 @@ a {
       -webkit-text-fill-color: transparent;
     }
   }
+
+  .navbarRightBtns {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    
+    .navbarRightBtnUserDetails {
+      height: 48px;
+      padding: 0px 4px 0px 12px;
+      background-color: $white-100;
+      background:
+        linear-gradient(to bottom, $background-rgba, $background-rgba) padding-box,
+        $niidl-gradient-to-bottom border-box;
+      border: 2px solid transparent;
+      border-radius: $border-radius-l;
+      box-shadow: $box-shadow;
+      transition: transform 0.25s ease-in-out;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      column-gap: 12px;
+
+      &:hover {
+        transform: scale(1.02) rotate(-0.5deg);
+        transition: transform 0.25s ease-in-out;
+      }
+      
+      .navbarUsername {
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.25px;
+        color: $black-100;
+      }
+
+      .navbarProfilePicture {
+        border-radius: $border-radius-l;
+        box-shadow: $box-shadow;
+      }
+    }
+  }
 }
 
-.navbar > div > button {
-  width: 72px;
-  height: 36px;
+.actionButton {
+  height: 48px;
   margin: 0 0 0 16px;
+  padding: 16px 32px;
+  border: 2px solid $niidl-indigo;
+  border-radius: $border-radius-l;
+  background-color: $white-100;
+  color: $niidl-indigo;
+  font-weight: 600;
+  transition:
+      background-color 0.25s ease-in-out,
+      color 0.25s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $niidl-indigo;
+    color: $white-100;
+    transition:
+      background-color 0.25s ease-in-out,
+      color 0.25s ease-in-out;
+  }
 }

@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { signInWithPopup, GithubAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../auth/firebaseClient';
 import { useState, useEffect } from 'react';
@@ -28,7 +29,7 @@ const login = async () => {
     : 'http://localhost:8080';
 
   const provider = new GithubAuthProvider();
-  provider.addScope('public_repo');
+  provider.addScope('read:user');
   await signInWithPopup(auth, provider).then(async (result) => {
     let user = result.user;
     const currentUser = new User(
@@ -39,7 +40,7 @@ const login = async () => {
     );
 
     try {
-      const usernameJson = await fetch(`${isProduction}/userAuth`, {
+      const userJson = await fetch(`${isProduction}/userAuth`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -48,9 +49,10 @@ const login = async () => {
         body: JSON.stringify(currentUser),
       });
 
-      const username = await usernameJson.text();
+      const user = await userJson.json();
 
-      Cookies.set('userName', username);
+      Cookies.set('userName', user.user_name);
+      Cookies.set('githubProfilePicture', user.github_profile_picture);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -107,6 +109,7 @@ function Navbar() {
     }
   }
   const userName = Cookies.get('userName');
+  const githubProfilePicture = Cookies.get('githubProfilePicture')!;
 
   return (
     <div className={'navbar'}>
@@ -114,13 +117,23 @@ function Navbar() {
         <div className={'logo'}>niidl</div>
       </Link>
 
-      <div>
+      <div className={'navbarRightBtns'}>
         {githubUser ? (
           <>
             <Link href={`${isProductionServer}/user/${userName}`}>
-              <div>{githubUser}</div>
+              <div className={'navbarRightBtnUserDetails'}>
+                <div className={'navbarUsername'}>{githubUser}</div>
+                <Image 
+                  src={githubProfilePicture}
+                  width={36}
+                  height={36}
+                  alt={`Profile picture for ${githubUser}`}
+                  className={'navbarProfilePicture'}
+                />
+              </div>
             </Link>
             <button
+              className='actionButton'
               onClick={async () => {
                 setGithubUser('');
                 await logout();
@@ -134,6 +147,7 @@ function Navbar() {
         ) : (
           <>
             <button
+              className='actionButton'
               onClick={async () => {
                 await cookieLogin();
                 setGithubUser(Cookies.get('userName'));
@@ -143,6 +157,7 @@ function Navbar() {
               Login
             </button>
             <button
+              className='actionButton'
               onClick={async () => {
                 await cookieLogin();
                 setGithubUser(Cookies.get('userName'));
