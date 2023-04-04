@@ -35,7 +35,8 @@ export default function NewDiscussionModal({
     };
 
     setShowModal(false);
-    await axios.post(
+
+    const id = await axios.post(
       `${isProduction}/projects/${projectId}/newThread`,
       formBody,
       {
@@ -45,6 +46,8 @@ export default function NewDiscussionModal({
         },
       }
     );
+
+    router.push(`/project/${projectId}/discussion/${id.data.id}`);
     // .then((res) => {
     //   console.log(res);
     //   setShowModal(false);
