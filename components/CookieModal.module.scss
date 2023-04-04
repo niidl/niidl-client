@@ -1,0 +1,101 @@
+@import '../app/variables.module';
+
+.cookieModalBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(192, 192, 192, 0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 8888;
+}
+
+.cookieModalContent {
+  width: 528px;
+  height: fit-content;
+  position: relative;
+  padding: 36px;
+  background:
+      linear-gradient(to bottom, $background-rgba, $background-rgba) padding-box,
+      $niidl-gradient-to-bottom border-box;
+  border: 1px solid transparent;
+  background-color: $white-100;
+  border-radius: $border-radius-s;
+  box-shadow: $box-shadow;
+  z-index: 9999;
+  animation: fadein 0.5s ease-in-out;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  row-gap: 24px;
+
+  h3 {
+    color: $niidl-scarlet;
+    font-size: 32px;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+}
+
+.cookieModalCloseBtn {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  cursor: pointer;
+  transition: color 0.25s ease-in-out;
+
+  &:hover {
+    color: $niidl-scarlet;
+    transition: color 0.25s ease-in-out;
+  }
+}
+
+.cookieModalAcceptBtn {
+  color: $foreground-rgba;
+  padding: 12px 36px;
+  font-weight: 600;
+  background:
+    linear-gradient(to bottom, $background-rgba, $background-rgba) padding-box,
+    $niidl-gradient-to-bottom border-box;
+  border: 2px solid transparent;
+  border-radius: $border-radius-l;
+  cursor: pointer;
+
+  &:hover {
+    color: $white-100;
+    background:
+        $niidl-gradient-to-bottom padding-box,
+        $niidl-gradient-to-bottom border-box;
+    box-shadow: $box-shadow;
+    transition:
+      box-shadow 0.25s ease-in-out;
+  }
+}
+
+.cookieIcon {
+  width: 128px;
+  height: 128px;
+  color: $niidl-indigo;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0%;
+    transform: translateY(50px);
+  }
+
+  100% {
+    opacity: 100%;
+    transform: translateY(0px);
+  }
+}

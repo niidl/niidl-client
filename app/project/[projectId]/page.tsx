@@ -131,7 +131,7 @@ export default async function ProjectPage({ params }: any) {
             <div className={styles.projectTechnologiesContainer}>
               {tagOnly.map((keyword) => (
                 <div
-                  className={projectCategoryStyles.projectCategoryInstance}
+                  className={styles.projectTags}
                   key={keyword}
                 >
                   {keyword}
