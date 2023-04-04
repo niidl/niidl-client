@@ -117,7 +117,6 @@ export default async function ProjectPage({ params }: any) {
             height={500}
             className={styles.projectPageBasicInfoImage}
             alt={'Tokyo skyline on a clear day'}
-            loader={(src: any) => src}
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
