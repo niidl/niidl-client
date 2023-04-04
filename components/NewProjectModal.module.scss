@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  // z-index: 10;
 
   & > .newProjectModalContent {
     width: 600px;
@@ -43,7 +44,7 @@
       }
     }
 
-    input[type=submit] {
+    input[type='submit'] {
       padding: 6px;
     }
   }
