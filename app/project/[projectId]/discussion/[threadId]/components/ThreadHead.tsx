@@ -12,7 +12,7 @@ import { HiOutlineArrowCircleUp } from 'react-icons/hi';
 import { UpvotedThreads } from '../../components/GeneralDiscussions';
 import EditThreadModal from './EditThreadModal';
 import Markdown from 'markdown-to-jsx';
-import { CodeBlock } from './ThreadMessageCode';
+import { CodeBlock, CodeSpaces } from './ThreadMessageCode';
 
 interface Props {
   threadInfo: ThreadInfo;
@@ -143,8 +143,8 @@ export default function ThreadHead({
                 disableParsingRawHTML: true,
                 overrides: {
                   code: { component: CodeBlock },
+                  span: { component: CodeSpaces },
                 },
-                forceInline: true,
               }}
             >
               {threadInfo.content}

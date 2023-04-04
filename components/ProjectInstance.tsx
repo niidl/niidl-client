@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Image, { ImageLoaderProps } from 'next/image';
 import { Project } from '@/app/page';
 import styles from './ProjectInstance.module.scss';
 
@@ -19,6 +19,7 @@ const ProjectInstance: React.FC<Props> = ({ project }) => {
             sizes="33vw"
             priority={true}
             alt={`Image for ${project.project_name}`}
+            loader={(src: any) => src}
           />
         </div>
         <div className={styles.projectInstanceInfoContainer}>
