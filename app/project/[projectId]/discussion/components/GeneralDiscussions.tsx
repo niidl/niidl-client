@@ -42,6 +42,8 @@ export const GeneralDiscussions = ({
     })
   );
 
+  console.log(filteredArray);
+
   useEffect(() => {
     getUserUpvotedThreads();
   }, []);

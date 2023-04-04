@@ -20,13 +20,9 @@ export default function UserDiscussionContributionInstance({ message }: Props) {
       href={`/project/${message.thread.project_id}/discussion/${message.thread.id}`}
     >
       <div className={styles.userDiscussionContributionInstance}>
-        <div>
+        <div className={styles.userDiscussionContributionLeftContentContainer}>
           <div className={styles.userDiscussionContributionInstanceContent}>
-            {
-              message.content.length < 80 
-                ? message.content
-                : `${message.content.slice(0, 100)}...`
-            }
+            { message.content }
           </div>
 
           <div className={styles.userDiscussionContributionInstanceThreadTitle}>

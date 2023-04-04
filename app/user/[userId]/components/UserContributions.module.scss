@@ -44,21 +44,25 @@
       margin: 0 auto 16px auto;
     }
 
-    .userDiscussionContributionInstanceContent {
-      width: inherit;
-      color: $niidl-indigo;
-      font-weight: 600;
-      margin: 0 0 4px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .userDiscussionContributionLeftContentContainer {
+      width: 88%;
 
-    .userDiscussionContributionInstanceThreadTitle {
-      font-size: 12px;
-
-      span {
-        font-style: italic;
+      .userDiscussionContributionInstanceContent {
+        width: inherit;
+        color: $niidl-indigo;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .userDiscussionContributionInstanceThreadTitle {
+        font-size: 12px;
+  
+        span {
+          font-style: italic;
+        }
       }
     }
 
