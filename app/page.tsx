@@ -369,7 +369,13 @@ export default function Home() {
         <div>
           {/* <h2>Filtered Projects</h2> */}
           <div className={styles.filteredProjectsContainer}>
-            {selectedProjectCategories.length || VIM ? ( //Categories or VIM?
+            {!searchInputRef.current ? (
+              allProjects.map((project) => (
+                <ProjectInstance project={project} key={project.id} />
+              ))
+            ) : selectedProjectCategories.length ||
+              VIM ||
+              searchInputRef.current.value ? ( //Categories or VIM?
               filteredProjects.length ? (
                 filteredProjects.map((filteredProject) => (
                   <ProjectInstance
