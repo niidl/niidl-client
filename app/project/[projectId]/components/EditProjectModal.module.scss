@@ -1,0 +1,198 @@
+@import '../app/variables.module';
+
+.newProjectModalBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(192, 192, 192, 0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  & > .newProjectModalContent {
+    width: 600px;
+    height: auto;
+    position: relative;
+    background-color: #fff;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    border-radius: $border-radius-s;
+
+    .headContainer {
+      display: flex;
+      justify-content: space-between;
+
+      .closeButton {
+        font-size: 2rem;
+        cursor: pointer;
+
+        &:hover {
+          color: $niidl-scarlet;
+        }
+      }
+
+      h2 {
+        color: $niidl-indigo;
+      }
+    }
+
+    & > form > div {
+      margin: 0 0 12px 0;
+      display: flex;
+      flex-direction: column;
+
+      .selectProjectType {
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+        font-size: 0.875rem;
+        color: #6b7280;
+        background-color: transparent;
+        border-style: none;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #e5e7eb;
+        color: #54585e;
+        border-color: #4b5563;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .selectProjectType:focus {
+        border-color: $niidl-scarlet;
+      }
+
+      & > label {
+        margin: 0 0 6px 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: $foreground-rgba;
+        align-self: start;
+        font-size: 0.8rem;
+      }
+
+      & > input {
+        all: unset;
+        letter-spacing: 1px;
+        padding: 4px 8px;
+        height: 24px;
+        border-bottom: solid 1px $foreground-rgba;
+        &:focus {
+          border-bottom: solid 1px $niidl-scarlet;
+        }
+      }
+    }
+
+    .fileContainer {
+      display: flex;
+
+      .fileInput {
+        display: none;
+      }
+
+      .fileButtonContainer {
+        display: flex;
+        margin: 8px 0;
+        align-items: center;
+
+        .imageButton {
+          all: unset;
+          padding: 4px 12px;
+          border: 1px solid $foreground-rgba;
+          color: $black-100;
+          border-radius: $border-radius-l;
+          cursor: pointer;
+
+          &:hover {
+            color: $niidl-scarlet;
+            border: 1px solid $niidl-scarlet;
+            box-shadow: #f1f1f1 2px 2px;
+            transition: all 0.4s ease-in-out;
+          }
+        }
+
+        .fileNameContainer {
+          margin: 0 0 0 12px;
+          color: $foreground-rgba;
+        }
+      }
+    }
+
+    .buttonContainer {
+      display: flex;
+      align-items: flex-end;
+
+      .submitButton {
+        justify-self: flex-end;
+        width: 80px;
+        margin: 0 24px 0 0;
+        padding: 12px;
+        border: 2px solid transparent;
+        background: linear-gradient(
+              to bottom,
+              $background-rgba,
+              $background-rgba
+            )
+            padding-box,
+          $niidl-gradient-to-bottom border-box;
+        color: $foreground-rgba;
+        border-radius: $border-radius-s;
+        cursor: pointer;
+
+        &:hover {
+          background: $niidl-gradient-to-bottom padding-box,
+            $niidl-gradient-to-bottom border-box;
+          color: $white-100;
+          box-shadow: $box-shadow;
+          transition: box-shadow 0.15s ease-in-out;
+        }
+      }
+    }
+
+    .tagsLanguagesContainer {
+      display: flex;
+      flex-flow: row;
+      justify-content: space-between;
+      margin: 24px 0 24px 0;
+
+      label {
+        // margin: 0 0 6px 0;
+        padding: 0 0 0 8px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: $foreground-rgba;
+        align-self: start;
+        font-size: 0.8rem;
+      }
+
+      .tagsContainer {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+        border-bottom: 1px $foreground-rgba solid;
+        overflow: hidden;
+      }
+
+      .languageContainer {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+        border-bottom: 1px $foreground-rgba solid;
+        overflow: hidden;
+      }
+
+      select {
+        all: unset;
+        padding: 12px 0 0 8px;
+        overflow-y: scroll;
+      }
+    }
+  }
+}
