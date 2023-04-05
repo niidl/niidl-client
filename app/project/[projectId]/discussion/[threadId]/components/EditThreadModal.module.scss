@@ -27,10 +27,10 @@
       font-size: 1.5rem;
       cursor: pointer;
       align-self: flex-end;
-    }
 
-    .closeButton:hover {
-      color: $niidl-scarlet;
+      &:hover {
+        color: $niidl-scarlet;
+      }
     }
 
     .editContainer {
@@ -50,7 +50,7 @@
         }
 
         .threadTitle {
-          all:unset;
+          all: unset;
           margin: 0 0 12px 0;
           border-bottom: 1px solid $foreground-rgba;
           color: $foreground-rgba;
