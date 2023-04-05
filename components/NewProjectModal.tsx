@@ -3,6 +3,7 @@ import styles from './NewProjectModal.module.scss';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { useRef, useState } from 'react';
 
 type Props = {
   showModal: boolean;
@@ -28,6 +29,9 @@ export default function NewProjectModal({
     ? 'https://niidl.net'
     : 'http://localhost:8080';
 
+  const [filename, setFilename] = useState<string>('Select an image file.');
+
+  const fileInput = useRef<any>();
   const router = useRouter();
 
   async function handleFormSubmit(event: any) {
@@ -126,6 +130,14 @@ export default function NewProjectModal({
     // onClose();
   }
 
+  function handleClick(e: any) {
+    fileInput.current.click();
+  }
+
+  function handleFileInputChange(e: any) {
+    setFilename(fileInput.current.files[0].name);
+  }
+
   return showModal ? (
     <div className={styles.newProjectModalBackground} onClick={() => onClose()}>
       <div
@@ -152,7 +164,11 @@ export default function NewProjectModal({
 
           <div>
             <label htmlFor='project_type'>Project Type</label>
-            <select name='projectType' id='projectType'>
+            <select
+              name='projectType'
+              id='projectType'
+              className={styles.selectProjectType}
+            >
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
@@ -205,12 +221,30 @@ export default function NewProjectModal({
             </div>
           </div>
 
-          <div>
-            <label htmlFor='file'>Upload an image file</label>
-            <input type='file' name='upload' />
+          <div className={styles.fileContainer}>
+            <label htmlFor='file' className={styles.fileLabel}>
+              Upload an image file
+            </label>
+            <input
+              type='file'
+              name='upload'
+              className={styles.fileInput}
+              ref={fileInput}
+              onChange={handleFileInputChange}
+            />
+            <div className={styles.fileButtonContainer}>
+              <button className={styles.imageButton} onClick={handleClick}>
+                Choose Image...
+              </button>
+              <div className={styles.fileNameContainer}>{filename}</div>
+            </div>
           </div>
 
-            <input className={styles.submitButton} type={'submit'}></input>
+          <div className={styles.buttonContainer}>
+            <button className={styles.submitButton} type={'submit'}>
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
