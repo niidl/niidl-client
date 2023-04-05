@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: column;
     border-radius: $border-radius-s;
-    display: flex;
 
     .headContainer {
       display: flex;
@@ -68,24 +67,69 @@
       }
     }
 
-    .submitButton {
-      justify-self: flex-end;
-      margin: 8px 24px 0 0;
-      padding: 12px;
-      border: 2px solid transparent;
-      background: linear-gradient(to bottom, $background-rgba, $background-rgba)
-          padding-box,
-        $niidl-gradient-to-bottom border-box;
-      color: $foreground-rgba;
-      border-radius: $border-radius-s;
-      cursor: pointer;
+    .fileContainer {
+      display: flex;
 
-      &:hover {
-        background: $niidl-gradient-to-bottom padding-box,
+      .fileInput {
+        display: none;
+      }
+
+      .fileButtonContainer {
+        display: flex;
+        margin: 8px 0;
+        align-items: center;
+
+        .imageButton {
+          all: unset;
+          padding: 4px 12px;
+          border: 1px solid $foreground-rgba;
+          color: $black-100;
+          border-radius: $border-radius-l;
+          cursor: pointer;
+
+          &:hover {
+            color: $niidl-scarlet;
+            border: 1px solid $niidl-scarlet;
+            box-shadow: #f1f1f1 2px 2px;
+            transition: all 0.4s ease-in-out;
+          }
+        }
+
+        .fileNameContainer {
+          margin: 0 0 0 12px;
+          color: $foreground-rgba;
+        }
+      }
+    }
+
+    .buttonContainer {
+      display: flex;
+      align-items: flex-end;
+
+      .submitButton {
+        justify-self: flex-end;
+        width: 80px;
+        margin: 0 24px 0 0;
+        padding: 12px;
+        border: 2px solid transparent;
+        background: linear-gradient(
+              to bottom,
+              $background-rgba,
+              $background-rgba
+            )
+            padding-box,
           $niidl-gradient-to-bottom border-box;
-        color: $white-100;
-        box-shadow: $box-shadow;
-        transition: box-shadow 0.15s ease-in-out;
+        color: $foreground-rgba;
+        border-radius: $border-radius-s;
+        cursor: pointer;
+
+        &:hover {
+          background: $niidl-gradient-to-bottom padding-box,
+            $niidl-gradient-to-bottom border-box;
+          color: $white-100;
+          box-shadow: $box-shadow;
+          transition: box-shadow 0.15s ease-in-out;
+        }
       }
     }
 
@@ -95,7 +139,7 @@
       justify-content: space-between;
 
       label {
-        margin: 0 0 6px 0;
+        // margin: 0 0 6px 0;
         padding: 0 0 0 8px;
         letter-spacing: 2px;
         text-transform: uppercase;
@@ -112,13 +156,15 @@
       .tagsContainer {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 48%;
+        border-bottom: 1px $foreground-rgba solid;
       }
 
       .languageContainer {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 48%;
+        border-bottom: 1px $foreground-rgba solid;
       }
     }
   }
