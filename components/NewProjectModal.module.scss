@@ -172,16 +172,12 @@
         font-size: 0.8rem;
       }
 
-      select {
-        all: unset;
-        padding: 12px 0 0 8px;
-      }
-
       .tagsContainer {
         display: flex;
         flex-direction: column;
         width: 48%;
         border-bottom: 1px $foreground-rgba solid;
+        overflow: hidden;
       }
 
       .languageContainer {
@@ -189,6 +185,13 @@
         flex-direction: column;
         width: 48%;
         border-bottom: 1px $foreground-rgba solid;
+        overflow: hidden;
+      }
+
+      select {
+        all: unset;
+        padding: 12px 0 0 8px;
+        overflow-y: scroll;
       }
     }
   }

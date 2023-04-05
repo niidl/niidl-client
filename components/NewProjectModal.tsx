@@ -131,6 +131,7 @@ export default function NewProjectModal({
   }
 
   function handleClick(e: any) {
+    e.preventDefault();
     fileInput.current.click();
   }
 
