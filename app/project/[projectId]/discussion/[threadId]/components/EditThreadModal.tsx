@@ -75,7 +75,9 @@ export default function EditMessageModal({ setShowModal, thread }: Props) {
               className={styles.textArea}
               defaultValue={thread.content}
             />
-            <input className={styles.submitButton} type={'submit'}></input>
+            <button className={styles.submitButton} type={'submit'}>
+              Save
+            </button>
           </form>
         </div>
       </div>
