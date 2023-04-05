@@ -45,7 +45,7 @@
     width: 500px;
     height: auto;
     min-width: 300px;
-    background-color: darkcyan;
+    background-color: $niidl-indigo;
 
     .projectPageBasicInfoImage {
       width: 100%;
@@ -54,12 +54,25 @@
     }
   }
 
-  .projectTechnologiesContainer {
+  .buttonsContainer {
     width: 100%;
-    margin: 64px 0 0 0;
     display: flex;
-    flex-flow: row wrap;
-    row-gap: 12px;
+    flex-direction: column;
+
+    .projectTechnologiesContainer {
+      width: 100%;
+      margin: 32px 0 0 0;
+      display: flex;
+      flex-flow: row wrap;
+      row-gap: 12px;
+    }
+
+    .editContainer {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin: 32px 4px 0 0;
+    }
   }
 
   h1 {

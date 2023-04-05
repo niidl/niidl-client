@@ -109,6 +109,7 @@ export default function Home() {
       singleProj.id = gitHubData[i].id;
       singleProj.project_name = gitHubData[i].project_name;
       singleProj.tags = cleanedTags;
+      singleProj.project_image = gitHubData[i].project_image;
       gitHubProjectsArray.push(singleProj);
     }
     setdemoGHProjects(gitHubProjectsArray);
@@ -139,6 +140,7 @@ export default function Home() {
       singleProj.id = gitHubData[i].id;
       singleProj.project_name = gitHubData[i].project_name;
       singleProj.tags = cleanedTags;
+      singleProj.project_image = gitHubData[i].project_image;
       gitHubProjectsArray.push(singleProj);
     }
     setAllGHProjects(gitHubProjectsArray);
@@ -271,7 +273,6 @@ export default function Home() {
         });
         if (newFilter.length) {
           setFilteredProjects(newFilter);
-          console.log(filteredProjects);
         } else {
           window.alert('There is no projects under these filters.');
         }
@@ -344,14 +345,15 @@ export default function Home() {
             </form>
 
             <button
-              className={styles.addProjectBtn}
+              className={
+                basedOnGithub
+                  ? `${styles.basedOnGithubButton} ${styles.githubProjectsSelected}`
+                  : styles.basedOnGithubButton
+              }
               onClick={() => {
                 setVIM(false);
-                if (basedOnGithub) {
-                  setBasedOnGithub(false);
-                } else {
-                  setBasedOnGithub(true);
-                }
+                if (basedOnGithub) setBasedOnGithub(false);
+                else setBasedOnGithub(true);
               }}
             >
               Projects Based on Github

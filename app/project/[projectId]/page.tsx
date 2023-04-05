@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.scss';
 import projectCategoryStyles from '../../../components/ProjectCategory.module.scss';
@@ -111,39 +110,36 @@ export default async function ProjectPage({ params }: any) {
     <div className={styles.projectPageInfoContainer}>
       <div className={styles.projectPageBasicInfoContainer}>
         <div className={styles.projectPageBasicInfoImageContainer}>
-          <Image
+          <img
             src={project.project_image}
-            width={500}
-            height={500}
             className={styles.projectPageBasicInfoImage}
             alt={'Tokyo skyline on a clear day'}
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
-          <Link href={project.github_url} target="_blank">
+          <Link href={project.github_url} target='_blank'>
             <h1>{project.project_name}</h1>
           </Link>
           <div className={styles.projectBasicInfoProjectType}>
             {project.project_type}
           </div>
           <div>{project.description}</div>
-          <div>
+          <div className={styles.buttonsContainer}>
             <div className={styles.projectTechnologiesContainer}>
               {tagOnly.map((keyword) => (
-                <div
-                  className={styles.projectTags}
-                  key={keyword}
-                >
+                <div className={styles.projectTags} key={keyword}>
                   {keyword}
                 </div>
               ))}
             </div>
+            <div className={styles.editContainer}>
+              {isOwner && (
+                <EditProjectButton projectInfo={project}></EditProjectButton>
+              )}
+            </div>
           </div>
         </div>
       </div>
-
-      {isOwner && <EditProjectButton projectInfo={project}></EditProjectButton>}
-
       <div>
         {project.contributors && (
           <>
@@ -175,19 +171,17 @@ export default async function ProjectPage({ params }: any) {
                 <Link
                   key={contributor.contributor_id}
                   href={`https://github.com/${contributor.username}`}
-                  target="_blank"
+                  target='_blank'
                 >
                   <div
                     className={styles.projectContributorInstanceContainer}
                     key={contributor.contributor_id}
                   >
                     <div className={styles.projectContributorImageContainer}>
-                      <Image
+                      <img
                         src={contributor.image}
                         className={styles.projectContributorImage}
                         alt={`Photo of ${contributor.username}`}
-                        width={200}
-                        height={200}
                       />
                     </div>
 

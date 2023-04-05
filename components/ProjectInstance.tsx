@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Project } from '@/app/page';
 import styles from './ProjectInstance.module.scss';
 
@@ -12,12 +11,9 @@ const ProjectInstance: React.FC<Props> = ({ project }) => {
     <Link href={`/project/${project.id}`} key={project.project_name}>
       <div className={styles.projectInstanceContainer}>
         <div className={styles.projectInstanceImageContainer}>
-          <Image
-            className={styles.projectInstanceImage}
+          <img
             src={project.project_image}
-            fill
-            sizes="33vw"
-            priority={true}
+            className={styles.projectInstanceImage}
             alt={`Image for ${project.project_name}`}
           />
         </div>

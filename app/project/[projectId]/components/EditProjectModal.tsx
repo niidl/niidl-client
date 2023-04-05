@@ -104,8 +104,6 @@ export default function EditProjectModal({
       formBody.project_image = projectInfo.project_image;
     }
 
-    console.log(formBody);
-
     await fetch(`${isProduction}/projects/${projectInfo.id}`, {
       method: 'PATCH',
       credentials: 'include',
