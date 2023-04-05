@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
 import styles from '../../../../components/NewProjectModal.module.scss';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { useRef, useState } from 'react';
 
 type Props = {
   showModal: boolean;
@@ -8,6 +9,8 @@ type Props = {
   projectCategories: string[];
   projectTypes: string[];
   projectInfo: SingleProj;
+  langOnly: string[];
+  tagsOnly: string[];
 };
 
 export interface SingleProj {
@@ -51,8 +54,12 @@ export default function EditProjectModal({
   onClose,
   projectCategories,
   projectTypes,
+  langOnly,
+  tagsOnly,
 }: Props) {
   const initialTags = projectInfo.tags.map((tagObj) => tagObj.tag_name);
+  const fileInput = useRef<any>();
+  const [filename, setFilename] = useState<string>('Select an image file.');
 
   async function handleFormSubmit(event: any) {
     const isProduction: string = process.env.PRODUCTION
@@ -115,7 +122,13 @@ export default function EditProjectModal({
 
     const allOptions = event.target.elements.projectTags;
     const newTags: any = [];
-    for (const option of allOptions) {
+    for (const option of allOptions[0]) {
+      if (option.selected) {
+        newTags.push(option.value);
+      }
+    }
+
+    for (const option of allOptions[1]) {
       if (option.selected) {
         newTags.push(option.value);
       }
@@ -158,19 +171,29 @@ export default function EditProjectModal({
     onClose();
   }
 
+  function handleClick(e: any) {
+    e.preventDefault();
+    fileInput.current.click();
+  }
+
+  function handleFileInputChange(e: any) {
+    setFilename(fileInput.current.files[0].name);
+  }
+
   return showModal ? (
     <div className={styles.newProjectModalBackground} onClick={() => onClose()}>
       <div
         className={styles.newProjectModalContent}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={() => onClose()}
-          className={styles.newProjectModalCloseBtn}
-        >
-          Close
-        </button>
-        <h2>Edit Project</h2>
+        <div className={styles.headContainer}>
+          <h2>Edit Project</h2>
+          <AiOutlineCloseCircle
+            onClick={() => onClose()}
+            className={styles.closeButton}
+          />
+        </div>
+
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
             <label htmlFor="project_name">Project Title</label>
@@ -188,6 +211,7 @@ export default function EditProjectModal({
               name="projectType"
               id="projectType"
               defaultValue={projectInfo.project_type}
+              className={styles.selectProjectType}
             >
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
@@ -215,29 +239,65 @@ export default function EditProjectModal({
             />
           </div>
 
-          <div>
-            <label htmlFor="tags">Tags</label>
-            <select name={'tags'} id={'projectTags'} multiple>
-              {projectCategories.map((category) => {
-                return initialTags.includes(category) ? (
-                  <option value={category} key={category} selected>
-                    {category}
-                  </option>
-                ) : (
-                  <option value={category} key={category}>
-                    {category}
-                  </option>
-                );
-              })}
-            </select>
+          <div className={styles.tagsLanguagesContainer}>
+            <div className={styles.tagsContainer}>
+              <label htmlFor="tags">Tags</label>
+              <select name={'tags'} id={'projectTags'} multiple>
+                {tagsOnly.map((category) => {
+                  return initialTags.includes(category) ? (
+                    <option value={category} key={category} selected>
+                      {category}
+                    </option>
+                  ) : (
+                    <option value={category} key={category}>
+                      {category}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={styles.languageContainer}>
+              <label htmlFor="tags">Languages</label>
+              <select name={'tags'} id={'projectTags'} multiple>
+                {langOnly.map((category) => {
+                  return initialTags.includes(category) ? (
+                    <option value={category} key={category} selected>
+                      {category}
+                    </option>
+                  ) : (
+                    <option value={category} key={category}>
+                      {category}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="file">Upload a file</label>
-            <input type="file" name="upload" />
+          <div className={styles.fileContainer}>
+            <label htmlFor="file" className={styles.fileLabel}>
+              Upload an image file
+            </label>
+            <input
+              type="file"
+              name="upload"
+              className={styles.fileInput}
+              ref={fileInput}
+              onChange={handleFileInputChange}
+            />
+            <div className={styles.fileButtonContainer}>
+              <button className={styles.imageButton} onClick={handleClick}>
+                Choose Image...
+              </button>
+              <div className={styles.fileNameContainer}>{filename}</div>
+            </div>
           </div>
 
-          <input type={'submit'}></input>
+          <div className={styles.buttonContainer}>
+            <button className={styles.submitButton} type={'submit'}>
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>

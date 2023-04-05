@@ -117,7 +117,7 @@ export default async function ProjectPage({ params }: any) {
           />
         </div>
         <div className={styles.projectPageBasicInfoContentContainer}>
-          <Link href={project.github_url} target='_blank'>
+          <Link href={project.github_url} target="_blank">
             <h1>{project.project_name}</h1>
           </Link>
           <div className={styles.projectBasicInfoProjectType}>
@@ -132,13 +132,13 @@ export default async function ProjectPage({ params }: any) {
                 </div>
               ))}
             </div>
-            <div className={styles.editContainer}>
-              {isOwner && (
-                <EditProjectButton projectInfo={project}></EditProjectButton>
-              )}
-            </div>
           </div>
         </div>
+      </div>
+      <div className={styles.editContainer}>
+        {isOwner && (
+          <EditProjectButton projectInfo={project}></EditProjectButton>
+        )}
       </div>
       <div>
         {project.contributors && (
@@ -171,7 +171,7 @@ export default async function ProjectPage({ params }: any) {
                 <Link
                   key={contributor.contributor_id}
                   href={`https://github.com/${contributor.username}`}
-                  target='_blank'
+                  target="_blank"
                 >
                   <div
                     className={styles.projectContributorInstanceContainer}
