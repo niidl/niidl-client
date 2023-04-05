@@ -2,6 +2,7 @@
 import styles from '../../../../components/NewProjectModal.module.scss';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   showModal: boolean;
@@ -59,6 +60,7 @@ export default function EditProjectModal({
 }: Props) {
   const initialTags = projectInfo.tags.map((tagObj) => tagObj.tag_name);
   const fileInput = useRef<any>();
+  const router = useRouter();
   const [filename, setFilename] = useState<string>('Select an image file.');
 
   async function handleFormSubmit(event: any) {
@@ -168,6 +170,7 @@ export default function EditProjectModal({
       });
     }
 
+    router.refresh();
     onClose();
   }
 
