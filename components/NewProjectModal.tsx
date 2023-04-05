@@ -2,6 +2,7 @@
 import styles from './NewProjectModal.module.scss';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 type Props = {
   showModal: boolean;
@@ -131,22 +132,27 @@ export default function NewProjectModal({
         className={styles.newProjectModalContent}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={() => onClose()}
-          className={styles.newProjectModalCloseBtn}
-        >
-          Close
-        </button>
-        <h2>Create New Project</h2>
+        <div className={styles.headContainer}>
+          <h2>Create New Project</h2>
+          <AiOutlineCloseCircle
+            className={styles.closeButton}
+            onClick={() => onClose()}
+          />
+        </div>
         <form onSubmit={(e) => handleFormSubmit(e)}>
           <div>
-            <label htmlFor="project_name">Project Title</label>
-            <input type={'text'} name={'project_name'} id={'projectName'} />
+            <label htmlFor='project_name'>Project Title</label>
+            <input
+              type={'text'}
+              name={'project_name'}
+              id={'projectName'}
+              required
+            />
           </div>
 
           <div>
-            <label htmlFor="project_type">Project Type</label>
-            <select name="projectType" id="projectType">
+            <label htmlFor='project_type'>Project Type</label>
+            <select name='projectType' id='projectType'>
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
@@ -154,48 +160,57 @@ export default function NewProjectModal({
           </div>
 
           <div>
-            <label htmlFor="description">Description</label>
+            <label htmlFor='description'>Description</label>
             <input
               type={'text'}
               name={'description'}
               id={'projectDescription'}
+              required
             />
           </div>
 
           <div>
-            <label htmlFor="github_url">Github Repository</label>
-            <input type={'text'} name={'github_url'} id={'projectGithubRepo'} />
+            <label htmlFor='github_url'>Github Repository</label>
+            <input
+              type={'url'}
+              name={'github_url'}
+              id={'projectGithubRepo'}
+              required
+            />
+          </div>
+          <div className={styles.tagsLanguagesContainer}>
+            <div className={styles.tagsContainer}>
+              <label htmlFor='tags'>Tags</label>
+              <select name={'tags'} id={'projectTags'} multiple>
+                {tagsOnly.map((category) => {
+                  return (
+                    <option value={category} key={category}>
+                      {category}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={styles.languageContainer}>
+              <label htmlFor='tags'>Languages</label>
+              <select name={'tags'} id={'projectTags'} multiple>
+                {langOnly.map((category) => {
+                  return (
+                    <option value={category} key={category}>
+                      {category}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
 
           <div>
-            <label htmlFor="tags">Tags</label>
-            <select name={'tags'} id={'projectTags'} multiple>
-              {tagsOnly.map((category) => {
-                return (
-                  <option value={category} key={category}>
-                    {category}
-                  </option>
-                );
-              })}
-            </select>
-            <label htmlFor="tags">Languages</label>
-            <select name={'tags'} id={'projectTags'} multiple>
-              {langOnly.map((category) => {
-                return (
-                  <option value={category} key={category}>
-                    {category}
-                  </option>
-                );
-              })}
-            </select>
+            <label htmlFor='file'>Upload an image file</label>
+            <input type='file' name='upload' />
           </div>
 
-          <div>
-            <label htmlFor="file">Upload a file</label>
-            <input type="file" name="upload" />
-          </div>
-
-          <input type={'submit'}></input>
+            <input className={styles.submitButton} type={'submit'}></input>
         </form>
       </div>
     </div>
