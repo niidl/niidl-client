@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Thread } from './Discussions';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styles from './NewDiscussionModal.module.scss';
 
 type Props = {
@@ -48,10 +48,6 @@ export default function NewDiscussionModal({
     );
 
     router.push(`/project/${projectId}/discussion/${id.data.id}`);
-    // .then((res) => {
-    //   console.log(res);
-    //   setShowModal(false);
-    // });
   }
 
   return showModal ? (
@@ -63,44 +59,54 @@ export default function NewDiscussionModal({
         className={styles.newDiscussionModalContent}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
+        <AiOutlineCloseCircle
           onClick={() => setShowModal(false)}
           className={styles.newDiscussionModalCloseBtn}
-        >
-          Close
-        </button>
-        <h2>Create New Discussion</h2>
-        <form
-          onSubmit={(e) => {
-            handleFormSubmit(e);
-            router.refresh();
-          }}
-        >
-          <div>
-            <label htmlFor="title">Title</label>
-            <input type={'text'} name={'title'} id={'discussionTitle'} />
-          </div>
+        />
+        <div className={styles.newThreadContainer}>
+          <h2>Create New Thread</h2>
+          <form
+            className={styles.formContainer}
+            onSubmit={(e) => {
+              handleFormSubmit(e);
+              router.refresh();
+            }}
+          >
+            <div>
+              <label htmlFor="title">Thread Title</label>
+              <input
+                type={'text'}
+                name={'title'}
+                id={'discussionTitle'}
+                className={styles.threadTitle}
+              />
+            </div>
 
-          <div>
             <label htmlFor="content">Description</label>
-            <textarea name={'content'} id={'discussionContent'} />
-          </div>
+            <textarea
+              name={'content'}
+              id={'discussionContent'}
+              className={styles.textArea}
+            />
 
-          <div>
             <label htmlFor="project_type">Project Type</label>
+
             <select
               name="projectType"
               id="projectType"
               defaultValue={'General Discussion'}
+              className={styles.selectProjectType}
             >
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </select>
-          </div>
 
-          <input type={'submit'}></input>
-        </form>
+            <button type={'submit'} className={styles.submitButton}>
+              Post
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   ) : null;
