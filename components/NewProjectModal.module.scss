@@ -46,6 +46,29 @@
       display: flex;
       flex-direction: column;
 
+      .selectProjectType {
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+        font-size: 0.875rem;
+        color: #6b7280;
+        background-color: transparent;
+        border-style: none;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #e5e7eb;
+        color: #54585e;
+        border-color: #4b5563;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .selectProjectType:focus {
+        border-color: $niidl-scarlet;
+      }
+
       & > label {
         margin: 0 0 6px 0;
         letter-spacing: 2px;
@@ -137,6 +160,7 @@
       display: flex;
       flex-flow: row;
       justify-content: space-between;
+      margin: 24px 0 24px 0;
 
       label {
         // margin: 0 0 6px 0;
@@ -145,7 +169,7 @@
         text-transform: uppercase;
         color: $foreground-rgba;
         align-self: start;
-        font-size: 0.6rem;
+        font-size: 0.8rem;
       }
 
       select {

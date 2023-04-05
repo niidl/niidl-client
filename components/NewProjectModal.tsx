@@ -164,7 +164,11 @@ export default function NewProjectModal({
 
           <div>
             <label htmlFor='project_type'>Project Type</label>
-            <select name='projectType' id='projectType'>
+            <select
+              name='projectType'
+              id='projectType'
+              className={styles.selectProjectType}
+            >
               {projectTypes.map((type) => (
                 <option key={type}>{type}</option>
               ))}
