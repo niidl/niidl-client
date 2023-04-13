@@ -1,38 +1,252 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<br />
+<div align="center">
+
+  <h3 align="center">niidl</h3>
+
+  <p align="center">
+    Backend of niidl.co, an App created for intermediate coders as a place to search for and collaborate on code.
+    <br />
+    <a href="https://github.com/niidl/niidl-client"><strong>Check out our org on GitHub</strong></a>
+    <br />
+    <a href="https://github.com/niidl/niidl-client"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/niidl/niidl-client/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/niidl/niidl-client/issues">Request Feature</a>
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ul>
+    </li>
+       <li>
+      <a href="#basic-outline">Basic Outline</a>
+      <ul>
+        <li><a href="#schema">Database/Schema</a></li>
+        <li><a href="#api">Primary APIs</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+## About The Project
+
+[niidl](https://niidl.co)
+
+Learning to code can be a daunting task. There are plenty of resources on how to get started, but once you understand the basics, you are thrust directly into the world of complex projects with intimidating code bases, and no direction. Here at niidl, we aim to bridge that gap by connecting engineers with projects that resonate with them, through advanced search features and personalized discussion boards.
+For the full story on niidl's inception, please visit our org page!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+
+- [![TypeScript][typescript]][typescript-url]
+- [![NextJS][nextjs]][nextjs-url]
+- [![Firebase][firebase]][firebase-url]
+- [![Vercel][vercel]][vercel-url]
+- [![Docker][docker]][docker-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running follow these simple steps.
+Please keep in mind this repo only includes the frontend, you will also need fork niidl's server side repo which can be found here:
+[niidl-server](https://github.com/niidl/niidl-server)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You will need to create a [![Firebase][firebase.js]][firebase-url] account for the authentication process, if you do not have one already.
+Our App's frontend has been deployed using [![Vercel][vercel]][vercel-url], which has a solid free tier plan, however, it does not allow for multiple users to share a project. We got around this by having only our Tech Lead create an account and work through deployment. Another way to get around this restriction would be to share the account between multiple people, which we do not recommend. If you are working solo, you can disregard this entirely.
+For another option if you wish to deploy the App for free, we currently recommend [![Render][render.com]][render-url] as it is one of the few free deployment platform on the market, but please be aware that it can be quite slow.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+_Below you will find the basics on installation and set up._
+_Please note you will need to follow the steps found on [niidl-client](https://github.com/niidl/niidl-client) before any deployment can be done._
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+2. Module Installation
+   ```sh
+   npm install
+   ```
+3. Create a Postgres Database
+   ```sh
+   -psql postgres
+   CREATE DATABASE db_name_here
+   ```
+4. Configure .env File
+   _Create a .env file in your ROOT directory with the following_
+   ```js
+   DATABASE_URL = 'postgresql://postgres:test@localhost:5432/db_name_here';
+   GITHUB_ACCESS_TOKEN = accessTokenHere;
+   ```
+   This App makes use of the GitHub API, while the project can be made without an API key, you will be limited to 50 calls an hour. Information on how to get your own Access Token can be found [here](https://docs.github.com/en/rest?apiVersion=2022-11-28).
+5. Migration and Seeds via Prisma
+   ```sh
+   npm run build-db
+   ```
+6. Run Server
+   The default port is set to localhost:8080.
+   ```sh
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Learn More
+## Basic Outline
 
-To learn more about Next.js, take a look at the following resources:
+The following is a rough breakdown for the server side of the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Database/Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+For a better understanding of the existing schema, please look at the schema file located at ./niidl-server/prisma/schema.prisma. Documentation for [![Prisma][prisma]][prisma-url] can be found on their site.
 
-## Deploy on Vercel
+### Major APIs Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For this project, we make use of several APIs including [![Firebase][firebase]][firebase-url] and [GitHub](https://docs.github.com/en/rest?apiVersion=2022-11-28).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Firebase
+
+[![Firebase][firebase]][firebase-url] is used for authentication via GitHub exclusively. Using it's framework, we handle user sign in and keep user data secure. Because we create our own session tokens via Crypto by [![Node][node.js]][node-url] we query for Firebase for the following:
+
+- UID
+- Email
+  These are then used in the query to the GitHub API to ensure we are accessing the correct user. As Username and Photo can be changed at any point, those are updated each time a user logs in, while the rest remain constant.
+
+#### GitHub API
+
+The documentation for [GitHub's API](https://docs.github.com/en/rest?apiVersion=2022-11-28) is extensive and is utilized throughout the build. It is used to get information including the following:
+
+- User Info
+  - Username
+  - GitHub Photo
+- Repository Info
+  - Repo Name
+  - Repo Issues
+  - Repo Code
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Usage
+
+The usage for this resource as stated above is to create an place for coders to collaborate on projects with a more robust search function and better filtering. As GitHub primarily filters off languages and keywords, this tends to leave much to be desired when looking for a project that resonates with engineers looking to help others. We also wanted a place where relatively inexperienced coders would have the opportunity to offer their skills without feeling judged. We know how high the perceived barrier to entry can be for working on "major projects" and wanted to make that feel more accessible.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Roadmap
+
+#### MVP
+
+- [x] Broader search via GitHub API
+  - [x] Incorporate opensource projects
+  - [x] Limit functionality to promote project creation through niidl
+- [x] Secure authentication via Firebase
+  - [x] Cookie utilization
+- [x] User Features
+  - [x] Built out user dashboard
+- [x] Discussion Features
+  - [x] Sub pages to allow for navigation through
+  - [x] Add tabs including new ideas, pinned threads, most popular
+  - [x] Allow for upvoting of comments/threads
+  - [x] Edit/Delete comments/threads
+  - [x] All comments/threads have markdown capability
+- [x] UI/UX
+  - [x] Redirect to Thread/Project on creation
+  - [x] Cover message box with login/signup display if not logged in
+  - [x] Search bar with past history
+
+#### V 1.1
+
+- [x] Cookie Modal on first login
+- [x] Split tags into categories (language/descriptors)
+- [x] Validate GitHub owner so users can only upload their own projects
+- [x] Add profile pictures to messages
+- [x] Loading animation for transitions
+- [x] Allow for markdown to include inline code
+
+#### Future Implementations
+
+- [ ] Multi-language Support
+- [ ] Further user dashboard personalization
+- [ ] Continue refinement of project categorization and filtering
+
+See the [open issues](https://github.com/Screamtothevoid/Rage/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Contact
+
+- Takuya Stern - [@TrenchTemplar](https://github.com/TrenchTemplar) - AndrewTakuya@gmail.com
+- Kaire Montenegro - [@Kai-Animator](https://github.com/Kai-Animator) - kaireml@protonmail.com
+- Hideki Fabio Hirose - [@fabiohidekihirose](https://github.com/fabiohidekihirose) - fabiohidekihirose@gmail.com
+- Adrian Ang - [@adrianang](https://github.com/adrianang) - adriancbang@gmail.com
+- Bryan Cendales - [@MrBCendales](https://github.com/MrBCendales) - bn.cendales10@gmail.com
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Acknowledgments
+
+It's impossible to add every single resource that helped to make this possible, but below you will find a few.
+
+- [Img Shields](https://shields.io)
+- [GitHub Pages](https://pages.github.com)
+- [React Icons](https://react-icons.github.io/react-icons/search)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[typescript]: https://img.shields.io/badge/TypeScript-007acc?style=for-the-badge&logo=typescript&logoColor=white
+[typescript-url]: https://www.typescriptlang.org/
+[nextjs]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[nextjs-url]: https://nextjs.org/
+[vercel]: https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white
+[vercel-url]: https://vercel.com
+[firebase]: https://img.shields.io/badge/Firebase-2C384A?style=for-the-badge&logo=firebase&logoColor=FFA000
+[firebase-url]: https://www.firebase.google.com
+[docker]: https://img.shields.io/badge/docker-384d54?style=for-the-badge&logo=docker&logoColor=0db7ed
+[docker-url]: https://www.docker.com
