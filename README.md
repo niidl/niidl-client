@@ -38,7 +38,6 @@
        <li>
       <a href="#basic-outline">Basic Outline</a>
       <ul>
-        <li><a href="#schema">Database/Schema</a></li>
         <li><a href="#api">Primary APIs</a></li>
       </ul>
     </li>
@@ -83,12 +82,12 @@ Please keep in mind this repo only includes the frontend, you will also need for
 
 You will need to create a [![Firebase][firebase.js]][firebase-url] account for the authentication process, if you do not have one already.
 Our App's frontend has been deployed using [![Vercel][vercel]][vercel-url], which has a solid free tier plan, however, it does not allow for multiple users to share a project. We got around this by having only our Tech Lead create an account and work through deployment. Another way to get around this restriction would be to share the account between multiple people, which we do not recommend. If you are working solo, you can disregard this entirely.
-For another option if you wish to deploy the App for free, we currently recommend [![Render][render.com]][render-url] as it is one of the few free deployment platform on the market, but please be aware that it can be quite slow.
+For another option, we recommend [![Render][render.com]][render-url] as it is one of the few free deployment platforms on the market, but please be aware that it can be quite slow.
 
 ### Installation
 
 _Below you will find the basics on installation and set up._
-_Please note you will need to follow the steps found on [niidl-client](https://github.com/niidl/niidl-client) before any deployment can be done._
+_Please note you will need to follow the steps found on [niidl-server](https://github.com/niidl/niidl-server) before any deployment can be done._
 
 1. Clone the repo
    ```sh
@@ -98,23 +97,7 @@ _Please note you will need to follow the steps found on [niidl-client](https://g
    ```sh
    npm install
    ```
-3. Create a Postgres Database
-   ```sh
-   -psql postgres
-   CREATE DATABASE db_name_here
-   ```
-4. Configure .env File
-   _Create a .env file in your ROOT directory with the following_
-   ```js
-   DATABASE_URL = 'postgresql://postgres:test@localhost:5432/db_name_here';
-   GITHUB_ACCESS_TOKEN = accessTokenHere;
-   ```
-   This App makes use of the GitHub API, while the project can be made without an API key, you will be limited to 50 calls an hour. Information on how to get your own Access Token can be found [here](https://docs.github.com/en/rest?apiVersion=2022-11-28).
-5. Migration and Seeds via Prisma
-   ```sh
-   npm run build-db
-   ```
-6. Run Server
+3. Run Client
    The default port is set to localhost:8080.
    ```sh
    npm run dev
@@ -124,11 +107,7 @@ _Please note you will need to follow the steps found on [niidl-client](https://g
 
 ## Basic Outline
 
-The following is a rough breakdown for the server side of the application.
-
-### Database/Schema
-
-For a better understanding of the existing schema, please look at the schema file located at ./niidl-server/prisma/schema.prisma. Documentation for [![Prisma][prisma]][prisma-url] can be found on their site.
+The following is a rough breakdown for the client side of the application.
 
 ### Major APIs Used
 
